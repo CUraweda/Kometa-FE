@@ -8,14 +8,14 @@ function SignLayout({ children, bg }: Props) {
   const navigate = useNavigate();
 
   return (
-    <div className="grid grid-cols-2 gap-10 p-8 min-h-screen">
-      <div className="flex flex-col justify-between">
+    <div className="w-full flex justify-center items-center ">
+      <div className="w-full sm:w-1/2 min-h-screen p-10  flex flex-col justify-between">
         <div className="flex justify-between items-center">
           <Link to="/">
             <img className="h-10" src={logoColor} alt="logo-color" />
           </Link>
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             className="text-emeraldGreen text-sm"
           >
             Kembali
@@ -26,14 +26,16 @@ function SignLayout({ children, bg }: Props) {
           <p>© 2025 Kometa All Rights Reserved.</p>
         </div>
       </div>
-      <img
-        className="h-full w-full object-cover rounded-lg overflow-hidden"
-        src={
-          bg ??
-          "https://images.unsplash.com/photo-1609580723017-c611fb82987b?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        }
-        alt="signin-bg"
-      />
+      <div className="w-1/2 p-5 hidden sm:block">
+
+        <div className="w-full min-h-screen bg-green-500 bg-cover bg-center relative rounded-xl overflow-hidden">
+          <img
+            src={bg}
+            alt="signin-bg"
+            className="absolute top-0 left-0 w-full h-full object-cover"
+          />
+        </div>
+      </div>
     </div>
   );
 }

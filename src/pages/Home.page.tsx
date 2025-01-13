@@ -17,28 +17,47 @@ import { headerPrograms, programs } from "../constant/content/program";
 import { socials } from "../constant/content/social";
 import { headerTeam, teams } from "../constant/content/team";
 import { useScrollClick } from "../hooks/useScrollClick";
+import CustomMap from "../component/maps";
 
 function HomePage() {
   const { handleScrollClick } = useScrollClick();
   return (
     <>
-      <Container className="flex items-center min-h-screen">
+      <Container className="flex items-center min-h-screen ">
+
         <div className="hero justify-start text-white space-y-5 text-balance">
-          <div className="hero-content flex flex-col items-start max-w-[640px]">
-            <h3 className="text-[44px] tracking-wide font-semibold leading-[1.2]">
+          <div className="hero-content flex flex-col items-start max-w-[60rem]">
+            <p className="text-2xl sm:text-5xl tracking-wide font-semibold leading-[1.2]">
               Pionir Digitalisasi Ekonomi Kerakyatan melalui Koperasi Modern
               Berbasis Teknologi
-            </h3>
-            <p className="text-[20px] tracking-wider font-light">
+            </p>
+            <p className="text-sm sm:text-xl tracking-wider font-light">
               Menggerakkan ekonomi kerakyatan melalui koperasi modern berbasis
               teknologi untuk masa depan yang lebih baik.
             </p>
             <div className="flex mt-14 space-x-5">
-              <img
-                className="block h-12"
-                src={membersJoin}
-                alt="group-members"
-              />
+              <div className="avatar-group -space-x-6 rtl:space-x-reverse">
+                <div className="avatar">
+                  <div className="w-10">
+                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                  </div>
+                </div>
+                <div className="avatar">
+                  <div className="w-10">
+                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                  </div>
+                </div>
+                <div className="avatar">
+                  <div className="w-10">
+                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                  </div>
+                </div>
+                <div className="avatar placeholder">
+                  <div className="bg-neutral text-neutral-content w-10">
+                    <span>+99</span>
+                  </div>
+                </div>
+              </div>
               <div className="flex items-center gap-3">
                 <span className="text-4xl font-bold">120+</span>
                 <span className="tracking-widest font-light">Anggota</span>
@@ -49,66 +68,71 @@ function HomePage() {
       </Container>
       <Container id="product" className="py-10">
         <Header {...headerProduct} />
-        <div className="flex gap-8 mt-14">
+        <div className="flex mt-14  flex-wrap">
           {products.map((item, index) => (
             <List key={`product-${index}`} {...item} />
           ))}
         </div>
       </Container>
-      <Container id="about" className="flex justify-between gap-12 py-16">
-        <Header direction="left" className="max-w-[600px]" {...headerAbout} />
-        <div className="block w-5/12 h-[500px] overflow-hidden rounded-xl ">
-          <img
-            src={aboutPetaniPhoto}
-            className="w-full h-full object-cover object-center"
-            alt="teentang petani"
-          />
-        </div>
-      </Container>
-      <Container id="achievement" className="py-24 flex items-center gap-24">
+      <div className="bg-gray-100">
+
+        <Container id="about" className="flex justify-between flex-wrap items-center py-16 ">
+          <Header direction="left" className="w-full sm:w-1/2 items-center sm:items-start text-center sm:text-start" {...headerAbout} />
+          <div className="block w-full sm:w-5/12 h-[500px] overflow-hidden p-4 mt-5 ">
+            <img
+              src={aboutPetaniPhoto}
+              className="w-full h-full object-cover object-center rounded-xl"
+              alt="teentang petani"
+            />
+          </div>
+        </Container>
+      </div>
+      <Container id="achievement" className="py-24 flex flex-wrap px-3 items-center gap-10">
         <Header
           direction="left"
-          className="max-w-[600px]"
+          className="w-full sm:w-1/2 items-center sm:items-start text-center sm:text-start"
           {...headerAchievement}
         />
-        <div className="grid grid-cols-2 gap-11">
-          {achievements.map(({ label, value }, index) => (
-            <div
-              key={`achievement-${index}`}
-              className="flex flex-col items-center justify-center gap-2"
-            >
-              <span className="text-5xl font-bold">
-                {index < achievements.length - 1 ? (
-                  <div className="flex">
-                    <CountUp
-                      className="text-emeraldGreen font-bold"
-                      end={value}
-                      scrollSpyOnce
-                      enableScrollSpy
-                    />
-                    <span>+</span>
-                  </div>
-                ) : (
-                  <div className="flex items-end">
-                    <span>Rp +</span>
-                    <CountUp
-                      className="text-emeraldGreen font-bold"
-                      end={value}
-                      scrollSpyOnce
-                      enableScrollSpy
-                    />
-                    <span className="text-3xl ml-1">Jt</span>
-                  </div>
-                )}
-              </span>
-              <span className="text-sm font-light tracking-wide">{label}</span>
-            </div>
-          ))}
+        <div className="w-full sm:w-5/12">
+          <div className="grid grid-cols-2 gap-11">
+            {achievements.map(({ label, value }, index) => (
+              <div
+                key={`achievement-${index}`}
+                className="flex flex-col items-center justify-center gap-2"
+              >
+                <span className="text-3xl sm:text-5xl font-bold">
+                  {index < achievements.length - 1 ? (
+                    <div className="flex text-emeraldGreen">
+                      <CountUp
+                        className=" font-bold"
+                        end={value}
+                        scrollSpyOnce
+                        enableScrollSpy
+                      />
+                      <span>+</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-end text-emeraldGreen">
+                      <span>Rp +</span>
+                      <CountUp
+                        className="font-bold"
+                        end={value}
+                        scrollSpyOnce
+                        enableScrollSpy
+                      />
+                      <span>Jt</span>
+                    </div>
+                  )}
+                </span>
+                <span className="text-sm font-light tracking-wide text-center">{label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </Container>
       <Container id="member" className="py-10">
         <Header {...headerMembers} />
-        <div className="flex gap-8 mt-14">
+        <div className="flex mt-14  flex-wrap">
           {members.map((item, index) => (
             <List key={`member-${index}`} {...item} />
           ))}
@@ -117,11 +141,11 @@ function HomePage() {
       <div className="bg-deepBlue">
         <Container
           id="program"
-          className=" py-24 flex items-center gap-24 text-white"
+          className="py-24 px-5 flex flex-wrap items-center gap-24 text-white"
         >
           <Header
             direction="left"
-            className="max-w-[600px]"
+            className="w-full sm:w-1/2 items-center sm:items-start text-center sm:text-start"
             isTextWhite
             {...headerPrograms}
           />
@@ -142,13 +166,13 @@ function HomePage() {
           </div>
         </Container>
       </div>
-      <Container id="team" className="py-10">
+      <Container id="team" className="py-10 p-3">
         <Header {...headerTeam} />
-        <div className="flex gap-8 mt-14">
+        <div className="flex flex-wrap  mt-14">
           {teams.map(({ photoPath, position, name }, index) => (
             <div
               key={`team-${index}`}
-              className="flex flex-col items-center gap-5 justify-between"
+              className="w-full sm:w-1/4 p-3 flex flex-col items-center justify-between"
             >
               <div className="bg-darkMetal rounded-lg cursor-pointer image-container">
                 <img
@@ -166,18 +190,14 @@ function HomePage() {
         </div>
       </Container>
       <div id="network">
-        <img
-          className="block w-full h-auto mt-20"
-          src={maps}
-          alt="office-map"
-        />
+        <CustomMap />
       </div>
 
       <div className="border-t-4 border-t-emeraldGreen"></div>
-      <Container className="pt-16 pb-10">
-        <div className="flex items-start justify-between">
-          <div>
-            <div>
+      <Container className="pt-16 pb-10 px-3">
+        <div className="">
+          <div className="flex flex-wrap w-full  ">
+            <div className="w-full sm:w-1/3 p-4">
               <a href="top" onClick={handleScrollClick}>
                 <img className="h-10" src={colorLogo} alt="color-logo" />
               </a>
@@ -185,7 +205,7 @@ function HomePage() {
                 Kolaborasi untuk Kesejahteraan, Inovasi untuk Masa Depan.
               </p>
             </div>
-            <div className="mt-20">
+            <div className="w-full sm:w-1/3 p-4 ">
               <div className="flex gap-3">
                 {socials.map(({ link, icon: Icon }, index) => (
                   <a key={`social-${index}`} href={link} target="_blank">
@@ -193,30 +213,29 @@ function HomePage() {
                   </a>
                 ))}
               </div>
-              <p className="mt-3 text-sm text-slate-500">
-                © 2025 Kometa. All Rights Reserved
-              </p>
+
+            </div>
+            <div className="w-full sm:w-1/3 gap-3 p-4 flex flex-col">
+              {contact.map(({ icon: Icon, description }, index) => (
+                <div
+                  key={`contact-${index}`}
+                  className={`flex gap-3 cursor-pointer ${index == 0 ? "items-start" : "items-center"
+                    }`}
+                >
+                  <span
+                    className={`${index == 0 ? "pt-1" : ""
+                      } min-w-7 flex justify-center items-center`}
+                  >
+                    <Icon />
+                  </span>
+                  <span className="text-sm text-gray-500">{description}</span>
+                </div>
+              ))}
             </div>
           </div>
-          <div className="flex flex-col gap-4 max-w-xs">
-            {contact.map(({ icon: Icon, description }, index) => (
-              <div
-                key={`contact-${index}`}
-                className={`flex gap-3 cursor-pointer ${
-                  index == 0 ? "items-start" : "items-center"
-                }`}
-              >
-                <span
-                  className={`${
-                    index == 0 ? "pt-1" : ""
-                  } min-w-7 flex justify-center items-center`}
-                >
-                  <Icon />
-                </span>
-                <span className="text-sm text-gray-500">{description}</span>
-              </div>
-            ))}
-          </div>
+          <p className="mt-10 text-center text-sm text-slate-500">
+            © 2025 Kometa. All Rights Reserved
+          </p>
         </div>
       </Container>
     </>
@@ -233,7 +252,7 @@ function List({
   description: string;
 }) {
   return (
-    <div className="flex flex-col">
+    <div className="w-full sm:w-1/4 items-center sm:items-start text-center sm:text-start flex flex-col p-4">
       <Icon />
       <h2 className="mt-6 text-lg font-medium text-slate-700">{title}</h2>
       <p className="mt-2 tracking-wide text-sm text-slate-400">{description}</p>
