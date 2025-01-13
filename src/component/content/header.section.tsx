@@ -17,17 +17,16 @@ function Header({
 }: Props) {
   const overrideStyle = isTextWhite
     ? {
-        color: "white",
-      }
+      color: "white",
+    }
     : undefined;
 
   return (
     <div
-      className={`flex flex-col  ${
-        direction == "left"
+      className={`flex flex-col px-3 ${direction == "left"
           ? "text-left items-start"
           : "items-center text-center"
-      } ${className}`}
+        } ${className}`}
     >
       <h3 style={overrideStyle} className="tracking-widest text-emeraldGreen">
         {section}

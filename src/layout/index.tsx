@@ -3,10 +3,20 @@ import Navbar from "./navbar.component";
 
 function Layout() {
   return (
-    <div className="h-[810px] bg-kometa min-h-screen bg-no-repeat">
-      <Navbar />
-      <Outlet />
-    </div>
+    <>
+
+
+      <div className="w-full min-h-screen relative ">
+          <div className="absolute top-0 left-0 w-full h-full bg-kometa bg-cover" >
+
+            <Navbar />
+            <Outlet />
+          </div>
+        
+
+      </div>
+
+    </>
   );
 }
 
