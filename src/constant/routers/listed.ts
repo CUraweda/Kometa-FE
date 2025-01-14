@@ -1,0 +1,18 @@
+export const listed = {
+  signin: "/signin",
+  signup: "/signup",
+  forget: "/forget",
+  reset: "/reset",
+  sent: "/sent",
+  verify: "/verify",
+  registerMember: "/register",
+  payment: "/payment",
+  paid: "/paid",
+  error: "/*",
+  dashboard: "/dashboard",
+  land: "land",
+  planting: "planting",
+  supplier: "supplier",
+  finance: "finance",
+  profile: "profile",
+};

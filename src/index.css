@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+.input,
+.input-bordered,
+.select,
+.select-bordered,
+.textarea,
+.textarea-bordered {
+  @apply outline-0 ring-0 focus:outline-none focus:ring-0 active:outline-none active:ring-0 shadow-none focus:border-emeraldGreen active:border-emeraldGreen;
+}
+
+.tab-active {
+  @apply border-none border-b !border-b-emeraldGreen;
+}
+
 .image-container {
   position: relative;
   overflow: hidden;

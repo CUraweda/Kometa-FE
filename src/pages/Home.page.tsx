@@ -1,30 +1,31 @@
 import CountUp from "react-countup";
 import aboutPetaniPhoto from "../assets/content/about.png";
-import maps from "../assets/content/maps.png";
-import membersJoin from "../assets/content/members.png";
 import colorLogo from "../assets/logo/color.png";
-import Container from "../component/container.component";
+import Container from "../component/content/container.component";
 import Header from "../component/content/header.section";
+import CustomMap from "../component/ui/maps";
 import { headerAbout } from "../constant/content/about";
 import {
   achievements,
   headerAchievement,
 } from "../constant/content/achievement";
 import { contact } from "../constant/content/contact";
-import { headerMembers, members } from "../constant/content/members";
+import {
+  dummyPhoto,
+  headerMembers,
+  members,
+} from "../constant/content/members";
 import { headerProduct, products } from "../constant/content/product";
 import { headerPrograms, programs } from "../constant/content/program";
 import { socials } from "../constant/content/social";
 import { headerTeam, teams } from "../constant/content/team";
 import { useScrollClick } from "../hooks/useScrollClick";
-import CustomMap from "../component/maps";
 
 function HomePage() {
   const { handleScrollClick } = useScrollClick();
   return (
     <>
       <Container className="flex items-center min-h-screen ">
-
         <div className="hero justify-start text-white space-y-5 text-balance">
           <div className="hero-content flex flex-col items-start max-w-[60rem]">
             <p className="text-2xl sm:text-5xl tracking-wide font-semibold leading-[1.2]">
@@ -37,26 +38,13 @@ function HomePage() {
             </p>
             <div className="flex mt-14 space-x-5">
               <div className="avatar-group -space-x-6 rtl:space-x-reverse">
-                <div className="avatar">
-                  <div className="w-10">
-                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                {dummyPhoto.map((item) => (
+                  <div className="avatar">
+                    <div className="w-10">
+                      <img key={item} src={item} alt={item} loading="eager" />
+                    </div>
                   </div>
-                </div>
-                <div className="avatar">
-                  <div className="w-10">
-                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                  </div>
-                </div>
-                <div className="avatar">
-                  <div className="w-10">
-                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                  </div>
-                </div>
-                <div className="avatar placeholder">
-                  <div className="bg-neutral text-neutral-content w-10">
-                    <span>+99</span>
-                  </div>
-                </div>
+                ))}
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-4xl font-bold">120+</span>
@@ -75,9 +63,15 @@ function HomePage() {
         </div>
       </Container>
       <div className="bg-gray-100">
-
-        <Container id="about" className="flex justify-between flex-wrap items-center py-16 ">
-          <Header direction="left" className="w-full sm:w-1/2 items-center sm:items-start text-center sm:text-start" {...headerAbout} />
+        <Container
+          id="about"
+          className="flex justify-between flex-wrap items-center py-16 "
+        >
+          <Header
+            direction="left"
+            className="w-full sm:w-1/2 items-center sm:items-start text-center sm:text-start"
+            {...headerAbout}
+          />
           <div className="block w-full sm:w-5/12 h-[500px] overflow-hidden p-4 mt-5 ">
             <img
               src={aboutPetaniPhoto}
@@ -87,7 +81,10 @@ function HomePage() {
           </div>
         </Container>
       </div>
-      <Container id="achievement" className="py-24 flex flex-wrap px-3 items-center gap-10">
+      <Container
+        id="achievement"
+        className="py-24 flex flex-wrap px-3 items-center gap-10"
+      >
         <Header
           direction="left"
           className="w-full sm:w-1/2 items-center sm:items-start text-center sm:text-start"
@@ -124,7 +121,9 @@ function HomePage() {
                     </div>
                   )}
                 </span>
-                <span className="text-sm font-light tracking-wide text-center">{label}</span>
+                <span className="text-sm font-light tracking-wide text-center">
+                  {label}
+                </span>
               </div>
             ))}
           </div>
@@ -181,7 +180,7 @@ function HomePage() {
                   alt={`photo-team-${index}`}
                 />
               </div>
-              <div className="text-center">
+              <div className="text-center mt-6">
                 <h3 className="text-sm text-slate-500">{position}</h3>
                 <p className="font-semibold">{name}</p>
               </div>
@@ -199,7 +198,12 @@ function HomePage() {
           <div className="flex flex-wrap w-full  ">
             <div className="w-full sm:w-1/3 p-4">
               <a href="top" onClick={handleScrollClick}>
-                <img className="h-10" src={colorLogo} alt="color-logo" />
+                <img
+                  className="h-10"
+                  src={colorLogo}
+                  alt="color-logo"
+                  loading="eager"
+                />
               </a>
               <p className="max-w-64 mt-5 font-semibold">
                 Kolaborasi untuk Kesejahteraan, Inovasi untuk Masa Depan.
@@ -213,18 +217,19 @@ function HomePage() {
                   </a>
                 ))}
               </div>
-
             </div>
             <div className="w-full sm:w-1/3 gap-3 p-4 flex flex-col">
               {contact.map(({ icon: Icon, description }, index) => (
                 <div
                   key={`contact-${index}`}
-                  className={`flex gap-3 cursor-pointer ${index == 0 ? "items-start" : "items-center"
-                    }`}
+                  className={`flex gap-3 cursor-pointer ${
+                    index == 0 ? "items-start" : "items-center"
+                  }`}
                 >
                   <span
-                    className={`${index == 0 ? "pt-1" : ""
-                      } min-w-7 flex justify-center items-center`}
+                    className={`${
+                      index == 0 ? "pt-1" : ""
+                    } min-w-7 flex justify-center items-center`}
                   >
                     <Icon />
                   </span>
