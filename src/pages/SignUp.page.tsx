@@ -1,5 +1,5 @@
 import SignUpForm from "../component/form/signup.form";
-import SignLayout from "../layout/Sign.layout";
+import SignLayout from "../layout/sign.layout";
 import signupBackground from "../assets/content/signup-bg.png";
 
 function SignUpPage() {

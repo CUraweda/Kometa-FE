@@ -2,7 +2,7 @@ import paidAnimation from "../assets/gif/paid.gif";
 import { useNavigate } from "react-router-dom";
 import { listed } from "../constant/routers/listed";
 import { twMerge } from "tailwind-merge";
-import PaymentLayout from "../layout/Payment.layout";
+import PaymentLayout from "../layout/payment.layout";
 
 function PaidPage() {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import CenterLayout from "./Center.layout";
+import CenterLayout from "./center.layout";
 
 function ProtectedLayout({ children }: { children: ReactNode }) {
   const isAuthenticated = true;
