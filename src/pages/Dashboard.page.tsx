@@ -1,4 +1,4 @@
-import CenterLayout from "../layout/Center.layout";
+import CenterLayout from "../layout/center.layout";
 
 function DashboardPage() {
   return (
