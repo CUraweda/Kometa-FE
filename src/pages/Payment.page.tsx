@@ -8,7 +8,7 @@ import { modalList } from "../constant/modals";
 import { listed } from "../constant/routers/listed";
 import { useModal } from "../hooks/useModal";
 import { useTimer } from "../hooks/useTimer";
-import PaymentLayout from "../layout/Payment.layout";
+import PaymentLayout from "../layout/payment.layout";
 import { Payment } from "../types/common";
 
 function PaymentPage() {
