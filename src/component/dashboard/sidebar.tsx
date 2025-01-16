@@ -5,7 +5,7 @@ import { sidebarList } from "../../constant/routers/sidebar";
 
 function Sidebar() {
   return (
-    <div className="w-64 flex flex-col justify-between min-h-screen p-8 border-r border-r-gray-200">
+    <div className="w-64 flex flex-col justify-between min-h-screen p-8 border-r border-r-gray-200 bg-white">
       <div className="space-y-12">
         <img className="h-8" src={logo} alt="logo-kometa" />
         <ul className="space-y-3">
