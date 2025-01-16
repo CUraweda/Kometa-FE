@@ -20,5 +20,15 @@ export default {
   	}
   },
   plugins: [require("daisyui"), require("tailwindcss-animate")],
-  
+  daisyui: {
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["light"],
+          primary: "#0E8388",
+        },
+      },
+    ],
+  },
+
 };
