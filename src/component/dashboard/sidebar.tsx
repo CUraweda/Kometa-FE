@@ -1,9 +1,11 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Logout } from "../../assets/icon";
 import logo from "../../assets/logo/color.png";
 import { sidebarList } from "../../constant/routers/sidebar";
 
 function Sidebar() {
+  const navigate = useNavigate();
+
   return (
     <div className="w-64 flex flex-col justify-between min-h-screen p-8 border-r border-r-gray-200 bg-white">
       <div className="space-y-12">
@@ -35,10 +37,13 @@ function Sidebar() {
           ))}
         </ul>
       </div>
-      <div className="flex gap-3 items-center cursor-pointer p-2 rounded-lg hover:bg-emerald-50 hover:text-emeraldGreen">
+      <button
+        onClick={() => navigate("/")}
+        className="flex gap-3 items-center cursor-pointer p-2 rounded-lg hover:bg-emerald-50 hover:text-emeraldGreen"
+      >
         <Logout className="w-4 h-4" />
         <span>Keluar</span>
-      </div>
+      </button>
     </div>
   );
 }
