@@ -26,7 +26,7 @@ function SignLayout({ children, bg, hideBack = false }: Props) {
               onClick={() => navigate(-1)}
               className="text-emeraldGreen text-sm flex items-center"
             >
-              <RiArrowDropLeftLine size={25}/> Kembali
+              <RiArrowDropLeftLine size={25} /> Kembali
             </button>
           )}
         </div>
@@ -35,12 +35,12 @@ function SignLayout({ children, bg, hideBack = false }: Props) {
           <p>© 2025 Kometa All Rights Reserved.</p>
         </div>
       </div>
-      <div className="w-1/2 hidden sm:block relative min-h-screen">
-        <div className="m-10 absolute inset-0 bg-cover bg-center rounded-xl overflow-hidden">
+      <div className="w-1/2 hidden sm:block relative min-h-[calc(100vh-20px)]">
+        <div className="m-5 absolute inset-0 bg-cover bg-center rounded-xl overflow-hidden">
           <img
             src={bg}
             alt="signin-bg"
-            className="h-full max-w-1/2 object-cover"
+            className="h-full w-full object-cover"
           />
         </div>
       </div>
