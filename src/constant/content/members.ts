@@ -32,3 +32,34 @@ export const members = [
       "Memberikan dukungan finansial untuk mendorong pengembangan bisnis koperasi.",
   },
 ];
+
+export const dummyPhoto = [
+  "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
+  "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg",
+  "https://png.pngtree.com/thumb_back/fh260/background/20230610/pngtree-man-in-glasses-posing-in-front-of-a-dark-background-image_2904372.jpg",
+];
+
+export const memberType = [
+  { label: "Anggota Pemilik Aset/Lahan", value: "1" },
+  { label: "Anggota Pemilik Usaha/Bisnis", value: "2" },
+  { label: "Anggota Pemilik Jasa", value: "3" },
+  { label: "Anggota Pemberi Modal/Investor", value: "4" },
+];
+
+export const dummy = [
+  { label: "Sumatera", value: "1" },
+  { label: "Bandung", value: "2" },
+  { label: "Surabaya", value: "3" },
+  { label: "Sulawesi", value: "4" },
+];
+
+export const gender = [
+  {
+    label: "Pria",
+    value: "pria",
+  },
+  {
+    label: "Wanita",
+    value: "wanita",
+  },
+];

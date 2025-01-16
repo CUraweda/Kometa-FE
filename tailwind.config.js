@@ -1,11 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      backgroundImage: {
-        kometa: "url('./kometa-bg.png')",
-      },
       colors: {
         emeraldGreen: "#0E8388",
         deepBlue: "#305986",
@@ -13,8 +11,16 @@ export default {
       },
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("tailwindcss-animate")],
   daisyui: {
-    themes: ["light"],
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["light"],
+          primary: "#0E8388",
+        },
+      },
+    ],
   },
+
 };
