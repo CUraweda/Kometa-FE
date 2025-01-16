@@ -1,6 +1,6 @@
 import forgetBackground from "../assets/content/forget.jpg";
 import ForgetForm from "../component/form/forget.form";
-import SignLayout from "../layout/Sign.layout";
+import SignLayout from "../layout/sign.layout";
 
 function ForgetPage() {
   return (

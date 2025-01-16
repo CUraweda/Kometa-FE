@@ -8,6 +8,7 @@ type Props = { children: ReactNode; bg?: string; hideBack?: boolean };
 function SignLayout({ children, bg, hideBack = false }: Props) {
   const navigate = useNavigate();
 
+  
   return (
     <div className="w-full flex justify-center items-center ">
       <div className="w-full sm:w-1/2 min-h-screen p-10  flex flex-col justify-between">

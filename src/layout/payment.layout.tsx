@@ -17,4 +17,5 @@ function PaymentLayout({ children }: Props) {
   );
 }
 
+
 export default PaymentLayout;

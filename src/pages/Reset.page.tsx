@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import signinBackground from "../assets/content/signin-bg.png";
 import Error from "../component/content/error.component";
-import SignLayout from "../layout/Sign.layout";
+import SignLayout from "../layout/sign.layout";
 import ResetForm from "../component/form/reset.form";
 
 function ResetPage() {
