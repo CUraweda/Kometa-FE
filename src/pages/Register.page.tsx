@@ -12,7 +12,7 @@ import {
 import { dummy, gender, memberType } from "../constant/content/members";
 import { listed } from "../constant/routers/listed";
 import { useModal } from "../hooks/useModal";
-import PaymentLayout from "../layout/Payment.layout";
+import PaymentLayout from "../layout/payment.layout";
 import { Register } from "../types/register";
 
 function RegisterMember() {

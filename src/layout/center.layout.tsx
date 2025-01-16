@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 type Props = { className?: string; children: ReactNode };
 
+
 function CenterLayout({ className, children }: Props) {
   return (
     <div

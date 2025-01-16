@@ -12,7 +12,7 @@ import { modalList } from "../constant/modals";
 import { listed } from "../constant/routers/listed";
 import { useCountdown } from "../hooks/useCountdown";
 import { useModal } from "../hooks/useModal";
-import SignLayout from "../layout/Sign.layout";
+import SignLayout from "../layout/sign.layout";
 
 function VerifyOTPPage() {
   const MAX_OTP = 6;
