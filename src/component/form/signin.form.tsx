@@ -1,14 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { commonMessage } from "../../constant/form/validation.message";
 import { listed } from "../../constant/routers/listed";
 import { SignIn } from "../../types/sign";
 import Header from "../content/header.sign";
-import { Message } from "./error.field";
+import Input from "../ui/input";
+import Password from "../ui/password";
 
 const MOCK = {
   email: "admin@mail.com",
@@ -16,7 +16,6 @@ const MOCK = {
 };
 
 function SignInForm() {
-  const [showPassword, toggle] = useReducer((o) => !o, false);
   const navigate = useNavigate();
 
   const {
@@ -58,49 +57,18 @@ function SignInForm() {
         mudah, cepat, dan mendukung kebutuhan Anda."
       />
       <form className="mt-8" onSubmit={handleSubmit(onSubmit)}>
-        <label className="form-control w-full">
-          <input
-            type="text"
-            placeholder="Email"
-            className={`input input-bordered ${
-              errors.email ? "border-red-600" : ""
-            }`}
-            {...register("email")}
-          />
-        </label>
-        <Message
-          isError={Boolean(errors.email)}
-          message={errors.email?.message}
+        <Input
+          type="text"
+          placeholder="Email"
+          error={errors?.email}
+          {...register("email")}
         />
 
-        <label className="form-control w-full mt-4 relative">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Kata Sandi"
-            className={`input input-bordered flex items-center relative ${
-              errors.password ? "border-red-600" : ""
-            }`}
-            {...register("password")}
-          />
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
-            {showPassword ? (
-              <RiEyeLine
-                size={20}
-                onClick={toggle}
-                className="text-slate-500"
-              />
-            ) : (
-              <RiEyeOffLine
-                size={20}
-                onClick={toggle}
-                className="text-slate-500"
-              />
-            )}
-          </div>
-        </label>
-        <Message
-          isError={Boolean(errors.password)}
-          message={errors.password?.message}
+        <Password
+          className="mt-4"
+          placeholder="Kata Sandi"
+          error={errors?.password}
+          {...register("password")}
         />
 
         <div className="flex justify-end mt-2">
