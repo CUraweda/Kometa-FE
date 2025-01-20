@@ -8,7 +8,7 @@ function TopBar() {
   const isProfile = useLocation().pathname === `/${listed.profile}`;
 
   return (
-    <div className="w-full flex justify-between items-center py-3 px-5 border-b border-b-gray-200">
+    <div className="w-full flex justify-between items-center py-3 px-5 border-b border-b-gray-200 bg-white shadow-md">
       <div className="flex gap-2 justify-center items-center">
         <img src={IconMap} alt="logo" className="lg:hidden" />
         {isProfile ? null : <h3>Hello, John Smith</h3>}

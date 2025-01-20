@@ -19,6 +19,9 @@ function LandCard({
 }: Props) {
   const land = landType[ownershipStatus as keyof typeof landType];
   return (
+    <>
+    <div className="w-full sm:w-1/3 p-3">
+
     <div className="border border-input p-5 rounded-lg">
       <div className="flex justify-between">
         <p className="flex items-baseline text-xl font-medium">
@@ -43,6 +46,8 @@ function LandCard({
         </div>
       </div>
     </div>
+    </div>
+    </>
   );
 }
 

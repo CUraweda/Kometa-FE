@@ -15,11 +15,17 @@ import DashboardPage from "../../pages/Dashboard.page";
 import ProtectedLayout from "../../layout/Protected.layout";
 import LandingLayout from "../../layout/Landing.layout";
 import DashboardLayout from "../../layout/Dashboard.layout";
+import DashboardLayoutAdmin from "../../layout/DashboardAdmin.layout";
 import LandPage from "../../pages/Land.page";
 import PlantingPage from "../../pages/Planting.page";
 import SupplierPage from "../../pages/Supplier.page";
 import FinancePage from "../../pages/Finance.page";
 import ProfilePage from "../../pages/Profile.page";
+import Pendapatan from "@/pages/admin/Pendapatan";
+import Anggota from "@/pages/admin/Anggota";
+import DetailAnggota from "@/pages/admin/DetailAnggota";
+import AnggotaBaru from "@/pages/admin/AnggotaBaru";
+import DetailAnggotaBaru from "@/pages/admin/DetailAnggotaBaru";
 
 export const router = createBrowserRouter([
   {
@@ -58,6 +64,21 @@ export const router = createBrowserRouter([
       { path: listed.supplier, element: <SupplierPage /> },
       { path: listed.finance, element: <FinancePage /> },
       { path: listed.profile, element: <ProfilePage /> },
+      { path: listed.adminPendapatan, element: <Pendapatan /> },
+    ],
+  },
+  {
+    element: (
+      <ProtectedLayout>
+        <DashboardLayoutAdmin />
+      </ProtectedLayout>
+    ),
+    children: [
+      { path: listed.adminPendapatan, element: <Pendapatan /> },
+      { path: listed.adminAnggota, element: <Anggota /> },
+      { path: listed.detailAnggota, element: <DetailAnggota /> },
+      { path: listed.anggotaBaru, element: <AnggotaBaru /> },
+      { path: listed.DetailAnggotaBaru, element: <DetailAnggotaBaru /> },
     ],
   },
 ]);

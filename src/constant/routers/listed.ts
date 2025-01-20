@@ -15,4 +15,9 @@ export const listed = {
   supplier: "supplier",
   finance: "finance",
   profile: "profile",
+  adminPendapatan: "/admin/pendapatan",
+  adminAnggota: "/admin/anggota",
+  detailAnggota: "/admin/anggota/detail",
+  anggotaBaru: "/admin/anggota-baru",
+  DetailAnggotaBaru: "/admin/detail-anggota-baru",
 };
