@@ -39,7 +39,7 @@ function Sidebar() {
       </div>
       <button
         onClick={() => navigate("/")}
-        className="flex gap-3 items-center cursor-pointer p-2 rounded-lg hover:bg-emerald-50 hover:text-emeraldGreen"
+        className="flex gap-3 items-center cursor-pointer p-2 rounded-lg hover:text-red-700"
       >
         <Logout className="w-4 h-4" />
         <span>Keluar</span>

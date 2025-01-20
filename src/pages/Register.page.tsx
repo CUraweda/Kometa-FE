@@ -14,6 +14,9 @@ import { listed } from "../constant/routers/listed";
 import { useModal } from "../hooks/useModal";
 import PaymentLayout from "../layout/payment.layout";
 import { Register } from "../types/register";
+import Input from "@/component/ui/input";
+import Select from "@/component/ui/select";
+import TextArea from "@/component/ui/textarea";
 
 function RegisterMember() {
   const [modalId, setModalId] = useState(instuctionId.photoKTP);
@@ -23,31 +26,39 @@ function RegisterMember() {
 
   const handleOpenModal = () => openModal(modalId);
 
-  const { register, setValue, getValues, handleSubmit, reset } =
-    useForm<Register>({
-      defaultValues: {
-        fotoKTP: null,
-        selfieKTP: null,
-        keangotaan: "",
-        nik: "",
-        name: "",
-        gender: "",
-        placeBirth: "",
-        dob: new Date(),
-        province: "",
-        city: "",
-        district: "",
-        subdistrict: "",
-        currentStreet: "",
-        ktpStreet: "",
-        payment: "",
-      },
-    });
+  const {
+    register,
+    setValue,
+    getValues,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Register>({
+    defaultValues: {
+      fotoKTP: null,
+      selfieKTP: null,
+      keangotaan: "",
+      nik: "",
+      name: "",
+      gender: "",
+      placeBirth: "",
+      dob: new Date(),
+      province: "",
+      city: "",
+      district: "",
+      subdistrict: "",
+      currentStreet: "",
+      ktpStreet: "",
+      payment: "",
+    },
+  });
 
   const onSubmit: SubmitHandler<Register> = (value) => {
     window.alert(JSON.stringify(value));
     reset();
-    navigate(listed.payment, { state: { payment: value.payment } });
+    navigate(listed.payment, {
+      state: { payment: value.payment },
+    });
   };
 
   const { photo, title, regulation } = instructions[modalId as InstructionKey];
@@ -122,33 +133,28 @@ function RegisterMember() {
 
             {/* Keanggotaan & NIK */}
             <div className="flex gap-4">
-              <select
-                className="select select-bordered w-full max-w-xs"
+              <Select
+                data={memberType}
+                className="w-full"
+                placeholder="Keanggotaan"
+                error={errors?.keangotaan}
                 {...register("keangotaan")}
-              >
-                <option value="" disabled selected>
-                  Keanggotaan
-                </option>
-                {memberType.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-              <input
+              />
+              <Input
                 type="text"
+                error={errors?.nik}
                 placeholder="NIK"
-                className="input input-bordered w-full max-w-xs"
+                className="w-full"
                 {...register("nik")}
               />
             </div>
 
             {/* Nama Lengkap & Jenis Kelamin */}
             <div className="flex gap-4">
-              <input
+              <Input
                 type="text"
+                error={errors?.name}
                 placeholder="Nama Lengkap (Sesuai KTP)"
-                className="input input-bordered w-full max-w-xs"
                 {...register("name")}
               />
               <Radio
@@ -157,104 +163,78 @@ function RegisterMember() {
                 onChange={(e) => setValue("gender", e.value)}
                 selected={getValues("gender")}
                 data={gender}
+                error={errors.gender}
               />
             </div>
 
             {/* Tempat lahir & Tanggal lahir */}
             <div className="flex gap-4">
-              <input
+              <Input
                 type="text"
+                error={errors?.placeBirth}
                 placeholder="Tempat Lahir"
-                className="input input-bordered w-full max-w-xs"
                 {...register("placeBirth")}
               />
-              <input
+              <Input
                 type="date"
+                error={errors?.placeBirth}
                 placeholder="Tanggal Lahir"
-                className="input input-bordered w-full max-w-xs"
                 {...register("dob")}
               />
             </div>
 
             {/* Provinsi & Kecamatan */}
             <div className="flex gap-4">
-              <select
-                className="select select-bordered w-full max-w-xs"
+              <Select
+                data={dummy}
+                error={errors?.province}
+                placeholder="Provinsi"
                 {...register("province")}
-              >
-                <option value="" disabled selected>
-                  Provinsi
-                </option>
-                {dummy.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-              <select
-                className="select select-bordered w-full max-w-xs"
+              />
+              <Select
+                data={dummy}
+                error={errors?.city}
+                placeholder="City"
                 {...register("city")}
-              >
-                <option value="" disabled selected>
-                  Kota/Kabupaten
-                </option>
-                {dummy.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
 
             {/* Provinsi & Kecamatan */}
             <div className="flex gap-4">
-              <select
-                className="select select-bordered w-full max-w-xs"
+              <Select
+                data={dummy}
+                error={errors?.district}
+                placeholder="Kecamatan"
                 {...register("district")}
-              >
-                <option value="" disabled selected>
-                  Kecamatan
-                </option>
-                {dummy.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-              <select
-                className="select select-bordered w-full max-w-xs"
+              />
+              <Select
+                data={dummy}
+                error={errors?.subdistrict}
+                placeholder="Desa/Kelurahan"
                 {...register("subdistrict")}
-              >
-                <option value="" disabled selected>
-                  Desa/Kelurahan
-                </option>
-                {dummy.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
 
             {/* Alamat saat ini & Alamat KTP*/}
             <div className="flex gap-4">
-              <textarea
-                rows={2}
-                className="textarea textarea-bordered w-full max-w-xs"
+              <TextArea
+                error={errors?.currentStreet}
                 placeholder="Alamat (Saat ini)"
                 {...register("currentStreet")}
-              ></textarea>
-              <textarea
-                rows={2}
-                className="textarea textarea-bordered w-full max-w-xs"
+              />
+              <TextArea
+                error={errors?.currentStreet}
                 placeholder="Alamat (Sesuai KTP)"
                 {...register("ktpStreet")}
-              ></textarea>
+              />
             </div>
           </div>
           <div className="space-y-4">
             <h2 className="font-medium tracking-wide">Metode Pembayaran</h2>
-           <PaymentMethod selected={getValues("payment")} onChange={(item) => setValue("payment", item.value)} />
+            <PaymentMethod
+              selected={getValues("payment")}
+              onChange={(item) => setValue("payment", item.value)}
+            />
           </div>
         </div>
         <div className="w-full text-center">
