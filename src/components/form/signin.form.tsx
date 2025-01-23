@@ -36,8 +36,9 @@ function SignInForm() {
   const onSubmit = async (formData: SignIn) => {
     try {
       const response = await authentication.login(formData)
-      const role = "USER"
-      role === 'USER' ? navigate(listedUser.dashboard) : navigate(listedAdmin.dashboard)
+      const role = "ADMIN"
+      // navigate(listedUser.dashboard) 
+      navigate(listedAdmin.dashboard)
       reset();
     } catch (error) {
       console.log(error);

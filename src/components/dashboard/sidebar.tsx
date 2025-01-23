@@ -3,7 +3,6 @@ import { Logout } from "../../assets/icon";
 import logo from "../../assets/logo/color.png";
 import { sidebarList } from "../../constant/routers/sidebar";
 import { sidebarListAdmin } from "../../constant/routers/sidebarAdmin";
-import { useState } from "react";
 import useAuthStore from "../../store/auth.store";
 
 function Sidebar() {

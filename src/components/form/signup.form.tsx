@@ -11,6 +11,8 @@ import Header from "../content/header.sign";
 import Input from "../ui/input";
 import Password from "../ui/password";
 import { authentication } from "@/middleware";
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 function SignUpForm() {
   const navigate = useNavigate();
@@ -89,6 +91,12 @@ function SignUpForm() {
             error={errors?.name}
             {...register("name")}
           />
+          {/* <PhoneInput
+            country={'us'}
+            value={this.state.phone}
+            onChange={phone => this.setState({ phone })}
+            {...register("phoneWA")}
+          /> */}
           <Input
             type="text"
             placeholder="Nomor Whatsapp"

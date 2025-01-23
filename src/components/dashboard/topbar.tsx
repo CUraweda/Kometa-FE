@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Area, Bell } from "../../assets/icon";
+import { Bell } from "../../assets/icon";
 import { listedUser } from "../../constant/routers/listed";
-import IconMap from "../../assets/icon/iconMap.png";
 import {
   Popover,
   PopoverContent,
@@ -33,9 +32,7 @@ function TopBar() {
           </PopoverTrigger>
           <PopoverContent><NotificationContent /></PopoverContent>
         </Popover>
-        <button className="group w-10 rounded-lg bg-gray-50 flex justify-center items-center hover:bg-emerald-50">
-          <Area className="h-8 group-hover:fill-emerald-600" />
-        </button>
+       
         <div
           onClick={() => navigate(listedUser.profile)}
           className="avatar ml-5 cursor-pointer"

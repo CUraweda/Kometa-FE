@@ -34,6 +34,8 @@ import Budidaya from "@/pages/admin/Budidaya";
 import Simpanan from "@/pages/admin/Simpanan";
 import Tagihan from "@/pages/admin/Tagihan";
 import LandDetails from "@/pages/LandDetails.page";
+import OTPVerification from "@/pages/testOTP";
+import Test from "@/pages/test";
 
 export const router = createBrowserRouter([
   {
@@ -75,6 +77,7 @@ export const router = createBrowserRouter([
       { path: listedUser.profile, element: <ProfilePage /> },
       { path: listedUser.tambahLahan, element: <AddLandPage /> },
       { path: listedUser.detailLahan, element: <LandDetails /> },
+      { path: listedUser.test, element: < Test/> },
      
     ],
   },

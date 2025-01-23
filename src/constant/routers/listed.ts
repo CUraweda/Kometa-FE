@@ -17,12 +17,13 @@ export const listedUser = {
   supplier: "supplier",
   finance: "finance",
   profile: "profile",
+  test: "/test",
  
 };
 
 export const listedAdmin = {
-  dashboard: "admin/dashboard",
-  finance: "admin/finance",
+  dashboard: "/admin/dashboard",
+  finance: "/admin/finance",
   adminPendapatan: "/admin/pendapatan",
   adminAnggota: "/admin/anggota",
   detailAnggota: "/admin/anggota/detail",

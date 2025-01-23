@@ -58,7 +58,7 @@ export const authentication = {
         try {
             const response = await authApi.login(data)
             const { at, rt } = response.data.data.token;
-            const role = 'USER'
+            const role = 'ADMIN'
             useAuthStore.getState().setAuth({ accessToken: at, refreshToken: rt, role: role });
 
         } catch (error) {
