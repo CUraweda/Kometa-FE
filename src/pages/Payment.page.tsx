@@ -2,10 +2,10 @@ import { useState } from "react";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import PaymentMethod from "../component/shared/payment.component";
+import PaymentMethod from "../components/shared/payment.component";
 import { paymentList } from "../constant/form/payment.list";
 import { modalList } from "../constant/modals";
-import { listed } from "../constant/routers/listed";
+import { listedUser } from "../constant/routers/listed";
 import { useModal } from "../hooks/useModal";
 import { useTimer } from "../hooks/useTimer";
 import PaymentLayout from "../layout/payment.layout";
@@ -46,7 +46,7 @@ function PaymentPage() {
 
   const handleChangePayment = () => {
     closeModal(modalList.updatePayment);
-    navigate(listed.payment, { state: { payment: paymentId } });
+    navigate(listedUser.payment, { state: { payment: paymentId } });
   };
 
   const selectedPayment = (
@@ -95,7 +95,7 @@ function PaymentPage() {
                     Ubah Pembayaran
                   </button>
                   <button
-                    onClick={() => navigate(listed.paid)}
+                    onClick={() => navigate(listedUser.paid)}
                     className="btn btn-outline hover:bg-emeraldGreen border-emeraldGreen hover:border-transparent text-emeraldGreen"
                   >
                     Cek Status

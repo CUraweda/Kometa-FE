@@ -1,7 +1,7 @@
 import CenterLayout from '@/layout/center.layout'
 import { CiSearch } from "react-icons/ci";
 import { AiOutlineExpandAlt } from "react-icons/ai";
-import ModalDetail, { openModal } from '@/component/ui/ModalDetail';
+import ModalDetail, { openModal } from '@/components/ui/ModalDetail';
 
 const Pendapatan = () => {
     const fakeData = [

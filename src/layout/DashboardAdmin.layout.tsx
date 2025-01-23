@@ -1,17 +1,19 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "../component/dashboard/sidebar";
-import TopBar from "../component/dashboard/topbar";
+import Sidebar from "../components/dashboard/sidebar";
+import TopBar from "../components/dashboard/topbar";
+import TopBarAdmin from "@/components/dashboard/topbarAdmin";
 
-function DashboardLayout() {
+function DashboardAdminLayout() {
   return (
     <>
-      <div className="hidden lg:grid">
+      <div className=" lg:grid">
         <div className="drawer lg:drawer-open">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col items-center justify-center">
-            <div className="w-full top-0 sticky z-10">
-
-            <TopBar />
+          
+            <div className="w-full top-0 sticky ">
+            
+            <TopBarAdmin />
             </div>
             <div className="py-5 px-7 w-full">
               <Outlet />
@@ -31,4 +33,4 @@ function DashboardLayout() {
   );
 }
 
-export default DashboardLayout;
+export default DashboardAdminLayout;

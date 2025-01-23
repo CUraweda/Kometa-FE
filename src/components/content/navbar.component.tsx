@@ -2,11 +2,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Logo } from "../../assets/logo/white";
 import LogoColor from "../../assets/logo/color.png";
 import { navbarMenu } from "../../constant/routers/navbar";
-import Container from "../../component/content/container.component";
+import Container from "../../components/content/container.component";
 import { useScrollClick } from "../../hooks/useScrollClick";
 import { TfiViewList } from "react-icons/tfi";
 import { RiCloseLargeFill } from "react-icons/ri";
-import { listed } from "../../constant/routers/listed";
+import { listedUser } from "../../constant/routers/listed";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -49,14 +49,14 @@ function Navbar() {
           </div>
           <div className=" items-center gap-2 sm:flex hidden">
             <button
-              onClick={handleRedirect(listed.signin)}
+              onClick={handleRedirect(listedUser.signin)}
               style={{ background: "transparent" }}
               className="btn btn-outline btn-sm sm:btn-md tracking-wider text-white font-bold hover:border-transparent"
             >
               Masuk
             </button>
             <button
-              onClick={handleRedirect(listed.signup)}
+              onClick={handleRedirect(listedUser.signup)}
               className="btn btn-sm sm:btn-md text-emeraldGreen font-bold"
             >
               Daftar

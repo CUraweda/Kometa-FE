@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { Email } from "../../assets/icon";
 import { commonMessage } from "../../constant/form/validation.message";
-import { listed } from "../../constant/routers/listed";
+import { listedUser } from "../../constant/routers/listed";
 import { Forget } from "../../types/sign";
 import Header from "../content/header.sign";
 import { Message } from "./error.field";
@@ -31,7 +31,7 @@ function ForgetForm() {
   });
 
   const onSubmit: SubmitHandler<Forget> = (value) => {
-    navigate(listed.sent, {
+    navigate(listedUser.sent, {
       state: {
         email: value.email,
         type: "reset_sent",

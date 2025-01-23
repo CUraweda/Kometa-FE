@@ -1,7 +1,7 @@
 import CenterLayout from '@/layout/center.layout'
 import { CiSearch, CiTrash } from "react-icons/ci";
 import { AiOutlineExpandAlt } from "react-icons/ai";
-import ModalDetail, { openModal } from '@/component/ui/ModalDetail';
+import ModalDetail, { openModal } from '@/components/ui/ModalDetail';
 import { LuPencilLine } from 'react-icons/lu';
 
 const Anggota = () => {

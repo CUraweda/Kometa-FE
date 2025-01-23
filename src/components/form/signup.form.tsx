@@ -5,11 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 import { commonMessage } from "../../constant/form/validation.message";
-import { listed } from "../../constant/routers/listed";
+import { listedUser } from "../../constant/routers/listed";
 import { SignUp } from "../../types/sign";
 import Header from "../content/header.sign";
 import Input from "../ui/input";
 import Password from "../ui/password";
+import { authentication } from "@/middleware";
 
 function SignUpForm() {
   const navigate = useNavigate();
@@ -22,17 +23,21 @@ function SignUpForm() {
     setFocus,
   } = useForm<SignUp>({
     defaultValues: {
-      phoneNumber: "",
+      name: "",
       email: "",
       password: "",
-      repeatPassword: "",
+      confirm_password: "",
+      phoneWA: "",
     },
     resolver: yupResolver(
       yup.object().shape({
-        phoneNumber: yup
+        phoneWA: yup
           .string()
           .required(commonMessage.phoneRequired)
           .min(10, commonMessage.phoneMaxDigit),
+        name: yup
+          .string()
+          .required(),
         email: yup
           .string()
           .required(commonMessage.emailRequired)
@@ -41,7 +46,7 @@ function SignUpForm() {
           .string()
           .required(commonMessage.passwordRequired)
           .min(8, commonMessage.passwordMinDigit),
-        repeatPassword: yup
+        confirm_password: yup
           .string()
           .required(commonMessage.repeatPasswordRequired)
           .oneOf([yup.ref("password")], commonMessage.unmatchPassword),
@@ -49,17 +54,24 @@ function SignUpForm() {
     ),
   });
 
-  const onSubmit: SubmitHandler<SignUp> = (value) => {
-    navigate(listed.verify, {
-      state: {
-        phoneNumber: value.phoneNumber,
-      },
-    });
+  const onSubmit = async (formData: SignUp) => {
+
+    const data = {
+      ...formData,
+      roleId: "USER",
+    };
+
+    try {
+      return await authentication.register(data)
+    } catch (error) {
+      console.log(error);
+    }
     reset();
+
   };
 
   useEffect(() => {
-    setFocus("phoneNumber");
+    setFocus("phoneWA");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -73,9 +85,15 @@ function SignUpForm() {
         <div className="space-y-4">
           <Input
             type="text"
+            placeholder="Name"
+            error={errors?.name}
+            {...register("name")}
+          />
+          <Input
+            type="text"
             placeholder="Nomor Whatsapp"
-            error={errors?.phoneNumber}
-            {...register("phoneNumber")}
+            error={errors?.phoneWA}
+            {...register("phoneWA")}
           />
 
           <Input
@@ -93,8 +111,8 @@ function SignUpForm() {
 
           <Password
             placeholder="Ulangi Kata Sandi"
-            error={errors?.repeatPassword}
-            {...register("repeatPassword")}
+            error={errors?.confirm_password}
+            {...register("confirm_password")}
           />
         </div>
         <button className="font-medium tracking-wider w-full btn bg-emeraldGreen hover:bg-emeraldGreen hover:opacity-95 text-white mt-6">
@@ -104,7 +122,7 @@ function SignUpForm() {
           Sudah punya akun?
           <Link
             className="ml-1 text-emeraldGreen font-medium"
-            to={listed.signin}
+            to={listedUser.signin}
           >
             Masuk
           </Link>

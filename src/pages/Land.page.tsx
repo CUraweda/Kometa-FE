@@ -5,14 +5,19 @@ import {
   listLand,
 } from "@/constant/form/land.data";
 import CenterLayout from "../layout/center.layout";
-import Input from "@/component/ui/input";
+import Input from "@/components/ui/input";
 import { useState } from "react";
-import Select from "@/component/ui/select";
-import LandCard from "@/component/shared/landcard.component";
-import Pagination from "@/component/ui/pagination";
+import Select from "@/components/ui/select";
+import LandCard from "@/components/shared/landcard.component";
+import Pagination from "@/components/ui/pagination";
+import { useNavigate } from "react-router-dom";
+import { listedUser } from "@/constant/routers/listed";
 
 function LandPage() {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+
+
 
   return (
     <CenterLayout className="min-h-[calc(100vh-105px)] items-start">
@@ -52,7 +57,7 @@ function LandPage() {
               placeholder="Status Kepemilikan"
             />
           </div>
-          <button className="btn btn-primary text-white">Tambah</button>
+          <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => navigate(listedUser.tambahLahan)}>Tambah</button>
         </div>
         <div className="flex w-full flex-wrap">
           {listLand.map((item) => (

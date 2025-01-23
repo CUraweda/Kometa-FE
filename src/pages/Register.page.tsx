@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import PaymentMethod from "../component/shared/payment.component";
-import Radio from "../component/ui/radio";
-import Upload from "../component/ui/upload";
+import PaymentMethod from "../components/shared/payment.component";
+import Radio from "../components/ui/radio";
+import Upload from "../components/ui/upload";
 import {
   InstructionKey,
   instructions,
   instuctionId,
 } from "../constant/content/instruction";
 import { dummy, gender, memberType } from "../constant/content/members";
-import { listed } from "../constant/routers/listed";
+import { listedUser } from "../constant/routers/listed";
 import { useModal } from "../hooks/useModal";
 import PaymentLayout from "../layout/payment.layout";
 import { Register } from "../types/register";
-import Input from "@/component/ui/input";
-import Select from "@/component/ui/select";
-import TextArea from "@/component/ui/textarea";
+import Input from "@/components/ui/input";
+import Select from "@/components/ui/select";
+import TextArea from "@/components/ui/textarea";
 
 function RegisterMember() {
   const [modalId, setModalId] = useState(instuctionId.photoKTP);
@@ -56,7 +56,7 @@ function RegisterMember() {
   const onSubmit: SubmitHandler<Register> = (value) => {
     window.alert(JSON.stringify(value));
     reset();
-    navigate(listed.payment, {
+    navigate(listedUser.payment, {
       state: { payment: value.payment },
     });
   };

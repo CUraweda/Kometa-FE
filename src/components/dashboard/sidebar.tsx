@@ -4,11 +4,12 @@ import logo from "../../assets/logo/color.png";
 import { sidebarList } from "../../constant/routers/sidebar";
 import { sidebarListAdmin } from "../../constant/routers/sidebarAdmin";
 import { useState } from "react";
+import useAuthStore from "../../store/auth.store";
 
 function Sidebar() {
   const navigate = useNavigate();
-  const [admin, setAdmin] = useState<boolean>(true)
-  const data = admin ? sidebarListAdmin : sidebarList
+  const { role } = useAuthStore();
+  const data = role === 'ADMIN' ? sidebarListAdmin : sidebarList
 
   return (
     <div className="w-64 flex flex-col justify-between min-h-screen p-8 border-r border-r-gray-200 bg-white">

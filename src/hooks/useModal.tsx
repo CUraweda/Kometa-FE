@@ -1,4 +1,4 @@
-import Modal from "../component/ui/modal";
+import Modal from "../components/ui/modal";
 
 export const useModal = () => {
   return {
