@@ -5,19 +5,24 @@ import {
   listLand,
 } from "@/constant/form/land.data";
 import CenterLayout from "../layout/center.layout";
-import Input from "@/component/ui/input";
+import Input from "@/components/ui/input";
 import { useState } from "react";
-import Select from "@/component/ui/select";
-import LandCard from "@/component/shared/landcard.component";
-import Pagination from "@/component/ui/pagination";
+import Select from "@/components/ui/select";
+import LandCard from "@/components/shared/landcard.component";
+import Pagination from "@/components/ui/pagination";
+import { useNavigate } from "react-router-dom";
+import { listedUser } from "@/constant/routers/listed";
 
 function LandPage() {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+
+
 
   return (
     <CenterLayout className="min-h-[calc(100vh-105px)] items-start">
       <div className="w-full space-y-3">
-        <div className="rounded-lg border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full">
+        <div className="rounded-lg border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full ">
           {fakerLand.map(({ id, value }) => {
             const land = landType[id as keyof typeof landType];
             return (
@@ -36,7 +41,7 @@ function LandPage() {
             );
           })}
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center flex-wrap gap-2">
           <div className="flex gap-4 w-3xl">
             <Input
               type="search"
@@ -52,9 +57,9 @@ function LandPage() {
               placeholder="Status Kepemilikan"
             />
           </div>
-          <button className="btn btn-primary text-white">Tambah</button>
+          <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => navigate(listedUser.tambahLahan)}>Tambah</button>
         </div>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="flex w-full flex-wrap">
           {listLand.map((item) => (
             <LandCard {...item} />
           ))}

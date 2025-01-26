@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { Area } from "../assets/icon";
-import { Message } from "../component/form/error.field";
+import { Message } from "../components/form/error.field";
 import { commonMessage } from "../constant/form/validation.message";
 import { Profile } from "../types/user";
 

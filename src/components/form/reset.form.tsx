@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 import { commonMessage } from "../../constant/form/validation.message";
-import { listed } from "../../constant/routers/listed";
+import { listedUser } from "../../constant/routers/listed";
 import { Reset } from "../../types/sign";
 import Header from "../content/header.sign";
 import { Message } from "./error.field";
@@ -52,7 +52,7 @@ function ResetForm() {
   };
 
   const onSubmit: SubmitHandler<Reset> = () => {
-    navigate(listed.sent, {
+    navigate(listedUser.sent, {
       state: {
         type: "password_changed",
       },

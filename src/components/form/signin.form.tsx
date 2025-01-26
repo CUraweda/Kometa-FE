@@ -4,16 +4,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { commonMessage } from "../../constant/form/validation.message";
-import { listed } from "../../constant/routers/listed";
+import { listedAdmin, listedUser } from "../../constant/routers/listed";
 import { SignIn } from "../../types/sign";
 import Header from "../content/header.sign";
 import Input from "../ui/input";
 import Password from "../ui/password";
-
-const MOCK = {
-  email: "admin@mail.com",
-  password: "12345678",
-};
+import { authentication } from "@/middleware";
 
 function SignInForm() {
   const navigate = useNavigate();
@@ -25,7 +21,7 @@ function SignInForm() {
     formState: { errors },
     setFocus,
   } = useForm<SignIn>({
-    defaultValues: { email: MOCK.email, password: MOCK.password },
+    defaultValues: { email: "", password: "" },
     resolver: yupResolver(
       yup.object().shape({
         email: yup
@@ -37,11 +33,17 @@ function SignInForm() {
     ),
   });
 
-  const onSubmit: SubmitHandler<SignIn> = (value) => {
-    if (value.email == MOCK.email && value.password == MOCK.password) {
+  const onSubmit = async (formData: SignIn) => {
+    try {
+      const response = await authentication.login(formData)
+      const role = "ADMIN"
+      // navigate(listedUser.dashboard) 
+      navigate(listedAdmin.dashboard)
       reset();
-      navigate(listed.dashboard, { replace: true });
+    } catch (error) {
+      console.log(error);
     }
+
   };
 
   useEffect(() => {
@@ -74,7 +76,7 @@ function SignInForm() {
         <div className="flex justify-end mt-2">
           <button
             type="button"
-            onClick={() => navigate(listed.forget)}
+            onClick={() => navigate(listedUser.forget)}
             className="text-sm justify-self-end text-blue-700"
           >
             Lupa kata sandi?
@@ -87,7 +89,7 @@ function SignInForm() {
           Belum punya akun?
           <Link
             className="ml-1 text-emeraldGreen font-medium"
-            to={listed.signup}
+            to={listedUser.signup}
           >
             Daftar
           </Link>
