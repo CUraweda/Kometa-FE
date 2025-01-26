@@ -5,15 +5,15 @@ import {
   tagihanSimpanan,
 } from "@/constant/dashboard/main";
 import CenterLayout from "../layout/center.layout";
-import Input from "@/component/ui/input";
+import Input from "@/components/ui/input";
 import React, { useState } from "react";
-import Badge from "@/component/ui/badge";
+import Badge from "@/components/ui/badge";
 import { landType } from "@/constant/form/land.data";
 import { LuPenLine, LuTrash2 } from "react-icons/lu";
 import { convertToRupiah } from "@/utils/rupiah";
 import { color } from "@/constant/style";
 import { formatDate } from "@/utils/date";
-import Graph from "@/component/ui/graph";
+import Graph from "@/components/ui/graph";
 
 function DashboardPage() {
   const [filter, setFilter] = useState(7);

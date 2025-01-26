@@ -42,7 +42,7 @@ const GeoMaps: React.FC = () => {
             name: "Total Anggota",
             states: {
               hover: {
-                color: "#15B392", // Warna hover Emerald Green
+                color: "#15B392", 
               },
             },
             dataLabels: {
