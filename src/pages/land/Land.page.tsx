@@ -4,7 +4,7 @@ import {
   landType,
   listLand,
 } from "@/constant/form/land.data";
-import CenterLayout from "../layout/center.layout";
+import CenterLayout from "../../layout/center.layout";
 import Input from "@/components/ui/input";
 import { useState } from "react";
 import Select from "@/components/ui/select";
@@ -59,7 +59,7 @@ function LandPage() {
           </div>
           <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => navigate(listedUser.tambahLahan)}>Tambah</button>
         </div>
-        <div className="flex w-full flex-wrap">
+        <div className="grid gap-5 w-full sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {listLand.map((item) => (
             <LandCard {...item} />
           ))}

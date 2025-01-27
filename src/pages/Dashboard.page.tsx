@@ -9,17 +9,16 @@ import Input from "@/components/ui/input";
 import React, { useState } from "react";
 import Badge from "@/components/ui/badge";
 import { landType } from "@/constant/form/land.data";
+import { formatDate } from "@/utils/date";
 import { LuPenLine, LuTrash2 } from "react-icons/lu";
 import { convertToRupiah } from "@/utils/rupiah";
-import { color } from "@/constant/style";
-import { formatDate } from "@/utils/date";
 import Graph from "@/components/ui/graph";
 
 function DashboardPage() {
   const [filter, setFilter] = useState(7);
 
   return (
-    <CenterLayout className="min-h-[calc(100vh-105px)]">
+    <CenterLayout>
       <div className="space-y-8">
         <div className="flex gap-3">
           <Input type="date" className="max-w-[180px] ml-auto" />
@@ -67,7 +66,9 @@ function DashboardPage() {
         </div>
         <div className="flex gap-8 w-full">
           <div className="flex-1 flex flex-col p-6 space-y-6 border border-[#EBEBEB] rounded-xl">
-            <h3 className="text-gray-500">Pengajuan <span className="text-emeraldGreen">Lahan</span></h3>
+            <h3 className="text-gray-500">
+              Pengajuan <span className="text-emeraldGreen">Lahan</span>
+            </h3>
             {dataPengajuan.map((item) => {
               const {
                 id,
@@ -128,7 +129,9 @@ function DashboardPage() {
           </div>
 
           <div className="flex-1 flex flex-col p-6 space-y-6 border border-[#EBEBEB] rounded-xl">
-            <h3 className="text-gray-500">Tagihan <span className="text-emeraldGreen">Simpanan</span></h3>
+            <h3 className="text-gray-500">
+              Tagihan <span className="text-emeraldGreen">Simpanan</span>
+            </h3>
             {tagihanSimpanan.map((item) => {
               const { id, total, title, jatuh_tempo, isPaid } = item;
 
@@ -143,10 +146,7 @@ function DashboardPage() {
                     </h3>
                     <Badge
                       label={isPaid ? "Lunas" : "Belum Dibayar"}
-                      color={isPaid ? color.success.text : color.red.text}
-                      background={
-                        isPaid ? color.success.background : color.red.background
-                      }
+                      variant="error"
                     />
                   </div>
                   <div className="flex flex-col gap-1">

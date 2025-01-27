@@ -34,6 +34,7 @@ export const landFilter = [
 type OwnershipStatus = "shm" | "girik" | "sewa";
 
 interface Property {
+  id: string;
   landArea: number;
   ownershipStatus: OwnershipStatus;
   name: string;
@@ -72,6 +73,7 @@ function generateUniqueRandomData(): Property[] {
 
   while (properties.size < 21) {
     const property: Property = {
+      id: String(Math.floor(Math.random() * 10000) + 34),
       landArea: Math.floor(Math.random() * 1000) + 50,
       ownershipStatus:
         ownershipStatuses[Math.floor(Math.random() * ownershipStatuses.length)],

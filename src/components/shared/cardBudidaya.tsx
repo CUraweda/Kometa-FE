@@ -11,7 +11,7 @@ interface CardProps {
 
 const CardBudidaya: React.FC<CardProps> = ({ activePools, totalPools, name, cultureName }) => {
   return (
-    <div className="w-full sm:w-1/3 p-3">
+    <div className="min-w-[calc(100%/3)]">
        <div className="border border-input p-5 rounded-lg shadow-md">
 
       <div className="flex justify-between items-center mb-2">

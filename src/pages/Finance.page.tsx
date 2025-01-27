@@ -101,17 +101,17 @@ function FinancePage() {
           <button className="btn btn-ghost bg-emeraldGreen text-white">Tambah Budidaya</button>
 
         </div>
-        <div className="w-full flex flex-col justify-start">
+        <div className="w-full flex flex-col justify-start mb-5 space-y-3">
           <span className="font-bold">Daftar Tagihan</span>
-          <div className="flex w-full flex-wrap ">
+          <div className="grid gap-5 w-full sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {cards.map((card, index) => (
               <CardFinance key={index} {...card} />
             ))}
           </div>
         </div>
-        <div className="w-full flex flex-col justify-start">
+        <div className="w-full flex flex-col justify-start space-y-3">
           <span className="font-bold">Histori PEmbayaran</span>
-          <div className="flex w-full flex-wrap ">
+          <div className="grid gap-5 w-full sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {cardsLunas.map((card, index) => (
               <CardFinance key={index} {...card} />
             ))}

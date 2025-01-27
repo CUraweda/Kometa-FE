@@ -5,6 +5,7 @@ import { Area } from "../assets/icon";
 import { Message } from "../components/form/error.field";
 import { commonMessage } from "../constant/form/validation.message";
 import { Profile } from "../types/user";
+import CenterLayout from "@/layout/center.layout";
 
 function ProfilePage() {
   const {
@@ -39,7 +40,7 @@ function ProfilePage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-105px)] flex justify-center items-center">
+    <CenterLayout>
       <div className="space-y-8">
         <h3 className="font-medium">Edit Profile</h3>
 
@@ -110,7 +111,7 @@ function ProfilePage() {
           </button>
         </form>
       </div>
-    </div>
+    </CenterLayout>
   );
 }
 
