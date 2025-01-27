@@ -50,6 +50,16 @@ export const dummy = [
 export const gender = [
   {
     label: "Pria",
+    value: "L",
+  },
+  {
+    label: "Wanita",
+    value: "P",
+  },
+];
+export const domisili = [
+  {
+    label: "Pria",
     value: "pria",
   },
   {

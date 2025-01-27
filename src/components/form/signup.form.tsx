@@ -64,7 +64,8 @@ function SignUpForm() {
     };
 
     try {
-      return await authentication.register(data)
+      const rest = await authentication.register(data)
+      rest == 200 ? navigate('/signin') : ''
     } catch (error) {
       console.log(error);
     }

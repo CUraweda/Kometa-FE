@@ -26,7 +26,11 @@ export interface LoginResponse {
         email: string;
         phoneWA: string;
         tempOTP: string | null;
-        roleId: string;
+        role: {
+         id: string
+        name: string
+        code: string
+        }
         emailVerified: boolean;
         resetToken: string | null;
         resetTokenExp: string | null;
@@ -35,6 +39,25 @@ export interface LoginResponse {
         at: string; // Access Token
         rt: string; // Refresh Token
       };
+    };
+  }
+  
+  export interface MembershipTypeItem {
+    id: string;
+    name: string;
+    foregroundColor: string;
+    backgroundColor: string;
+  }
+  
+  export interface MembershipTypeResponse {
+    status: boolean;
+    message: string;
+    data: {
+      total_items: number;
+      page: number;
+      limit: number;
+      total_pages: number;
+      items: MembershipTypeItem[];
     };
   }
   

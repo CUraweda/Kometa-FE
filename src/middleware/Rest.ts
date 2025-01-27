@@ -3,7 +3,7 @@ import axios, {
     InternalAxiosRequestConfig,
     AxiosRequestHeaders,
   } from "axios";
-  import { Login, LoginResponse, provinces, Register } from "./Utils";
+  import { Login, LoginResponse, MembershipTypeResponse, provinces, Register } from "./Utils";
   import useAuthStore from "../store/auth.store"; // Zustand store untuk auth
   
   const server = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
@@ -127,5 +127,31 @@ import axios, {
       server({
         method: "GET",
         url: ''
+      })
+  }
+
+  export const restAnggota = {
+    typeMember : (): AxiosPromise<MembershipTypeResponse> =>
+      server({
+        method: "GET",
+        url: 'api/membership/show-all'
+      }),
+    checkMember : (): AxiosPromise<any> =>
+      server({
+        method: "GET",
+        url: 'api/member-data/show-by-user',
+        headers: {
+          Authorization: `Bearer ${useAuthStore.getState().accessToken}`, 
+        },
+      }),
+    createMemberData : (data: any): AxiosPromise<any> =>
+      server({
+        method: "POST",
+        url: 'api/member-data/create',
+        data,
+        headers: {
+          Authorization: `Bearer ${useAuthStore.getState().accessToken}`, 
+        },
+
       })
   }

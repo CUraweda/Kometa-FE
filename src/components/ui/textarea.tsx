@@ -20,7 +20,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           ref={ref}
           rows={rows}
           className={twMerge(
-            "textarea textarea-bordered w-full max-w-xs",
+            "textarea textarea-bordered w-full",
             className
           )}
           placeholder={placeholder}

@@ -5,8 +5,8 @@ type Props = { children: ReactNode };
 
 function PaymentLayout({ children }: Props) {
   return (
-    <div className="flex flex-col w-full min-h-screen p-8">
-      <div className="flex justify-start">
+    <div className="flex flex-col w-full min-h-screen">
+      <div className="flex justify-start p-8">
         <img className="h-10" src={logo} alt="logo-kometa" />
       </div>
       {children}

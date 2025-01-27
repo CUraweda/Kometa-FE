@@ -9,7 +9,7 @@ import { SignIn } from "../../types/sign";
 import Header from "../content/header.sign";
 import Input from "../ui/input";
 import Password from "../ui/password";
-import { authentication } from "@/middleware";
+import { authentication, memberRest } from "@/middleware";
 
 function SignInForm() {
   const navigate = useNavigate();
@@ -35,16 +35,23 @@ function SignInForm() {
 
   const onSubmit = async (formData: SignIn) => {
     try {
-      // const response = await authentication.login(formData)
-      // const role = "ADMIN"
-      navigate(listedUser.dashboard) 
-      // navigate(listedAdmin.dashboard)
+      const response = await authentication.login(formData)
+      checkData(response)
       reset();
     } catch (error) {
       console.log(error);
     }
 
   };
+
+  const checkData = async (role : string) => {
+    const response = await memberRest.checkData()
+    if(response === 200){
+      role === 'ADMIN' ? navigate(listedAdmin.dashboard) : navigate(listedUser.dashboard)
+    } else {
+      navigate(listedUser.registerMember)
+    }
+  }
 
   useEffect(() => {
     setFocus("email");
