@@ -9,13 +9,12 @@ import SentPage from "../../pages/Sent.page";
 import SignInPage from "../../pages/SignIn.page";
 import SignUpPage from "../../pages/SignUp.page";
 import VerifyOTPPage from "../../pages/VerifyOTP.page";
-import { listedUser , listedAdmin } from "./listed";
+import { listedUser, listedAdmin } from "./listed";
 import NotFoundPage from "../../pages/NotFound.page";
 import DashboardPage from "../../pages/Dashboard.page";
 import ProtectedLayout from "../../layout/Protected.layout";
 import LandingLayout from "../../layout/Landing.layout";
 import DashboardLayout from "../../layout/Dashboard.layout";
-import LandPage from "../../pages/Land.page";
 import PlantingPage from "../../pages/Planting.page";
 import SupplierPage from "../../pages/Supplier.page";
 import FinancePage from "../../pages/Finance.page";
@@ -33,9 +32,10 @@ import LahanBaru from "@/pages/admin/LahanBaru";
 import Budidaya from "@/pages/admin/Budidaya";
 import Simpanan from "@/pages/admin/Simpanan";
 import Tagihan from "@/pages/admin/Tagihan";
-import LandDetails from "@/pages/LandDetails.page";
-import OTPVerification from "@/pages/testOTP";
+// import OTPVerification from "@/pages/testOTP";
 import Test from "@/pages/test";
+import LandDetails from "@/pages/land/LandDetails.page";
+import LandPage from "@/pages/land/Land.page";
 
 export const router = createBrowserRouter([
   {
@@ -58,7 +58,7 @@ export const router = createBrowserRouter([
   { path: listedUser.payment, element: <PaymentPage /> },
   { path: listedUser.paid, element: <PaidPage /> },
   { path: listedUser.error, element: <NotFoundPage /> },
-  
+
   {
     element: (
       <ProtectedLayout>
@@ -70,15 +70,23 @@ export const router = createBrowserRouter([
         path: listedUser.dashboard,
         element: <DashboardPage />,
       },
-      { path: listedUser.land, element: <LandPage /> },
+      {
+        path: listedUser.land,
+        children: [
+          {
+            index: true,
+            element: <LandPage />,
+          },
+          { path: listedUser.tambahLahan, element: <AddLandPage /> },
+          { path: listedUser.detailLahan, element: <LandDetails /> },
+        ],
+      },
       { path: listedUser.planting, element: <PlantingPage /> },
       { path: listedUser.supplier, element: <SupplierPage /> },
       { path: listedUser.finance, element: <FinancePage /> },
       { path: listedUser.profile, element: <ProfilePage /> },
-      { path: listedUser.tambahLahan, element: <AddLandPage /> },
-      { path: listedUser.detailLahan, element: <LandDetails /> },
-      { path: listedUser.test, element: < Test/> },
-     
+
+      { path: listedUser.test, element: <Test /> },
     ],
   },
   {

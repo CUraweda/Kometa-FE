@@ -13,17 +13,17 @@ type SelectProps = {
 } & SelectHTMLAttributes<HTMLSelectElement>;
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ data, defaultValue, placeholder, className, error, ...rest }, ref) => {
+  (
+    { data, defaultValue, placeholder, className, error, ...rest },
+    ref
+  ) => {
     const errorMessage = typeof error === "string" ? error : error?.message;
 
     return (
       <div className="w-full">
         <select
           ref={ref}
-          className={twMerge(
-            "select select-bordered w-full",
-            className
-          )}
+          className={twMerge("select select-bordered w-full", className)}
           defaultValue={defaultValue ?? ""}
           {...rest}
         >

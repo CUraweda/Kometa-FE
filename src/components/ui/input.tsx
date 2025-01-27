@@ -17,7 +17,7 @@ type InputProps = {
     | "time";
   placeholder?: string;
   className?: string;
-  icon?: "search" | "filter";
+  icon?: string;
   direction?: "left" | "right";
 } & React.InputHTMLAttributes<HTMLInputElement>;
 

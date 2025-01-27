@@ -41,7 +41,7 @@ function PlantingPage() {
 
         </div>
 
-        <div className="flex w-full flex-wrap ">
+        <div className="grid gap-5 w-full sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {cards.map((card, index) => (
             <CardBudidaya key={index} {...card} />
           ))}
