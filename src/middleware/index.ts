@@ -1,6 +1,6 @@
 import getErrorMessage from "@/helper/apiHelper";
-import { authApi, datawilayahIndonesia, restAnggota } from "./Rest"
-import { Login, Register } from "./Utils";
+import { authApi, datawilayahIndonesia, previewImage, restAnggota } from "./Rest"
+import { Login, Register, verifMember } from "./Utils";
 import Swal from 'sweetalert2'
 import useAuthStore from "@/store/auth.store";
 
@@ -99,7 +99,7 @@ export const memberRest = {
             }
             const response = await restAnggota.createMemberData(formData)
             return response
-            return 
+             
         } catch (error) {
             Swal.fire({
                 icon: "error",
@@ -111,10 +111,70 @@ export const memberRest = {
     },
     checkData : async () => {
         try {
-            await restAnggota.checkMember()
-            return 200
+            const response = await restAnggota.checkMember()
+            return response
         } catch (error) {
             return error
         }
+    },
+    getAll : async (payload: string) => {
+        try {
+            const response = await restAnggota.getAll(payload)
+            return response
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: getErrorMessage(error, 'failed. Please try again.'),
+            });
+            throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+        }
+    },
+    getById : async (payload: string | null) => {
+        try {
+            const response = await restAnggota.getOne(payload)
+            return response
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: getErrorMessage(error, 'failed. Please try again.'),
+            });
+            throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+        }
+    },
+    verifAnggota : async (data: verifMember, id: string) => {
+        try {
+            const response = await restAnggota.verif(data, id)
+            Swal.fire({
+                title: "Success!",
+                text: "Berhasil Update Status Anggota",
+                icon: "success"
+              });
+            return response
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: getErrorMessage(error, 'failed. Please try again.'),
+            });
+            throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+        }
     }
 }
+
+export const dataMember = {
+    getFile: async (path: string): Promise<string | undefined> => {
+        try {
+            
+            const response = await previewImage.get(path);
+            const blob = new Blob([response.data], { type: response.headers["content-type"] });
+            const imageUrl = URL.createObjectURL(blob);
+            console.log('file jalan ya ', imageUrl);
+            return imageUrl; // Kembalikan URL gambar
+        } catch (error) {
+            console.error("Show File Error:", error);
+            return undefined;
+        }
+    },
+};

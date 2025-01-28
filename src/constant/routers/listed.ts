@@ -18,6 +18,7 @@ export const listedUser = {
   finance: "finance",
   profile: "profile",
   test: "/test",
+  dahsboardVerfi: "/dashboard/verif",
  
 };
 

@@ -7,3 +7,8 @@ export const sidebarList = [
   { label: "Budidaya", path: listedUser.planting, icon: Planting },
   { label: "Simpanan", path: listedUser.finance, icon: Pocket },
 ];
+
+export const sidebarListUnverif = [
+  { label: "Dashboard", path: listedUser.dahsboardVerfi, icon: Dashboard },
+ 
+];

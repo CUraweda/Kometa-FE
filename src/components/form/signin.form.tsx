@@ -10,6 +10,7 @@ import Header from "../content/header.sign";
 import Input from "../ui/input";
 import Password from "../ui/password";
 import { authentication, memberRest } from "@/middleware";
+import { MemberData } from "@/middleware/Utils";
 
 function SignInForm() {
   const navigate = useNavigate();
@@ -44,14 +45,34 @@ function SignInForm() {
 
   };
 
-  const checkData = async (role : string) => {
-    const response = await memberRest.checkData()
-    if(response === 200){
-      role === 'ADMIN' ? navigate(listedAdmin.dashboard) : navigate(listedUser.dashboard)
-    } else {
-      navigate(listedUser.registerMember)
+  const checkData = async (role: string) => {
+    try {
+      if(role === 'ADMIN'){
+        navigate(listedAdmin.dashboard)
+        return;
+      }
+      const response = await memberRest.checkData();
+     
+      if (!response || typeof response !== 'object' || !('data' in response)) {
+        navigate(listedUser.registerMember);
+        return;
+      }
+  
+      const dataRest = response.data as MemberData;
+      const isVerified = dataRest?.data?.isVerified;
+  
+      if (!isVerified) {
+        navigate(listedUser.dahsboardVerfi);
+        return;
+      }
+  
+      navigate(listedUser.dashboard);
+    } catch (error) {
+      console.error('Error checking data:', error);
+      navigate(listedUser.registerMember);
     }
-  }
+  };
+  
 
   useEffect(() => {
     setFocus("email");

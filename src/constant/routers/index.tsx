@@ -36,6 +36,7 @@ import Tagihan from "@/pages/admin/Tagihan";
 import Test from "@/pages/test";
 import LandDetails from "@/pages/land/LandDetails.page";
 import LandPage from "@/pages/land/Land.page";
+import UnVerifiedPage from "@/pages/UnVerified.page";
 
 export const router = createBrowserRouter([
   {
@@ -87,6 +88,7 @@ export const router = createBrowserRouter([
       { path: listedUser.profile, element: <ProfilePage /> },
 
       { path: listedUser.test, element: <Test /> },
+      { path: listedUser.dahsboardVerfi, element: <UnVerifiedPage /> },
     ],
   },
   {
