@@ -28,7 +28,7 @@ function Header({
           : "items-center text-center"
         } ${className}`}
     >
-      <h3 style={overrideStyle} className="tracking-widest text-emeraldGreen">
+      <h3 style={overrideStyle} className="tracking-widest text-primary">
         {section}
       </h3>
       <h2

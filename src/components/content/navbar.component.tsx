@@ -51,13 +51,13 @@ function Navbar() {
             <button
               onClick={handleRedirect(listedUser.signin)}
               style={{ background: "transparent" }}
-              className="btn btn-outline btn-sm sm:btn-md tracking-wider text-white font-bold hover:border-transparent"
+              className="btn btn-sm sm:btn-md tracking-wider text-white"
             >
               Masuk
             </button>
             <button
               onClick={handleRedirect(listedUser.signup)}
-              className="btn btn-sm sm:btn-md text-emeraldGreen font-bold"
+              className="btn btn-sm sm:btn-md btn-primary"
             >
               Daftar
             </button>
@@ -88,13 +88,13 @@ function Navbar() {
             <div className="w-full flex justify-between mt-5 gap-1 mb-8">
               <button
                 onClick={handleRedirect("/signin")}
-                className="btn w-1/2 btn-outline bg-emeraldGreen btn-sm sm:btn-md hover:bg-transparent tracking-wider  text-white font-bold"
+                className="btn w-1/2 btn-outline btn-sm sm:btn-md hover:bg-transparent tracking-wider"
               >
                 Masuk
               </button>
               <button
                 onClick={handleRedirect("/signup")}
-                className="btn w-1/2 btn-sm sm:btn-md text-emeraldGreen font-bold"
+                className="btn btn-primary w-1/2 btn-sm sm:btn-md"
               >
                 Daftar
               </button>

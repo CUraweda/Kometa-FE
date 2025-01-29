@@ -1,7 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import Input from "@/components/ui/input";
+import Select from "@/components/ui/select";
+import SelectLocation from "@/components/ui/SelectLocation";
+import TextArea from "@/components/ui/textarea";
+import { useWilayah } from "@/hooks/dataWilayah";
+import { memberRest } from "@/middleware";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import PaymentMethod from "../components/shared/payment.component";
 import Radio from "../components/ui/radio";
 import Upload from "../components/ui/upload";
 import {
@@ -9,22 +14,16 @@ import {
   instructions,
   instuctionId,
 } from "../constant/content/instruction";
-import { gender, memberType } from "../constant/content/members";
+import { gender } from "../constant/content/members";
 import { listedUser } from "../constant/routers/listed";
 import { useModal } from "../hooks/useModal";
 import PaymentLayout from "../layout/payment.layout";
 import { Register } from "../types/register";
-import Input from "@/components/ui/input";
-import Select from "@/components/ui/select";
-import TextArea from "@/components/ui/textarea";
-import SelectLocation from "@/components/ui/SelectLocation";
-import { useWilayah } from "@/hooks/dataWilayah";
-import { memberRest } from "@/middleware";
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schemaMember } from "@/schema/dataMember";
 import { Message } from "@/components/form/error.field";
-
+import { schemaMember } from "@/schema/dataMember";
+import { yupResolver } from "@hookform/resolvers/yup";
+import PaymentMethod from "@/components/shared/payment.component";
 
 function RegisterMember() {
   const [modalId, setModalId] = useState(instuctionId.photoKTP);
@@ -45,32 +44,32 @@ function RegisterMember() {
     formState: { errors },
   } = useForm<Register>({
     defaultValues: {
-      membershipTypeId: '',
-      fullName: '',
-      nik: '',
-      gender: '',
-      pob: '',
-      dob: '',
+      membershipTypeId: "",
+      fullName: "",
+      nik: "",
+      gender: "",
+      pob: "",
+      dob: "",
       isVerified: true,
-      KtpProvince: '',
-      KtpProvinceId: '',
-      KtpCity: '',
-      KtpCityId: '',
-      KtpDistrict: '',
-      KtpDistrictId: '',
-      KtpSubDistrict: '',
-      KtpSubDistrictId: '',
-      KtpAddressDetail: '',
+      KtpProvince: "",
+      KtpProvinceId: "",
+      KtpCity: "",
+      KtpCityId: "",
+      KtpDistrict: "",
+      KtpDistrictId: "",
+      KtpSubDistrict: "",
+      KtpSubDistrictId: "",
+      KtpAddressDetail: "",
       addressIsDifferent: true,
-      DomicileProvince: '',
-      DomicileProvinceId: '',
-      DomicileCity: '',
-      DomicileCityId: '',
-      DomicileDistrict: '',
-      DomicileDistrictId: '',
-      DomicileSubDistrict: '',
-      DomicileSubDistrictId: '',
-      DomicileAddressDetail: '',
+      DomicileProvince: "",
+      DomicileProvinceId: "",
+      DomicileCity: "",
+      DomicileCityId: "",
+      DomicileDistrict: "",
+      DomicileDistrictId: "",
+      DomicileSubDistrict: "",
+      DomicileSubDistrictId: "",
+      DomicileAddressDetail: "",
       ktp: undefined,
       ktp_selfie: undefined,
     },
@@ -85,8 +84,8 @@ function RegisterMember() {
     fetchKabupaten: fetchKtpKabupaten,
     fetchKecamatan: fetchKecamatan,
     fetchKelurahan: fetchKelurahan,
-    fetchProvinsi: fetchProvinsi
-  } = useWilayah('ktp');
+    fetchProvinsi: fetchProvinsi,
+  } = useWilayah("ktp");
 
   const {
     provinsi: domisiliProvinsi,
@@ -96,19 +95,19 @@ function RegisterMember() {
     fetchKabupaten: fetchDomisiliKabupaten,
     fetchKecamatan: fetchDomisiliKecamatan,
     fetchKelurahan: fetchDomisiliKelurahan,
-    fetchProvinsi: fetchDomisiliProvinsi
-  } = useWilayah('domisili');
+    fetchProvinsi: fetchDomisiliProvinsi,
+  } = useWilayah("domisili");
 
   useEffect(() => {
     fetchProvinsi();
-    fetchDomisiliProvinsi()
+    fetchDomisiliProvinsi();
   }, [fetchProvinsi, fetchDomisiliProvinsi]);
 
   // KTP
   useEffect(() => {
     const id = watch("KtpProvinceId");
     fetchKtpKabupaten(id);
-  }, [watch("KtpProvinceId")])
+  }, [watch("KtpProvinceId")]);
 
   useEffect(() => {
     const id = watch("KtpCityId");
@@ -126,12 +125,10 @@ function RegisterMember() {
     fetchDomisiliKabupaten(id);
   }, [watch("DomicileProvinceId")]);
 
-
   useEffect(() => {
     const id = watch("DomicileCityId");
     fetchDomisiliKecamatan(id);
   }, [watch("DomicileCityId")]);
-
 
   useEffect(() => {
     const id = watch("DomicileDistrictId");
@@ -167,17 +164,13 @@ function RegisterMember() {
       setValue("DomicileSubDistrictId", getValues("KtpSubDistrictId"));
       setValue("DomicileAddressDetail", getValues("KtpAddressDetail"));
     }
-  }, [
-    watch("addressIsDifferent"),
-    watch("KtpAddressDetail")
-  ]);
+  }, [watch("addressIsDifferent"), watch("KtpAddressDetail")]);
 
   const onSubmit: SubmitHandler<Register> = (value) => {
-    memberRest.createData(value)
+    memberRest.createData(value);
     reset();
     navigate(listedUser.payment);
   };
-
 
   const { photo, title, regulation } = instructions[modalId as InstructionKey];
 
@@ -194,29 +187,26 @@ function RegisterMember() {
           </p>
         </div>
 
-
         <div className="gap-5 px-3 sm:p-10">
           <div className="bg-white p-3 rounded-md">
-
             <div className="space-y-4">
               <h2 className="font-medium tracking-wide mb-3">
                 Informasi Pribadi
               </h2>
               {/* Upload KTP */}
-              <div className="flex gap-4 flex-col sm:flex-row justify-center">
+              <div className="w-full flex gap-4 flex-col sm:flex-row justify-center">
                 <div
                   onMouseEnter={() => setModalId(instuctionId.photoKTP)}
-                  className="flex gap-1 flex-col items-end justify-center"
+                  className="w-1/2 flex h-60 gap-1 flex-col items-end justify-center"
                 >
                   <Upload
                     id="photo_ktp"
                     label="Unggah Foto KTP"
                     value={getValues("ktp")}
-                    className="w-[320px] h-60 hover:border-emeraldGreen"
+                    className="min-w-[320px] flex-1 hover:border-emeraldGreen"
                     onChange={(e) => setValue("ktp", e)}
                   />
                   <div className="w-full justify-start">
-
                     <Message
                       isError={Boolean(errors?.ktp)}
                       message={errors?.ktp?.message || " "}
@@ -236,17 +226,16 @@ function RegisterMember() {
                 </div>
                 <div
                   onMouseEnter={() => setModalId(instuctionId.selfieKTP)}
-                  className="flex gap-1 flex-col items-end"
+                  className="flex w-1/2 h-60 gap-1 flex-col items-end"
                 >
                   <Upload
                     id="ktp_selfie"
                     label={`Unggah Foto Selfie dengan KTP`}
-                    className="w-[320px] h-60 whitespace-pre-line hover:border-emeraldGreen"
+                    className="min-w-[320px] flex-1 whitespace-pre-line hover:border-emeraldGreen"
                     value={getValues("ktp_selfie")}
                     onChange={(e) => setValue("ktp_selfie", e)}
                   />
                   <div className="w-full justify-start">
-
                     <Message
                       isError={Boolean(errors?.ktp_selfie)}
                       message={errors?.ktp_selfie?.message || " "}
@@ -288,8 +277,6 @@ function RegisterMember() {
                     {...register("nik")}
                   />
                 </div>
-
-
               </div>
 
               {/* Nama Lengkap & Jenis Kelamin */}
@@ -314,8 +301,6 @@ function RegisterMember() {
                     error={errors.gender}
                   />
                 </div>
-
-
               </div>
 
               {/* Tempat lahir & Tanggal lahir */}
@@ -338,10 +323,7 @@ function RegisterMember() {
                     {...register("dob")}
                   />
                 </div>
-
-
               </div>
-
             </div>
             <div className="space-y-4 mt-10">
               <h2 className="font-medium tracking-wide mb-3">
@@ -359,18 +341,21 @@ function RegisterMember() {
                     {...register("KtpProvinceId", {
                       onChange: (e) => {
                         const selectedValue = e.target.value;
-                        const selectedProvince = ktpProvinsi.find((p) => p.id === selectedValue);
+                        const selectedProvince = ktpProvinsi.find(
+                          (p) => p.id === selectedValue
+                        );
                         setValue("KtpProvinceId", selectedValue);
                         setValue("KtpProvince", selectedProvince?.name || "");
                       },
                     })}
                     onChangeCallback={(value) => {
-                      const selectedProvince = ktpProvinsi.find((p) => p.id === value);
+                      const selectedProvince = ktpProvinsi.find(
+                        (p) => p.id === value
+                      );
                       setValue("KtpProvinceId", value);
                       setValue("KtpProvince", selectedProvince?.name || "");
                     }}
                   />
-
                 </div>
                 <div className="w-full">
                   <label htmlFor="">Kabupaten / Kota</label>
@@ -381,7 +366,9 @@ function RegisterMember() {
                     {...register("KtpCityId", {
                       onChange: (e) => {
                         const selectedValue = e.target.value;
-                        const selected = ktpKabupaten.find((p) => p.id === selectedValue);
+                        const selected = ktpKabupaten.find(
+                          (p) => p.id === selectedValue
+                        );
                         setValue("KtpCityId", selectedValue);
                         setValue("KtpCity", selected?.name || "");
                       },
@@ -392,10 +379,7 @@ function RegisterMember() {
                       setValue("KtpCity", selected?.name || "");
                     }}
                   />
-
                 </div>
-
-
               </div>
               {/* Provinsi & Kecamatan */}
               <div className="flex gap-4 flex-col sm:flex-row">
@@ -408,7 +392,9 @@ function RegisterMember() {
                     {...register("KtpDistrictId", {
                       onChange: (e) => {
                         const selectedValue = e.target.value;
-                        const selected = ktpKecamatan.find((p) => p.id === selectedValue);
+                        const selected = ktpKecamatan.find(
+                          (p) => p.id === selectedValue
+                        );
                         setValue("KtpDistrictId", selectedValue);
                         setValue("KtpDistrict", selected?.name || "");
                       },
@@ -418,7 +404,6 @@ function RegisterMember() {
                       setValue("KtpDistrictId", value);
                       setValue("KtpDistrict", selected?.name || "");
                     }}
-
                   />
                 </div>
                 <div className="w-full">
@@ -430,7 +415,9 @@ function RegisterMember() {
                     {...register("KtpSubDistrictId", {
                       onChange: (e) => {
                         const selectedValue = e.target.value;
-                        const selected = ktpKelurahan.find((p) => p.id === selectedValue);
+                        const selected = ktpKelurahan.find(
+                          (p) => p.id === selectedValue
+                        );
                         setValue("KtpSubDistrictId", selectedValue);
                         setValue("KtpSubDistrict", selected?.name || "");
                       },
@@ -440,13 +427,9 @@ function RegisterMember() {
                       setValue("KtpSubDistrictId", value);
                       setValue("KtpSubDistrict", selected?.name || "");
                     }}
-
                   />
                 </div>
-
-
               </div>
-
 
               <div className="flex flex-col w-full sm:w-1/2">
                 <label htmlFor="">Detail Alamat</label>
@@ -456,7 +439,6 @@ function RegisterMember() {
                   className="w-full"
                   {...register("KtpAddressDetail")}
                 />
-
               </div>
             </div>
             <div className="space-y-4 mt-10">
@@ -464,13 +446,16 @@ function RegisterMember() {
                 Alamat Domisili
               </h2>
               <label className="cursor-pointer label flex justify-start gap-3">
-                <input type="checkbox" checked={watch("addressIsDifferent")}  {...register("addressIsDifferent")} className="checkbox checkbox-accent" />
+                <input
+                  type="checkbox"
+                  checked={watch("addressIsDifferent")}
+                  {...register("addressIsDifferent")}
+                  className="checkbox checkbox-accent"
+                />
                 <span className="label-text">Sama Seperti alamat KTP</span>
               </label>
-              {
-                !watch("addressIsDifferent") &&
+              {!watch("addressIsDifferent") && (
                 <div className="space-y-4">
-
                   {/* Provinsi & Kecamatan */}
                   <div className="flex gap-4 flex-col sm:flex-row">
                     <div className="w-full">
@@ -482,17 +467,20 @@ function RegisterMember() {
                         {...register("DomicileProvinceId", {
                           onChange: (e) => {
                             const selectedValue = e.target.value;
-                            const selected = domisiliProvinsi.find((p) => p.id === selectedValue);
+                            const selected = domisiliProvinsi.find(
+                              (p) => p.id === selectedValue
+                            );
                             setValue("DomicileProvinceId", selectedValue);
                             setValue("DomicileProvince", selected?.name || "");
                           },
                         })}
                         onChangeCallback={(value) => {
-                          const selected = domisiliProvinsi.find((p) => p.id === value);
+                          const selected = domisiliProvinsi.find(
+                            (p) => p.id === value
+                          );
                           setValue("DomicileProvinceId", value);
                           setValue("DomicileProvince", selected?.name || "");
                         }}
-
                       />
                     </div>
                     <div className="w-full">
@@ -504,21 +492,22 @@ function RegisterMember() {
                         {...register("DomicileCityId", {
                           onChange: (e) => {
                             const selectedValue = e.target.value;
-                            const selected = domisiliKabupaten.find((p) => p.id === selectedValue);
+                            const selected = domisiliKabupaten.find(
+                              (p) => p.id === selectedValue
+                            );
                             setValue("DomicileCityId", selectedValue);
                             setValue("DomicileCity", selected?.name || "");
                           },
                         })}
                         onChangeCallback={(value) => {
-                          const selected = domisiliKabupaten.find((p) => p.id === value);
+                          const selected = domisiliKabupaten.find(
+                            (p) => p.id === value
+                          );
                           setValue("DomicileCityId", value);
                           setValue("DomicileCity", selected?.name || "");
                         }}
-
                       />
                     </div>
-
-
                   </div>
 
                   {/* Provinsi & Kecamatan */}
@@ -532,17 +521,20 @@ function RegisterMember() {
                         {...register("DomicileDistrictId", {
                           onChange: (e) => {
                             const selectedValue = e.target.value;
-                            const selected = domisiliKecamatan.find((p) => p.id === selectedValue);
+                            const selected = domisiliKecamatan.find(
+                              (p) => p.id === selectedValue
+                            );
                             setValue("DomicileDistrictId", selectedValue);
                             setValue("DomicileDistrict", selected?.name || "");
                           },
                         })}
                         onChangeCallback={(value) => {
-                          const selected = domisiliKecamatan.find((p) => p.id === value);
+                          const selected = domisiliKecamatan.find(
+                            (p) => p.id === value
+                          );
                           setValue("DomicileDistrictId", value);
                           setValue("DomicileDistrict", selected?.name || "");
                         }}
-
                       />
                     </div>
                     <div className="w-full">
@@ -554,21 +546,25 @@ function RegisterMember() {
                         {...register("DomicileSubDistrictId", {
                           onChange: (e) => {
                             const selectedValue = e.target.value;
-                            const selected = domisiliKelurahan.find((p) => p.id === selectedValue);
+                            const selected = domisiliKelurahan.find(
+                              (p) => p.id === selectedValue
+                            );
                             setValue("DomicileSubDistrictId", selectedValue);
-                            setValue("DomicileSubDistrict", selected?.name || "");
+                            setValue(
+                              "DomicileSubDistrict",
+                              selected?.name || ""
+                            );
                           },
                         })}
                         onChangeCallback={(value) => {
-                          const selected = domisiliKelurahan.find((p) => p.id === value);
+                          const selected = domisiliKelurahan.find(
+                            (p) => p.id === value
+                          );
                           setValue("DomicileSubDistrictId", value);
                           setValue("DomicileSubDistrict", selected?.name || "");
                         }}
-
                       />
                     </div>
-
-
                   </div>
 
                   {/* Alamat saat ini & Alamat KTP*/}
@@ -580,13 +576,10 @@ function RegisterMember() {
                       className="w-full"
                       {...register("DomicileAddressDetail")}
                     />
-
-
                   </div>
                 </div>
-              }
+              )}
             </div>
-
           </div>
           <div className="space-y-4 flex-col sm:flex-row bg-white mt-10 p-3 rounded-md">
             <h2 className="font-medium tracking-wide">Metode Pembayaran</h2>
@@ -596,18 +589,17 @@ function RegisterMember() {
             /> */}
           </div>
         </div>
+
         <div className="w-full text-center">
           <button
             onClick={() => handleSubmit(onSubmit)()}
-            className="btn w-56 btn-ghost bg-emeraldGreen text-white mt-10 mb-20"
+            className="btn w-56 btn-primary text-white mt-10 mb-20"
           >
             Bayar Sekarang
           </button>
-
         </div>
-
-
       </PaymentLayout>
+
       <Modal id={modalId} title="Instruksi" alignTitle="left">
         {modalId && (
           <div>

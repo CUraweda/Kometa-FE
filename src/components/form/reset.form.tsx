@@ -132,7 +132,7 @@ function ResetForm() {
           message={errors.repeatPassword?.message}
         />
 
-        <button className="font-medium tracking-wider w-full btn bg-emeraldGreen hover:bg-emeraldGreen hover:opacity-95 text-white mt-6">
+        <button className="font-medium tracking-wider w-full btn bg-primary hover:bg-primary hover:opacity-95 text-white mt-6">
           Perbaharui Kata Sandi
         </button>
       </form>

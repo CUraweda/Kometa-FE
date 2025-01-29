@@ -30,8 +30,8 @@ function CardBox({ data, onChange, selected }: Props) {
         htmlFor={value}
         onClick={handleSlected}
         className={twMerge(
-          "border hover:border-emeraldGreen rounded-lg p-4 flex flex-1 justify-between cursor-pointer bg-transparent z-[999]",
-          isActive ? "border-emeraldGreen" : ""
+          "border hover:border-primary rounded-lg p-4 flex flex-1 justify-between cursor-pointer bg-transparent z-[999]",
+          isActive ? "border-primary" : ""
         )}
       >
         <label onClick={handleSlected} className="flex gap-4">
@@ -39,7 +39,7 @@ function CardBox({ data, onChange, selected }: Props) {
             id={value}
             name={id}
             type="radio"
-            className="radio radio-xs checked:bg-emeraldGreen"
+            className="radio radio-xs checked:bg-primary"
             onClick={handleSlected}
             value={currentSelected}
             defaultChecked={isActive}

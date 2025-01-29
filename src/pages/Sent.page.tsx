@@ -15,7 +15,7 @@ function SentPage() {
       description: (
         <>
           Instruksi reset kata sandi telah kami kirimkan ke
-          <span className="text-emeraldGreen font-medium ml-1">{email}</span>.
+          <span className="text-primary font-medium ml-1">{email}</span>.
           Silakan periksa kotak masuk atau folder spam Anda untuk melanjutkan
           proses reset.
         </>

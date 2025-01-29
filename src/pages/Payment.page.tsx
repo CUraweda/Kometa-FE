@@ -63,7 +63,7 @@ function PaymentPage() {
                 <p className="text-sm tracking-wide mb-2">Total Pembayaran</p>
                 <span className="flex justify-center">
                   <pre>Rp</pre>
-                  <h3 className="text-5xl ml-1 font-bold text-emeraldGreen">
+                  <h3 className="text-5xl ml-1 font-bold text-primary">
                     5.000
                   </h3>
                 </span>
@@ -90,13 +90,13 @@ function PaymentPage() {
                 <div className="flex justify-center gap-3">
                   <button
                     onClick={() => openModal(modalList.updatePayment)}
-                    className="btn btn-outline hover:bg-emeraldGreen border-emeraldGreen hover:border-transparent text-emeraldGreen"
+                    className="btn btn-outline hover:bg-primary border-primary hover:border-transparent text-primary"
                   >
                     Ubah Pembayaran
                   </button>
                   <button
                     onClick={() => navigate(listedUser.paid)}
-                    className="btn btn-outline hover:bg-emeraldGreen border-emeraldGreen hover:border-transparent text-emeraldGreen"
+                    className="btn btn-outline hover:bg-primary border-primary hover:border-transparent text-primary"
                   >
                     Cek Status
                   </button>

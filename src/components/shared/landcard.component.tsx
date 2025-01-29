@@ -27,7 +27,7 @@ function LandCard({
     <div className="min-w-[calc(100%/3)] ">
       <div
         onClick={() => navigate(`${location}/detail?id=${id}`)}
-        className="border border-input p-5 rounded-lg hover:cursor-pointer hover:border-emeraldGreen"
+        className="border border-input p-5 rounded-lg hover:cursor-pointer hover:border-primary"
       >
         <div className="flex justify-between">
           <p className="flex items-baseline text-xl font-medium">
@@ -45,7 +45,7 @@ function LandCard({
           <div className="flex gap-1 text-sm">
             <button className="group btn btn-ghost btn-xs hover:bg-slate-50">
               <LuPenLine
-                className="group-hover:stroke-emeraldGreen"
+                className="group-hover:stroke-primary"
                 onClick={() => navigate("/detail-lahan")}
               />
             </button>

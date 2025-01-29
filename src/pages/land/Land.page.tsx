@@ -17,10 +17,8 @@ function LandPage() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
-
-
   return (
-    <CenterLayout className="min-h-[calc(100vh-105px)] items-start">
+    <CenterLayout className="items-start">
       <div className="w-full space-y-3">
         <div className="rounded-lg border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full ">
           {fakerLand.map(({ id, value }) => {
@@ -57,7 +55,12 @@ function LandPage() {
               placeholder="Status Kepemilikan"
             />
           </div>
-          <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => navigate(listedUser.tambahLahan)}>Tambah</button>
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate(listedUser.add)}
+          >
+            Tambah
+          </button>
         </div>
         <div className="grid gap-5 w-full sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {listLand.map((item) => (

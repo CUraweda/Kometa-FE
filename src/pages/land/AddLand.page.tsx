@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import MapComponent from "../components/maps/MapsComponent";
+import MapComponent from "@/components/maps/MapsComponent";
 import { datawilayah } from '@/middleware';
 import { provinces } from '@/middleware/Utils';
 import { getLokasi } from '@/helper/mapsHelper';
-import pin from '../assets/icon/iconMap.png'
+import pin from '@/assets/icon/iconMap.png'
 import CustomMap, { Location } from '@/components/maps/maps';
 import ModalDetail, { closeModal, openModal } from '@/components/ui/ModalDetail';
 import FileUploader from '@/components/ui/fileUpload';
@@ -149,7 +149,7 @@ const AddLandPage: React.FC<TambahLahanProps> = () => {
                                 className="input input-bordered w-full"
                             />
                             <input type="text" placeholder="Luas" className="input input-bordered w-full"  />
-                            <button className='btn btn-ghost bg-emeraldGreen text-white' onClick={() => openModal('add-lokasi')}>Edit Lokasi</button>
+                            <button className='btn btn-ghost bg-primary text-white' onClick={() => openModal('add-lokasi')}>Edit Lokasi</button>
                         </div>
                     </div>
                 </div>
@@ -253,7 +253,7 @@ const AddLandPage: React.FC<TambahLahanProps> = () => {
                 {/* Buttons */}
                 <div className="flex justify-end gap-3">
                     <button className="btn btn-outline">Kembali</button>
-                    <button className="btn btn-ghost bg-emeraldGreen text-white">Simpan</button>
+                    <button className="btn btn-primary text-white">Simpan</button>
                 </div>
             </div>
 
@@ -266,8 +266,8 @@ const AddLandPage: React.FC<TambahLahanProps> = () => {
                 />
                 <div className='w-full p-5 flex justify-end gap-2'>
 
-                    <button className='btn btn-outline text-emeraldGreen w-32' onClick={() => closeModal('add-lokasi')}>Kambali</button>
-                    <button className='btn btn-ghost bg-emeraldGreen text-white w-32'>simpan</button>
+                    <button className='btn btn-outline text-primary w-32' onClick={() => closeModal('add-lokasi')}>Kambali</button>
+                    <button className='btn btn-primary text-white w-32'>simpan</button>
                 </div>
 
             </ModalDetail>

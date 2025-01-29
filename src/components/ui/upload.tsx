@@ -23,7 +23,7 @@ function Upload({ id, label, className, onChange, value }: Props) {
       key={id}
       htmlFor={id}
       className={twMerge(
-        "w-40 h-32 rounded-xl border border-dashed flex justify-center items-center cursor-pointer",
+        "w-full h-32 rounded-xl border border-dashed flex justify-center items-center cursor-pointer",
         className
       )}
     >

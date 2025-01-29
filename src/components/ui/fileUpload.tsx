@@ -90,7 +90,7 @@ const FileUploader: React.FC = () => {
           />
           <label
             htmlFor="file-upload"
-            className="mt-2 px-4 py-1 bg-emeraldGreen text-white text-sm font-medium rounded cursor-pointer hover:bg-emerald-500"
+            className="mt-2 px-4 py-1 bg-primary text-white text-sm font-medium rounded cursor-pointer hover:bg-emerald-500"
           >
             Browse File
           </label>

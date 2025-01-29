@@ -20,7 +20,7 @@ function PaymentMethod({ onChange, selected }: Props) {
             onClick={() => setActiveTab(item)}
             className={`tab truncate ${
               item == activeTab
-                ? "tab-active [--tab-border-color:green] text-emeraldGreen"
+                ? "tab-active [--tab-border-color:green] text-primary"
                 : ""
             }`}
           >

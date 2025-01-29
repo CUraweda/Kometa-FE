@@ -10,9 +10,9 @@ export const listedUser = {
   paid: "/paid",
   error: "/*",
   dashboard: "/dashboard",
+  add: "add",
+  detail: "detail",
   land: "land",
-  tambahLahan: "tambah",
-  detailLahan: "detail",
   planting: "planting",
   supplier: "supplier",
   finance: "finance",
@@ -36,5 +36,4 @@ export const listedAdmin = {
   budidaya: "/admin/budidaya",
   simpanan: "/admin/simpanan",
   tagihan: "/admin/tagihan",
-  
 };

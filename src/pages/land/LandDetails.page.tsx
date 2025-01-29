@@ -2,8 +2,10 @@ import CustomMap from "@/components/maps/maps";
 import CenterLayout from "@/layout/center.layout";
 import React, { useState } from "react";
 import pin from "@/assets/icon/iconMap.png";
+import { useNavigate } from "react-router-dom";
 
 const LandDetails: React.FC = () => {
+  const navigate = useNavigate();
   const landData = {
     message: "Alasan Ditolak",
     location: {
@@ -36,7 +38,7 @@ const LandDetails: React.FC = () => {
     lng: 107.626454,
   });
   const handleBack = () => {
-    console.log("Back button clicked");
+    navigate(-1);
   };
 
   const handleEdit = () => {
