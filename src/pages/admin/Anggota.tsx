@@ -3,36 +3,52 @@ import { CiSearch, CiTrash } from "react-icons/ci";
 import { AiOutlineExpandAlt } from "react-icons/ai";
 import ModalDetail, { openModal } from '@/components/ui/ModalDetail';
 import { LuPencilLine } from 'react-icons/lu';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { memberRest } from '@/middleware';
+import { Member } from '@/middleware/Utils';
+import { formatDate } from '@/utils/date';
+import { listedAdmin } from '@/constant/routers/listed';
 
 const Anggota = () => {
-    const fakeData = [
-        { id: "Anggota", value: "124.32" },
-        { id: "Total pendaftaran", value: "564.32" },
-        { id: "Total Simpanan Wajib", value: "231.32" },
-        { id: "Total Simpanan Wajib", value: "231.32" },
-    ];
+    const [data, setData] = useState<any>(undefined);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        getData()
+    }, []);
+
+    const getData = async () => {
+        const payload = 'limit=10&page=1';
+        const response = await memberRest.getAll(payload);
+
+        if (response.data && response.data.data.items) {
+            const filteredItems = response.data.data.items.filter((item: Member) => item.isVerified);
+            setData(filteredItems);
+        }
+    };
+
 
     const handleOpenModal = (props: string) => {
         openModal(props);
     }
+
+    const handleDetailAnggota = (props: string) => {
+            const params = new URLSearchParams({
+                id: props,
+                type:'member'
+            });
+            
+            navigate(`${listedAdmin.detailAnggota}?${params.toString()}`);
+        }
+    
+
     return (
         <div>
             <CenterLayout className="min-h-[calc(100vh-105px)]">
                 <div className=' w-full min-h-[calc(100vh-105px)] flex flex-col'>
                     <span className='text-xl'>Anggota Kometa</span>
-                    <div className="rounded-lg mt-10 border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full bg-white">
-                        {fakeData.map(({ id, value }) => {
 
-                            return (
-                                <div className="px-8 flex-1 h-full flex flex-col justify-between items-start">
-                                    <h3 className="text-sm font-semibold">
-                                        {id}
-                                    </h3>
-                                    <span className="text-4xl font-medium">{value}</span>{" "}
-                                </div>
-                            );
-                        })}
-                    </div>
                     <div className='mt-5 w-full flex justify-end gap-3'>
                         <label className="input input-bordered flex items-center gap-2 ">
                             <CiSearch />
@@ -60,7 +76,6 @@ const Anggota = () => {
                                     <tr>
                                         <th>Tanggal Pendaftaran</th>
                                         <th>Nama</th>
-                                        <th>Anggota</th>
                                         <th>Nomor Whatsapp</th>
                                         <th>Email</th>
                                         <th>Anggota</th>
@@ -68,29 +83,38 @@ const Anggota = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>21-01-2022, 14:00:00</td>
-                                        <td><span className='text-green-600'>Simpanan</span></td>
-                                        <td>Joko Susilo</td>
-                                        <td>02930234707</td>
-                                        <td>asjndas@gmail.com</td>
-                                       
-                                        <td><span className='text-red-600'>Belum Lunas</span></td>
-                                        <td>
-                                            <div className='w-full flex justify-center'>
+                                    {
+                                        data?.map((value: Member, index: number) => (
+                                            <tr key={index}>
+                                                <td>{formatDate(value.createdAt)}</td>
+                                                <td>{value?.fullName}</td>
+                                                <td>{value?.user.phoneWA}</td>
+                                                <td>{value?.user.email}</td>
 
-                                            <button className='text-2xl btn btn-sm btn-ghost text-orange-500' onClick={() => handleOpenModal('detail-pendapatan')}>
-                                            <LuPencilLine />
-                                            </button>
-                                            <button className='text-2xl btn btn-sm btn-ghost' onClick={() => handleOpenModal('detail-pendapatan')}>
-                                                <AiOutlineExpandAlt />
-                                            </button>
-                                            <button className='text-2xl btn btn-sm btn-ghost text-red-500' onClick={() => handleOpenModal('detail-pendapatan')}>
-                                            <CiTrash />
-                                            </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                <td>
+                                                    <span style={{ backgroundColor: value.membershipType.backgroundColor, color: value.membershipType.foregroundColor, padding: '5px', borderRadius: '5px' }}>
+                                                        {value?.membershipType.name}
+                                                    </span>
+                                                </td>
+
+                                                <td>
+                                                    <div className='w-full flex justify-center'>
+
+                                                        <button className='text-2xl btn btn-sm btn-ghost text-orange-500' onClick={() => handleOpenModal('detail-pendapatan')}>
+                                                            <LuPencilLine />
+                                                        </button>
+                                                        <button className='text-xl btn btn-xs btn-ghost' onClick={() => handleDetailAnggota(value.id)}>
+                                                            <AiOutlineExpandAlt />
+                                                        </button>
+                                                        <button className='text-2xl btn btn-sm btn-ghost text-red-500' onClick={() => handleOpenModal('detail-pendapatan')}>
+                                                            <CiTrash />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        ))
+                                    }
 
                                 </tbody>
                             </table>

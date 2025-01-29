@@ -211,7 +211,7 @@ function RegisterMember() {
                   <Upload
                     id="photo_ktp"
                     label="Unggah Foto KTP"
-                    value={getValues("ktp")}
+                    value={watch("ktp")}
                     className="w-[320px] h-60 hover:border-emeraldGreen"
                     onChange={(e) => setValue("ktp", e)}
                   />
@@ -242,7 +242,7 @@ function RegisterMember() {
                     id="ktp_selfie"
                     label={`Unggah Foto Selfie dengan KTP`}
                     className="w-[320px] h-60 whitespace-pre-line hover:border-emeraldGreen"
-                    value={getValues("ktp_selfie")}
+                    value={watch("ktp_selfie")}
                     onChange={(e) => setValue("ktp_selfie", e)}
                   />
                   <div className="w-full justify-start">

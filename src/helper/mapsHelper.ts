@@ -21,3 +21,20 @@ export const getLokasi = (): Promise<{ lat: number; lng: number }> => {
     });
   };
   
+  export const getNamaWilayah = async (lat: number, lng: number): Promise<string> => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      );
+      const data = await response.json();
+  
+      if (data && data.display_name) {
+        return data.display_name; // Mengembalikan nama wilayah lengkap
+      } else {
+        return "Tidak ditemukan"; // Jika data kosong
+      }
+    } catch (error) {
+      console.error("Error fetching address:", error);
+      return "Error mendapatkan nama wilayah";
+    }
+  };

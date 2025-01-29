@@ -6,24 +6,41 @@ import {
 } from "@/constant/form/land.data";
 import CenterLayout from "../../layout/center.layout";
 import Input from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "@/components/ui/select";
 import LandCard from "@/components/shared/landcard.component";
-import Pagination from "@/components/ui/pagination";
+// import Pagination from "@/components/ui/pagination";
 import { useNavigate } from "react-router-dom";
 import { listedUser } from "@/constant/routers/listed";
+import { landApi } from "@/middleware";
+import useMemberStore from "@/store/home.store";
+import { LandData } from "@/middleware/Utils";
 
 function LandPage() {
-  const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const { idMember } = useMemberStore();
+  const [search, setSearch] = useState("");
+  const [data, setData] = useState<LandData[]>()
+  
+  const getData = async () => {
+    const response = await landApi.getAllByMember(idMember)
+    if (response.data && response.data.data.items) {
+      setData(response.data.data.items)
+      // const filteredItems = response.data.data.items.filter((item: Member) => item.isVerified);
+      // setData(filteredItems);
+    }
+  }
 
+  useEffect(() => {
+    getData()
+  }, [])
 
 
   return (
     <CenterLayout className="min-h-[calc(100vh-105px)] items-start">
       <div className="w-full space-y-3">
         <div className="rounded-lg border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full ">
-          {fakerLand.map(({ id, value }) => {
+          {/* {fakerLand.map(({ id, value }) => {
             const land = landType[id as keyof typeof landType];
             return (
               <div className="px-8 flex-1 h-full flex flex-col justify-between items-start">
@@ -39,7 +56,7 @@ function LandPage() {
                 </p>
               </div>
             );
-          })}
+          })} */}
         </div>
         <div className="flex justify-between items-center flex-wrap gap-2">
           <div className="flex gap-4 w-3xl">
@@ -60,12 +77,12 @@ function LandPage() {
           <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => navigate(listedUser.tambahLahan)}>Tambah</button>
         </div>
         <div className="grid gap-5 w-full sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {listLand.map((item) => (
+          {data?.map((item : LandData) => (
             <LandCard {...item} />
           ))}
         </div>
         <div className="flex justify-center w-full py-5">
-          <Pagination />
+          {/* <Pagination /> */}
         </div>
       </div>
     </CenterLayout>

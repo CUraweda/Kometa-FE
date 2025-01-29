@@ -1,6 +1,6 @@
 import getErrorMessage from "@/helper/apiHelper";
-import { authApi, datawilayahIndonesia, previewImage, restAnggota } from "./Rest"
-import { Login, Register, verifMember } from "./Utils";
+import { authApi, datawilayahIndonesia, previewImage, restAnggota, restLand } from "./Rest"
+import { LandData, Login, Register, verifMember } from "./Utils";
 import Swal from 'sweetalert2'
 import useAuthStore from "@/store/auth.store";
 
@@ -64,7 +64,8 @@ export const authentication = {
             const response = await authApi.login(data)
             const { at, rt } = response.data.data.token;
             const role = response.data.data.user.role.code
-            useAuthStore.getState().setAuth({ accessToken: at, refreshToken: rt, role: role });
+            const id = response.data.data.user.id
+            useAuthStore.getState().setAuth({ accessToken: at, refreshToken: rt, role: role, id });
             return role
         } catch (error) {
             Swal.fire({
@@ -170,7 +171,6 @@ export const dataMember = {
             const response = await previewImage.get(path);
             const blob = new Blob([response.data], { type: response.headers["content-type"] });
             const imageUrl = URL.createObjectURL(blob);
-            console.log('file jalan ya ', imageUrl);
             return imageUrl; // Kembalikan URL gambar
         } catch (error) {
             console.error("Show File Error:", error);
@@ -178,3 +178,79 @@ export const dataMember = {
         }
     },
 };
+
+export const landApi = {
+    create : async ( data : LandData) : Promise<any> => {
+        try {
+            const response = await restLand.create(data)
+            Swal.fire({
+                title: "Success!",
+                text: "Berhasil menambahkan data lahan",
+                icon: "success"
+              });
+              
+            return response
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: getErrorMessage(error, 'failed. Please try again.'),
+            });
+            throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+        }
+    },
+    getAllByMember : async (id: string | null) : Promise<any> => {
+        try {
+            return await restLand.getAllByUser(id)
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: getErrorMessage(error, 'failed. Please try again.'),
+            });
+            throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+        }
+    },
+    getAll : async (params?: string) : Promise<any> => {
+        try {
+            return await restLand.getAll(params)
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: getErrorMessage(error, 'failed. Please try again.'),
+            });
+            throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+        }
+    },
+    getOne : async (id?: any) : Promise<any> => {
+        try {
+            return await restLand.getOne(id)
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: getErrorMessage(error, 'failed. Please try again.'),
+            });
+            throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+        }
+    },
+    verif : async (data: verifMember, id: string) => {
+        try {
+            const response = await restLand.approv(data, id)
+            Swal.fire({
+                title: "Success!",
+                text: "Berhasil Update Status Anggota",
+                icon: "success"
+              });
+            return response
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: getErrorMessage(error, 'failed. Please try again.'),
+            });
+            throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+        }
+    }
+}

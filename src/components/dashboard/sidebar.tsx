@@ -7,10 +7,12 @@ import useAuthStore from "../../store/auth.store";
 import { useEffect, useState } from "react";
 import { memberRest } from "@/middleware";
 import { MemberData } from "@/middleware/Utils";
+import useMemberStore from "@/store/home.store";
 
 function Sidebar() {
   const navigate = useNavigate();
-  const { role } = useAuthStore();
+  const { role, clearAuth} = useAuthStore();
+  const { setMember} = useMemberStore();
   const [data, setData] = useState<any[]>([])
 
   const checkData = async () => {
@@ -19,6 +21,10 @@ function Sidebar() {
     if (typeof response === 'object' && response !== null && 'data' in response) {
       const dataRest = response.data as MemberData;
       const isVerif = dataRest.data.isVerified
+      const idMember = dataRest.data.id
+   
+      setMember({idMember})
+      
       stateSidebar(isVerif)
     } else {
       console.error('Invalid response structure', response);
@@ -35,10 +41,10 @@ function Sidebar() {
 
   const stateSidebar = (props: boolean) => {
     if (props) {
-      console.log('admin jalan 2');
+     
       setData(sidebarList)
     } else {
-      console.log('admin jalan 3');
+     
       setData(sidebarListUnverif)
     }
   }
@@ -73,7 +79,7 @@ function Sidebar() {
         </ul>
       </div>
       <button
-        onClick={() => navigate("/")}
+        onClick={() => {clearAuth(), navigate("/")}}
         className="flex gap-3 items-center cursor-pointer p-2 rounded-lg hover:text-red-700"
       >
         <Logout className="w-4 h-4" />

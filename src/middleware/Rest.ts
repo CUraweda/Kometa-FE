@@ -3,7 +3,7 @@ import axios, {
   InternalAxiosRequestConfig,
   AxiosRequestHeaders,
 } from "axios";
-import { Login, LoginResponse, MemberData, MembershipTypeResponse, provinces, Register, typeGetAllMember, verifMember } from "./Utils";
+import { LandData, Login, LoginResponse, MemberData, MembershipTypeResponse, provinces, Register, typeGetAllMember, verifMember } from "./Utils";
 import useAuthStore from "../store/auth.store"; // Zustand store untuk auth
 
 const server = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
@@ -170,15 +170,15 @@ export const restAnggota = {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
     }),
-    verif: (data: verifMember , id: string) : AxiosPromise<MemberData>=> 
-      server({
-        method: "PUT",
-        url: `api/member-data/verify/${id}`,
-        data,
-        headers: {
-          Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
-        },
-      })
+  verif: (data: verifMember, id: string): AxiosPromise<MemberData> =>
+    server({
+      method: "PUT",
+      url: `api/member-data/verify/${id}`,
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    })
 }
 
 export const previewImage = {
@@ -187,5 +187,50 @@ export const previewImage = {
       method: "GET",
       url: `api/download?path=${path}`,
       responseType: "arraybuffer",
+    })
+}
+
+export const restLand = {
+  create: (data: LandData): AxiosPromise<LandData> =>
+    server({
+      method: "POST",
+      url: `api/land-data/create`,
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  getAllByUser: (id: string | null): AxiosPromise<LandData> =>
+    server({
+      method: "GET",
+      url: `api/land-data/show-all?memberId=${id}&limit=100`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  getAll: (params?: string): AxiosPromise<LandData> =>
+    server({
+      method: "GET",
+      url: `api/land-data/show-all?${params}`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  getOne: (id?: string): AxiosPromise<LandData> =>
+    server({
+      method: "GET",
+      url: `api/land-data/show-one/${id}`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  approv: (data: verifMember, id?: string): AxiosPromise<LandData> =>
+    server({
+      method: "PUT",
+      url: `api/land-data/decision/${id}`,
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
     })
 }

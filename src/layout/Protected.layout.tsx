@@ -4,10 +4,10 @@ import useAuthStore from "@/store/auth.store";
 import { useNavigate } from "react-router-dom";
 
 function ProtectedLayout({ children }: { children: ReactNode }) {
-  const { accessToken } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   
-  return accessToken ? (
+  return isAuthenticated ? (
     children
   ) : (
     <CenterLayout className="flex flex-col">

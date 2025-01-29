@@ -159,3 +159,32 @@ export interface verifMember {
   isVerified: boolean
   rejectedMessage?: string
 }
+
+export interface LandData {
+  id?: string
+  memberId: string;
+  longitudeArea: number;
+  latitudeArea: number;
+  wideArea: number;
+  ownerFullName: string;
+  ownerProvince: string;
+  ownerCity: string;
+  ownerDistrict: string;
+  ownerSubDistrict: string;
+  ownershipStatus: "SHM" | "Girik" | "Kontrak/Sewa"; 
+  ownerNotes: string;
+  landCondition: string;
+  landAddress: string;
+  documentShmCertificateNo: string;
+  documentOwnerFullName: string;
+  documentWideArea: number;
+  status: string;
+  isAccepted?: boolean,
+  decisionBy?: string,
+  decisionDate?: string,
+  decisionMessage?:string
+  landFile?: {
+    filePath: string
+  }
+  file: File;// Use `File` type for the file field
+}

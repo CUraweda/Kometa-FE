@@ -12,6 +12,7 @@ const DetailAnggotaBaru = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [searchParams] = useSearchParams();
 
+  const type = searchParams.get("type");
   const checkData = async () => {
     const id = searchParams.get("id");
 
@@ -106,7 +107,7 @@ const DetailAnggotaBaru = () => {
     }
   }
   return (
-    <div className="container mx-auto p-4">
+    <div className="container ">
       <div className="bg-white shadow-lg rounded-lg p-6">
         <h1 className="text-xl font-bold mb-4">Anggota</h1>
         <p className="text-sm text-gray-500 mb-6">Anggota / Detail Anggota</p>
@@ -114,25 +115,52 @@ const DetailAnggotaBaru = () => {
         <h2 className="text-lg font-bold mb-4">Detail Transaksi</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <p><span className="font-semibold">Pembayaran:</span> VA BNI</p>
+            <tr >
+              <td className="font-semibold">Pembayaran</td>
+              <td>:</td>
+              <td>VA BNI</td>
+            </tr>
+
           </div>
 
         </div>
 
         <h2 className="text-lg font-bold mt-6 mb-4">Informasi Akun</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <p><span className="font-semibold">Tanggal Pendaftaran : </span> {formatDateTime(data?.createdAt)}</p>
-            <p><span className="font-semibold">WhatsApp : </span>{data?.user.phoneWA}</p>
-            <p><span className="font-semibold">Email : </span>{data?.user.email} {data?.isVerified}</p>
-            <p><span className="font-semibold">Status:</span> {data?.isVerified ? <span className="badge badge-success text-white">Terverifikasi</span> : <span className="badge badge-warning">Tertunda</span>}</p>
-          </div>
-          <div>
-            <p><span className="font-semibold">Keanggotaan : </span> {data?.membershipType.name}</p>
-          </div>
+        <div className='z-0 overflow-hidden'>
+
+          <table className="table w-1/2">
+            <tr>
+              <th>Tanggal Pendaftaran</th>
+              <td>:</td>
+              <td>{formatDateTime(data?.createdAt)}</td>
+            </tr>
+            <tr>
+              <th>Whatsapp</th>
+              <td>:</td>
+              <td>{data?.user.phoneWA}</td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td>:</td>
+              <td>{data?.user.email}</td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td>:</td>
+              <td>{data?.isVerified ? <span className="badge badge-success text-white">Terverifikasi</span> : <span className="badge badge-warning">Tertunda</span>}</td>
+            </tr>
+            <tr>
+              <th>Keanggotaan</th>
+              <td>:</td>
+              <td><span style={{ backgroundColor: data?.membershipType.backgroundColor, color: data?.membershipType.foregroundColor, padding: '5px', borderRadius: '5px' }}>
+                {data?.membershipType.name}
+              </span></td>
+            </tr>
+
+          </table>
         </div>
 
-        <h2 className="text-lg font-bold mt-6 mb-4">Alamat KTP</h2>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
           {loading &&
             <>
@@ -144,8 +172,9 @@ const DetailAnggotaBaru = () => {
           {images.map(({ index, src }) => (
             <div
               key={index}
-              className="flex items-center space-x-4"
+              className="flex items-center mt-5"
             >
+
               <img src={src} alt={`Image ${index}`} className="w-96 rounded border" />
               <div className="w-full justify-start">
                 {/* Tambahkan konten tambahan di sini jika diperlukan */}
@@ -155,37 +184,116 @@ const DetailAnggotaBaru = () => {
 
 
         </div>
-
+        <h2 className="text-lg font-bold mt-6 mb-4">Alamat KTP</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <div>
-            <p><span className="font-semibold">NIK:</span>{data?.nik}</p>
-            <p><span className="font-semibold">Nama Lengkap:</span>{data?.fullName}</p>
-            <p><span className="font-semibold">Jenis Kelamin:</span> {data?.gender == "L" ? "laki-laki" : "perempuan"}</p>
-            <p><span className="font-semibold">Tempat Lahir:</span>{data?.pob}</p>
+            <table className='table w-1/2'>
+              <tr>
+                <th>NIK</th>
+                <td>:</td>
+                <td>{data?.nik}</td>
+              </tr>
+              <tr>
+                <th>Nama Lengkap</th>
+                <td>:</td>
+                <td>{data?.fullName}</td>
+              </tr>
+              <tr>
+                <th>Jenis Kelamin</th>
+                <td>:</td>
+                <td>{data?.gender == "L" ? "laki-laki" : "perempuan"}</td>
+              </tr>
+              <tr>
+                <th>Tempat Lahir</th>
+                <td>:</td>
+                <td>{data?.pob}</td>
+              </tr>
+              <tr>
+                <th>Tanggal Lahir</th>
+                <td>:</td>
+                <td>{formatDateString(data?.dob)}</td>
+              </tr>
+
+            </table>
           </div>
           <div>
-            <p><span className="font-semibold">Tanggal Lahir:</span>{formatDateString(data?.dob)}</p>
-            <p><span className="font-semibold">Provinsi:</span> {data?.KtpProvince} </p>
-            <p><span className="font-semibold">Kota/Kabupaten:</span> {data?.KtpCity} </p>
-            <p><span className="font-semibold">Kecamatan:</span>{data?.KtpDistrict}</p>
-            <p><span className="font-semibold">Desa/Kelurahan:</span>{data?.KtpSubDistrict}</p>
-            <p><span className="font-semibold">Detail Alamat:</span>{data?.KtpAddressDetail}</p>
+            <table className='table w-1/2'>
+              <tr>
+                <th>Provinsi</th>
+                <td>:</td>
+                <td>{data?.KtpProvince}</td>
+              </tr>
+              <tr>
+                <th>Kabupaten / Kota</th>
+                <td>:</td>
+                <td>{data?.KtpCity}</td>
+              </tr>
+              <tr>
+                <th>Kecamatan</th>
+                <td>:</td>
+                <td>{data?.KtpDistrict}</td>
+              </tr>
+              <tr>
+                <th>Desa/Kelurahan</th>
+                <td>:</td>
+                <td>{data?.KtpSubDistrict}</td>
+              </tr>
+              <tr>
+                <th>Detail Alamat</th>
+                <td>:</td>
+                <td>{data?.KtpAddressDetail}</td>
+              </tr>
+
+            </table>
           </div>
+
         </div>
 
         <h2 className="text-lg font-bold mt-6 mb-4">Alamat Domisili</h2>
         <div>
-          <p><span className="font-semibold">Provinsi:</span> {data?.DomicileProvince}</p>
-          <p><span className="font-semibold">Kota/Kabupaten:</span>{data?.DomicileCity}</p>
-          <p><span className="font-semibold">Kecamatan:</span>{data?.DomicileDistrict}</p>
-          <p><span className="font-semibold">Desa/Kelurahan:</span>{data?.DomicileSubDistrict}</p>
-          <p><span className="font-semibold">Detail Alamat:</span>{data?.DomicileAddressDetail}</p>
+          <table className='table w-1/2'>
+            <tr>
+              <th>Provinsi</th>
+              <td>:</td>
+              <td>{data?.DomicileProvince}</td>
+            </tr>
+            <tr>
+              <th>Kabupaten / Kota</th>
+              <td>:</td>
+              <td>{data?.DomicileCity}</td>
+            </tr>
+            <tr>
+              <th>Kecamatan</th>
+              <td>:</td>
+              <td>{data?.DomicileDistrict}</td>
+            </tr>
+            <tr>
+              <th>Desa/Kelurahan</th>
+              <td>:</td>
+              <td>{data?.DomicileSubDistrict}</td>
+            </tr>
+            <tr>
+              <th>Detail Alamat</th>
+              <td>:</td>
+              <td>{data?.DomicileAddressDetail}</td>
+            </tr>
+
+          </table>
         </div>
 
-        <div className="flex space-x-4 mt-6">
-          <button className="btn btn-error text-white" onClick={() => handleVerif(false, data?.id, 'ditolak')}>Tolak</button>
-          <button className="btn btn-success text-white" onClick={() => handleVerif(true, data?.id)}>Setuju</button>
-        </div>
+        {
+          type === 'member' &&
+          <>
+            <button className='btn btn-ghost bg-emeraldGreen text-white'>Edit</button>
+          </>
+        }
+        {
+          type !== 'member' &&
+          <div className="flex space-x-4 mt-6">
+            <button className="btn btn-ghost bg-red-500 text-white" onClick={() => handleVerif(false, data?.id, 'ditolak')}>Tolak</button>
+            <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => handleVerif(true, data?.id)}>Setuju</button>
+          </div>
+        }
       </div>
     </div>
   );

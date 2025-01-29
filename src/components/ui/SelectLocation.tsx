@@ -1,36 +1,33 @@
-import { Option } from "@/types/common";
 import { forwardRef, SelectHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 import { Message } from "../form/error.field";
 import { FieldError } from "react-hook-form";
 
-type wilayah = {
-    id: string,
-    name: string
-}
+type Wilayah = {
+    id: string;
+    name: string;
+};
+
 type SelectProps = {
-  data: Array<wilayah>;
-  error?: string | FieldError;
-  defaultValue?: string;
-  className?: string;
-  placeholder?: string;
-  onChangeCallback?: (value: string) => void; // Tambahkan prop untuk callback
+    data: Array<Wilayah>;
+    error?: string | FieldError;
+    value?: string; // Gunakan `value` yang dikontrol
+    className?: string;
+    placeholder?: string;
+    onChangeCallback?: (value: string) => void; 
 } & SelectHTMLAttributes<HTMLSelectElement>;
 
 const SelectLocation = forwardRef<HTMLSelectElement, SelectProps>(
-  (
-    { data, defaultValue, placeholder, className, error, onChangeCallback, ...rest },
-    ref
-  ) => {
+  ({ data, value, placeholder, className, error, onChangeCallback, ...rest }, ref) => {
     const errorMessage = typeof error === "string" ? error : error?.message;
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       const value = event.target.value;
       if (onChangeCallback) {
-        onChangeCallback(value); // Panggil callback saat ada perubahan
+        onChangeCallback(value); 
       }
       if (rest.onChange) {
-        rest.onChange(event); // Panggil onChange bawaan jika ada
+        rest.onChange(event); 
       }
     };
 
@@ -39,14 +36,14 @@ const SelectLocation = forwardRef<HTMLSelectElement, SelectProps>(
         <select
           ref={ref}
           className={twMerge("select select-bordered w-full", className)}
-          defaultValue={defaultValue ?? ""}
+          value={value} // Gunakan value yang dikontrol
           onChange={handleChange}
           {...rest}
         >
           <option value="" disabled>
             {placeholder}
           </option>
-          {data?.map((item: wilayah) => (
+          {data?.map((item: Wilayah) => (
             <option key={item.id} value={item.id}>
               {item.name}
             </option>
@@ -59,5 +56,4 @@ const SelectLocation = forwardRef<HTMLSelectElement, SelectProps>(
 );
 
 SelectLocation.displayName = "SelectLocation";
-
 export default SelectLocation;

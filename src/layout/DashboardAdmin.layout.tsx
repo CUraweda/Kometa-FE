@@ -11,7 +11,7 @@ function DashboardAdminLayout() {
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col items-center justify-center">
           
-            <div className="w-full top-0 sticky ">
+            <div className="w-full top-0 sticky z-50">
             
             <TopBarAdmin />
             </div>

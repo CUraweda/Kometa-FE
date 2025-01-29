@@ -21,7 +21,6 @@ import FinancePage from "../../pages/Finance.page";
 import ProfilePage from "../../pages/Profile.page";
 import Pendapatan from "@/pages/admin/Pendapatan";
 import Anggota from "@/pages/admin/Anggota";
-import DetailAnggota from "@/pages/admin/DetailAnggota";
 import AnggotaBaru from "@/pages/admin/AnggotaBaru";
 import DetailAnggotaBaru from "@/pages/admin/DetailAnggotaBaru";
 import AddLandPage from "@/pages/AddLand.page";
@@ -37,6 +36,7 @@ import Test from "@/pages/test";
 import LandDetails from "@/pages/land/LandDetails.page";
 import LandPage from "@/pages/land/Land.page";
 import UnVerifiedPage from "@/pages/UnVerified.page";
+import DetailLahan from "@/pages/admin/detailLahan";
 
 export const router = createBrowserRouter([
   {
@@ -100,7 +100,7 @@ export const router = createBrowserRouter([
     children: [
       { path: listedAdmin.dashboard, element: <DashboardAdmin /> },
       { path: listedAdmin.adminAnggota, element: <Anggota /> },
-      { path: listedAdmin.detailAnggota, element: <DetailAnggota /> },
+      { path: listedAdmin.detaillahanBaru, element: <DetailLahan /> },
       { path: listedAdmin.anggotaBaru, element: <AnggotaBaru /> },
       { path: listedAdmin.DetailAnggotaBaru, element: <DetailAnggotaBaru /> },
       { path: listedAdmin.lahan, element: <Lahan /> },

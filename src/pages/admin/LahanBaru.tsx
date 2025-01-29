@@ -4,24 +4,53 @@ import { AiOutlineExpandAlt } from "react-icons/ai";
 import ModalDetail, { openModal } from '@/components/ui/ModalDetail';
 import { IoCheckboxOutline } from "react-icons/io5";
 import { FaRegWindowClose } from "react-icons/fa";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { landApi } from '@/middleware';
+import { LandData } from '@/middleware/Utils';
+import { landType, statusType } from '@/constant/form/land.data';
+import { Badge } from 'lucide-react';
+import { listedAdmin } from '@/constant/routers/listed';
 
 const LahanBaru = () => {
     const fakeData = [
         { id: "SHM", value: "124.32" },
         { id: "Girik", value: "124.32" },
         { id: "Kontrak/ Sewa", value: "124.32" },
-       
+
     ];
 
-    const handleOpenModal = (props: string) => {
-        openModal(props);
+    const [data, setData] = useState<any>(undefined);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        getData()
+    }, []);
+
+    const getData = async () => {
+        const payload = 'limit=1000&page=1';
+        const response = await landApi.getAll(payload);
+
+        if (response.data && response.data.data.items) {
+            const filteredItems = response.data.data.items.filter((item: LandData) => !item.isAccepted);
+            setData(filteredItems);
+        }
+    };
+    const handleDetailLahan = (props: any) => {
+        const params = new URLSearchParams({
+            id: props,
+            type: 'lahan'
+        });
+
+        navigate(`${listedAdmin.detaillahanBaru}?${params.toString()}`);
     }
+
     return (
         <div>
             <CenterLayout className="min-h-[calc(100vh-105px)]">
                 <div className=' w-full min-h-[calc(100vh-105px)] flex flex-col'>
                     <span className='text-xl'>Lahan Baru</span>
-                    <div className="rounded-lg mt-10 border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full bg-white">
+                    {/* <div className="rounded-lg mt-10 border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full bg-white">
                         {fakeData.map(({ id, value }) => {
 
                             return (
@@ -33,7 +62,7 @@ const LahanBaru = () => {
                                 </div>
                             );
                         })}
-                    </div>
+                    </div> */}
                     <div className='mt-5 w-full flex justify-end gap-3'>
                         <label className="input input-bordered flex items-center gap-2 ">
                             <CiSearch />
@@ -55,7 +84,7 @@ const LahanBaru = () => {
                             <option>Planet of the Apes</option>
                             <option>Star Trek</option>
                         </select>
-                        
+
                     </div>
 
                     <div className='w-full bg-white mt-5 shadow-md p-2 rounded-md'>
@@ -64,43 +93,40 @@ const LahanBaru = () => {
                                 {/* head */}
                                 <thead>
                                     <tr>
-                                        <th>Tanggal Pendaftaran</th>
                                         <th>Nama</th>
-                                        <th>Nomor Whatsapp</th>
-                                        <th>Email</th>
-                                        <th>Pembayaran</th>
+                                        <th>Alamat Lahan</th>
+                                        <th>Luas</th>
+                                        <th>Kondisi Lahan</th>
+                                        <th>Kepemilikan</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>21-01-2022, 14:00:00</td>
+                                    {
+                                        data?.map((value: LandData, index: number) => (
 
-                                        <td>Joko Susilo</td>
-                                        <td>02930234707</td>
-                                        <td>asjndas@gmail.com</td>
-                                        <td>asjndas@gmail.com</td>
+                                            <tr key={index}>
+                                                <td>{value.ownerFullName}</td>
+                                                <td>{value.landAddress}</td>
+                                                <td>{value.wideArea}</td>
+                                                <td>{value.landCondition}</td>
+                                                <td>{value.ownershipStatus}</td>
+                                                <td>{value.status}</td>
+                                                <td>
+                                                    <div className='w-full flex justify-center'>
 
-                                        <td><span className='text-red-600'>Belum Lunas</span></td>
-                                        <td>
-                                            <div className='w-full flex justify-center'>
-
-                                                <button className='text-xl btn btn-xs btn-ghost text-green-500' onClick={() => handleOpenModal('detail-pendapatan')}>
-                                                    <IoCheckboxOutline />
-                                                </button>
-                                                <button className='text-xl btn btn-xs btn-ghost text-red-500' onClick={() => handleOpenModal('reject-pendapatan')}>
-                                                    <FaRegWindowClose />
-                                                </button>
-                                                <button className='text-xl btn btn-xs btn-ghost' onClick={() => handleOpenModal('detail-pendapatan')}>
-                                                    <AiOutlineExpandAlt />
-                                                </button>
-                                                <button className='text-xl btn btn-xs btn-ghost text-red-500' onClick={() => handleOpenModal('detail-pendapatan')}>
-                                                    <CiTrash />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                        <button className='text-xl btn btn-xs btn-ghost' onClick={() => handleDetailLahan(value.id)}>
+                                                            <AiOutlineExpandAlt />
+                                                        </button>
+                                                        <button className='text-xl btn btn-xs btn-ghost text-red-500'>
+                                                            <CiTrash />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
 
                                 </tbody>
                             </table>

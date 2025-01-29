@@ -9,6 +9,7 @@ import { Member, typeGetAllMember } from '@/middleware/Utils';
 import { memberRest } from '@/middleware';
 import { formatDate } from '@/utils/date';
 import { useNavigate } from 'react-router-dom';
+import { listedAdmin } from '@/constant/routers/listed';
 
 const AnggotaBaru = () => {
     const [data, setData] = useState<any>(undefined);
@@ -38,10 +39,11 @@ const AnggotaBaru = () => {
     }
     const handleDetailAnggota = (props: string) => {
         const params = new URLSearchParams({
-            id: props
+            id: props,
+            type: 'new-member'
         });
-
-        navigate(`/admin/detail-anggota-baru?${params.toString()}`);
+        
+        navigate(`${listedAdmin.DetailAnggotaBaru}?${params.toString()}`);
     }
 
     return (
@@ -106,17 +108,10 @@ const AnggotaBaru = () => {
                                                 <td>{value.user.phoneWA}</td>
                                                 <td>{value.user.email}</td>
                                                 <td>asjndas@gmail.com</td>
-
                                                 <td><span className='text-red-600'>Belum Lunas</span></td>
                                                 <td>
-                                                    <div className='w-full flex justify-center'>
+                                                    <div className='w-full flex justify-start'>
 
-                                                        <button className='text-xl btn btn-xs btn-ghost text-green-500' onClick={() => handleOpenModal('detail-pendapatan')}>
-                                                            <IoCheckboxOutline />
-                                                        </button>
-                                                        <button className='text-xl btn btn-xs btn-ghost text-red-500' onClick={() => handleOpenModal('reject-pendapatan')}>
-                                                            <FaRegWindowClose />
-                                                        </button>
                                                         <button className='text-xl btn btn-xs btn-ghost' onClick={() => handleDetailAnggota(value.id)}>
                                                             <AiOutlineExpandAlt />
                                                         </button>
