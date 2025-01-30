@@ -3,8 +3,18 @@ import axios, {
   InternalAxiosRequestConfig,
   AxiosRequestHeaders,
 } from "axios";
-import { Login, LoginResponse, MemberData, MembershipTypeResponse, provinces, Register, typeGetAllMember, verifMember } from "./Utils";
+import {
+  Login,
+  LoginResponse,
+  MemberData,
+  MembershipTypeResponse,
+  provinces,
+  Register,
+  typeGetAllMember,
+  verifMember,
+} from "./Utils";
 import useAuthStore from "../store/auth.store"; // Zustand store untuk auth
+import { token } from "@/utils/tokenize";
 
 const server = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
 const datawilayah = axios.create({
@@ -42,7 +52,7 @@ server.interceptors.response.use(
       originalRequest._retry = true; // Tandai permintaan ini sudah di-retry
 
       try {
-        const refreshToken = localStorage.getItem("refresh_token");
+        const refreshToken = token.get("refresh");
         if (!refreshToken) {
           throw new Error("Refresh token is missing");
         }
@@ -51,11 +61,12 @@ server.interceptors.response.use(
           refreshToken,
         });
 
-        const { at: newAccessToken, rt: newRefreshToken } = refreshResponse.data;
+        const { at: newAccessToken, rt: newRefreshToken } =
+          refreshResponse.data;
 
         // Simpan token baru di localStorage
-        localStorage.setItem("access_token", newAccessToken);
-        localStorage.setItem("refresh_token", newRefreshToken);
+        token.set("access", newAccessToken);
+        token.set("refresh", newRefreshToken);
 
         // Perbarui header Authorization dengan token baru
         if (!originalRequest.headers) {
@@ -70,8 +81,8 @@ server.interceptors.response.use(
         console.error("Failed to refresh token:", refreshError);
 
         // Bersihkan status login
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
+        token.delete("access");
+        token.delete("refresh");
 
         return Promise.reject(refreshError);
       }
@@ -80,7 +91,6 @@ server.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 
 // API untuk Data Wilayah Indonesia
 export const datawilayahIndonesia = {
@@ -123,36 +133,35 @@ export const authApi = {
 };
 
 export const authUser = {
-  profil: (): AxiosPromise<any> =>
+  profil: () =>
     server({
       method: "GET",
-      url: ''
-    })
-}
+      url: "",
+    }),
+};
 
 export const restAnggota = {
   typeMember: (): AxiosPromise<MembershipTypeResponse> =>
     server({
       method: "GET",
-      url: 'api/membership/show-all'
+      url: "api/membership/show-all",
     }),
   checkMember: (): AxiosPromise<MemberData> =>
     server({
       method: "GET",
-      url: 'api/member-data/show-by-user',
+      url: "api/member-data/show-by-user",
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
     }),
-  createMemberData: (data: any): AxiosPromise<any> =>
+  createMemberData: (data: unknown) =>
     server({
       method: "POST",
-      url: 'api/member-data/create',
+      url: "api/member-data/create",
       data,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
-
     }),
   getAll: (payload: string): AxiosPromise<typeGetAllMember> =>
     server({
@@ -170,22 +179,22 @@ export const restAnggota = {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
     }),
-    verif: (data: verifMember , id: string) : AxiosPromise<MemberData>=> 
-      server({
-        method: "PUT",
-        url: `api/member-data/verify/${id}`,
-        data,
-        headers: {
-          Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
-        },
-      })
-}
+  verif: (data: verifMember, id: string): AxiosPromise<MemberData> =>
+    server({
+      method: "PUT",
+      url: `api/member-data/verify/${id}`,
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+};
 
 export const previewImage = {
-  get: (path: string): AxiosPromise<any> =>
+  get: (path: string) =>
     server({
       method: "GET",
       url: `api/download?path=${path}`,
       responseType: "arraybuffer",
-    })
-}
+    }),
+};

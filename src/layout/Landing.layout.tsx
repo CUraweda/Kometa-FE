@@ -5,7 +5,7 @@ function LandingLayout() {
   return (
     <>
       <div className="w-full min-h-screen relative ">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('../public/kometa-bg.png')] bg-cover">
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('../kometa-bg.png')] bg-cover">
           <Navbar />
           <Outlet />
         </div>

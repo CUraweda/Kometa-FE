@@ -45,8 +45,8 @@ function HomePage() {
             </p>
             <div className="flex mt-14 space-x-5">
               <div className="avatar-group -space-x-6 rtl:space-x-reverse">
-                {dummyPhoto.map((item) => (
-                  <div className="avatar">
+                {dummyPhoto.map((item,index) => (
+                  <div key={`dummyPhoto-${index}`} className="avatar">
                     <div className="w-10">
                       <img key={item} src={item} alt={item} loading="eager" />
                     </div>
