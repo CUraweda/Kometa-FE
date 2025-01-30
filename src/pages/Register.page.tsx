@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import PaymentMethod from "../components/shared/payment.component";
 import Radio from "../components/ui/radio";
 import Upload from "../components/ui/upload";
@@ -24,14 +24,21 @@ import { memberRest } from "@/middleware";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaMember } from "@/schema/dataMember";
 import { Message } from "@/components/form/error.field";
+import { MemberData } from "@/middleware/Utils";
 
 
 function RegisterMember() {
-  const [modalId, setModalId] = useState(instuctionId.photoKTP);
-  const [typeMember, setTypeMember] = useState<any>();
+
+  const [searchParams] = useSearchParams();
+  const { Modal, openModal } = useModal();
   const navigate = useNavigate();
 
-  const { Modal, openModal } = useModal();
+  const [modalId, setModalId] = useState(instuctionId.photoKTP);
+  const [Id, setId] = useState('');
+  const [typeMember, setTypeMember] = useState<any>();
+  const [payment, setPayment] = useState<string>('');
+  const type = searchParams.get('type')
+
 
   const handleOpenModal = () => openModal(modalId);
 
@@ -73,6 +80,8 @@ function RegisterMember() {
       DomicileAddressDetail: '',
       ktp: undefined,
       ktp_selfie: undefined,
+      registrationFee: 5000,
+      registrationPaymentMethod: ''
     },
     resolver: yupResolver(schemaMember),
   });
@@ -154,6 +163,7 @@ function RegisterMember() {
 
     fetchTypeMember();
   }, []);
+
   useEffect(() => {
     const addressIsDifferent = watch("addressIsDifferent");
     if (addressIsDifferent) {
@@ -172,12 +182,67 @@ function RegisterMember() {
     watch("KtpAddressDetail")
   ]);
 
+  useEffect(() => {
+    if (type) {
+      checkData()
+    }
+  }, []);
+
+
   const onSubmit: SubmitHandler<Register> = (value) => {
     memberRest.createData(value)
+    setValue("registrationFee", 5000)
+    setValue("registrationPaymentMethod", payment)
+    const params = new URLSearchParams({
+      type: payment
+    });
+
     reset();
-    navigate(listedUser.payment);
+    navigate(`${listedUser.payment}?${params.toString()}`);
+  };
+  const onUpdate: SubmitHandler<Register> = (value) => {
+    memberRest.updateData(value, Id)
+    reset();
+    navigate('/dashboard/verif');
   };
 
+
+  const checkData = async () => {
+    const response = await memberRest.checkData();
+
+    if (typeof response === 'object' && response !== null && 'data' in response) {
+      const dataRest = response.data as MemberData;
+      setValue("membershipTypeId", dataRest.data.membershipTypeId)
+      setValue("fullName", dataRest.data.fullName)
+      setValue("nik", dataRest.data.nik)
+      setValue("gender", dataRest.data.gender)
+      setValue("pob", dataRest.data.pob)
+      setValue("dob", dataRest.data.dob)
+      setValue("isVerified", dataRest.data.isVerified)
+      setValue("KtpProvince", dataRest.data.KtpProvince)
+      setValue("KtpProvinceId", dataRest.data.KtpProvinceId)
+      setValue("KtpCity", dataRest.data.KtpCity)
+      setValue("KtpCityId", dataRest.data.KtpCityId)
+      setValue("KtpDistrict", dataRest.data.KtpDistrict)
+      setValue("KtpDistrictId", dataRest.data.KtpDistrictId)
+      setValue("KtpSubDistrict", dataRest.data.KtpSubDistrict)
+      setValue("KtpSubDistrictId", dataRest.data.KtpSubDistrictId)
+      setValue("KtpAddressDetail", dataRest.data.KtpAddressDetail)
+      setValue("addressIsDifferent", dataRest.data.addressIsDifferent)
+      setValue("DomicileProvince", dataRest.data.DomicileProvince)
+      setValue("DomicileProvinceId", dataRest.data.DomicileProvinceId)
+      setValue("DomicileCity", dataRest.data.DomicileCity)
+      setValue("DomicileCityId", dataRest.data.DomicileCityId)
+      setValue("DomicileDistrict", dataRest.data.DomicileDistrict)
+      setValue("DomicileDistrictId", dataRest.data.DomicileDistrictId)
+      setValue("DomicileSubDistrict", dataRest.data.DomicileSubDistrict)
+      setValue("DomicileSubDistrictId", dataRest.data.DomicileSubDistrictId)
+      setValue("DomicileAddressDetail", dataRest.data.DomicileAddressDetail)
+      setId(dataRest.data.id)
+    } else {
+      console.error('Invalid response structure', response);
+    }
+  };
 
   const { photo, title, regulation } = instructions[modalId as InstructionKey];
 
@@ -590,19 +655,33 @@ function RegisterMember() {
           </div>
           <div className="space-y-4 flex-col sm:flex-row bg-white mt-10 p-3 rounded-md">
             <h2 className="font-medium tracking-wide">Metode Pembayaran</h2>
-            {/* <PaymentMethod
-              selected={getValues("payment")}
-              onChange={(item) => setValue("payment", item.value)}
-            /> */}
+            <PaymentMethod
+              selected={payment}
+              onChange={(item) => setPayment(item.value)}
+            />
           </div>
         </div>
         <div className="w-full text-center">
-          <button
-            onClick={() => handleSubmit(onSubmit)()}
-            className="btn w-56 btn-ghost bg-emeraldGreen text-white mt-10 mb-20"
-          >
-            Bayar Sekarang
-          </button>
+          {
+            type &&
+
+            <button
+              onClick={() => handleSubmit(onUpdate)()}
+              className="btn w-56 btn-ghost bg-emeraldGreen text-white mt-10 mb-20"
+            >
+              Update Data
+            </button>
+          }
+          {
+            !type &&
+
+            <button
+              onClick={() => handleSubmit(onSubmit)()}
+              className="btn w-56 btn-ghost bg-emeraldGreen text-white mt-10 mb-20"
+            >
+              Bayar Sekarang
+            </button>
+          }
 
         </div>
 

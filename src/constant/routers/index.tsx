@@ -36,7 +36,8 @@ import Test from "@/pages/test";
 import LandDetails from "@/pages/land/LandDetails.page";
 import LandPage from "@/pages/land/Land.page";
 import UnVerifiedPage from "@/pages/UnVerified.page";
-import DetailLahan from "@/pages/admin/detailLahan";
+import DetailAnggota from "@/pages/admin/DetailAnggota";
+import DetailLahan from "@/pages/admin/DetailLahan";
 
 export const router = createBrowserRouter([
   {
@@ -102,6 +103,7 @@ export const router = createBrowserRouter([
       { path: listedAdmin.adminAnggota, element: <Anggota /> },
       { path: listedAdmin.detaillahanBaru, element: <DetailLahan /> },
       { path: listedAdmin.anggotaBaru, element: <AnggotaBaru /> },
+      { path: listedAdmin.detailAnggota, element: <DetailAnggota /> },
       { path: listedAdmin.DetailAnggotaBaru, element: <DetailAnggotaBaru /> },
       { path: listedAdmin.lahan, element: <Lahan /> },
       { path: listedAdmin.pendapatan, element: <Pendapatan /> },

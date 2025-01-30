@@ -138,6 +138,7 @@ export interface Member {
   fullName: string;
   membershipType: MembershipType;
   registrationPaymentMethod: string | null;
+  registrationIsPaid: boolean
   isVerified: boolean;
   user: User;
 }
@@ -188,3 +189,26 @@ export interface LandData {
   }
   file: File;// Use `File` type for the file field
 }
+
+export interface generatePayment {
+  paymentType: string
+}
+
+export interface PaymentData {
+  id: string;
+  memberId: string;
+  status: "Tunda" | "Selesai" | "Gagal" | string; // Bisa diperluas sesuai dengan kemungkinan status lainnya
+  purpose: string;
+  transactionId: string;
+  isPaid: boolean;
+  paymentMethod: "QRIS" | "VirtualAccount" | "CreditCard" | string; // Bisa ditambah opsi lainnya
+  paymentTotal: number;
+  paymentDate: string | null; // Bisa `null` jika belum dibayar
+  merchantTradeNo: string;
+  platformTradeNo: string;
+  qrisLink?: string; // Opsional, karena bisa jadi metode pembayaran lain
+  customerNo?: string | null; // Bisa `null` atau tidak ada
+  virtualAccountNo?: string | null; // Bisa `null` atau tidak ada
+  expiredDate: string;
+}
+

@@ -14,6 +14,7 @@ import { listedUser } from '@/constant/routers/listed';
 import { previewImage } from '@/middleware/Rest';
 import { Skeleton } from '@/components/ui/skeleton';
 import Swal from 'sweetalert2';
+import { Badge } from 'lucide-react';
 
 interface Position {
     lat: number;
@@ -38,6 +39,7 @@ const DetailLahan: React.FC<TambahLahanProps> = () => {
     });
 
     const id = searchParams.get("id")
+    const type = searchParams.get("type")
     const getData = async () => {
         const response = await landApi.getOne(id);
         const rest: LandData = response.data.data
@@ -87,7 +89,8 @@ const DetailLahan: React.FC<TambahLahanProps> = () => {
     const handleVerif = async (verify: boolean, id: any, text?: string) => {
         const payload = {
             isAccepted: verify,
-            decisionMessage: text
+            decisionMessage: text,
+            status: verify ? "Selesai" : "Ditolak"
         }
 
         Swal.fire({
@@ -108,7 +111,7 @@ const DetailLahan: React.FC<TambahLahanProps> = () => {
 
     const update = async (payload: any, id: string) => {
         try {
-          
+
             const response = await landApi.verif(payload, id)
             if (response) {
 
@@ -123,13 +126,14 @@ const DetailLahan: React.FC<TambahLahanProps> = () => {
         <div className="p-6 bg-gray-100 min-h-screen">
             <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
                 <h2 className="text-2xl font-bold mb-4">Lahan</h2>
-                <span>Status : {data?.isAccepted ? 'Disetujui' : 'Ditolak'}</span>
+               
+                <span className={`badge ${data?.isAccepted ? 'badge-accent' : 'badge-secondary'}`}>Status : {data?.isAccepted ? 'Disetujui' : 'Ditolak'}</span>
 
                 {/* Koordinat dan Dimensi Lahan */}
                 <div className="mb-6">
                     <h3 className="text-lg font-semibold mb-2">Koordinat dan Dimensi Lahan</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="border-dashed border-2 border-gray-300 h-64 rounded-md overflow-hidden">
+                        <div className="border-dashed border-2 border-gray-300 h-64 rounded-md overflow-hidden z-0">
                             <CustomMap
                                 locations={locations}
                                 defaultZoom={13}
@@ -237,13 +241,9 @@ const DetailLahan: React.FC<TambahLahanProps> = () => {
                             {loading &&
                                 <>
                                     <Skeleton className="h-52 w-96" />
-
                                 </>
                             }
-                            <div
-
-                                className="flex items-center"
-                            >
+                            <div className="flex items-center">
 
                                 <img src={images} alt={`Image `} className="w-96 rounded border" />
                                 <div className="w-full justify-start">
@@ -280,11 +280,13 @@ const DetailLahan: React.FC<TambahLahanProps> = () => {
                     </div>
                 </div>
 
-
-                <div className="flex justify-start gap-3 w-full">
-                    <button className="btn btn-ghost bg-red-500 text-white" onClick={() => handleVerif(false, data?.id, 'ditolak')}>Tolak</button>
-                    <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => handleVerif(true, data?.id, 'oke')}>Setuju</button>
-                </div>
+                {
+                    type !== 'lahan' &&
+                    <div className="flex justify-start gap-3 w-full">
+                        <button className="btn btn-ghost bg-red-500 text-white" onClick={() => handleVerif(false, data?.id, 'ditolak')}>Tolak</button>
+                        <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => handleVerif(true, data?.id, 'oke')}>Setuju</button>
+                    </div>
+                }
             </div>
 
             <ModalDetail id='add-lokasi' width='w-11/12 max-w-5xl p-0'>

@@ -1,5 +1,7 @@
+import ModalDetail, { closeModal, openModal } from '@/components/ui/ModalDetail';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatDateString, formatDateTime } from '@/helper/formatDate';
+import { formatRupiah } from '@/helper/formatRupiah';
 import { memberRest } from '@/middleware';
 import { previewImage } from '@/middleware/Rest';
 import { useEffect, useState } from 'react';
@@ -11,6 +13,7 @@ const DetailAnggotaBaru = () => {
   const [images, setImages] = useState<{ index: number; src: string }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchParams] = useSearchParams();
+  const [textReject, setText] = useState<string>('')
 
   const type = searchParams.get("type");
   const checkData = async () => {
@@ -77,6 +80,7 @@ const DetailAnggotaBaru = () => {
       isVerified: verify,
       rejectedMessage: text
     }
+    closeModal('reject-member')
 
     Swal.fire({
       title: "Are you sure?",
@@ -98,7 +102,6 @@ const DetailAnggotaBaru = () => {
     try {
       const response = await memberRest.verifAnggota(payload, id)
       if (response) {
-
         await checkData()
       }
     } catch (error) {
@@ -114,19 +117,31 @@ const DetailAnggotaBaru = () => {
 
         <h2 className="text-lg font-bold mb-4">Detail Transaksi</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
+          <table className="table w-1/2">
             <tr >
-              <td className="font-semibold">Pembayaran</td>
+              <th className="font-semibold">Pembayaran</th>
               <td>:</td>
-              <td>VA BNI</td>
+              <td>{data?.registrationPaymentMethod}</td>
+            </tr>
+            <tr >
+              <th className="font-semibold">Total</th>
+              <td>:</td>
+              <td>{formatRupiah(data?.registrationFee ? data?.registrationFee : 5000)}</td>
+            </tr>
+            <tr >
+              <th className="font-semibold">Status</th>
+              <td>:</td>
+              <td><span className={`p-1 rounded-md font-bold ${data?.registrationIsPaid ? 'bg-green-300 text-green-800' : 'bg-red-300 text-red-800'}`}>{data?.registrationIsPaid ? 'Paid' : 'Unpaid'}</span></td>
             </tr>
 
-          </div>
+
+          </table>
 
         </div>
 
         <h2 className="text-lg font-bold mt-6 mb-4">Informasi Akun</h2>
         <div className='z-0 overflow-hidden'>
+
 
           <table className="table w-1/2">
             <tr>
@@ -280,21 +295,36 @@ const DetailAnggotaBaru = () => {
 
           </table>
         </div>
+        <div className="w-full border border-input p-5 rounded-md flex flex-col gap-2 my-5">
+          <span>Catatan :</span>
+          <span>{data?.rejectedMessage || 'Tidak ada catatan'}</span>
+        </div>
 
-        {
+        {/* {
           type === 'member' &&
           <>
             <button className='btn btn-ghost bg-emeraldGreen text-white'>Edit</button>
           </>
-        }
+        } */}
         {
           type !== 'member' &&
           <div className="flex space-x-4 mt-6">
-            <button className="btn btn-ghost bg-red-500 text-white" onClick={() => handleVerif(false, data?.id, 'ditolak')}>Tolak</button>
-            <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => handleVerif(true, data?.id)}>Setuju</button>
+            <button className="btn btn-ghost bg-red-500 text-white" onClick={() => openModal('reject-member')}>Tolak</button>
+            <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => handleVerif(true, data?.id, '-')}>Setuju</button>
           </div>
         }
       </div>
+
+      <ModalDetail id='reject-member'>
+        <div className='w-full flex flex-col gap-3'>
+
+          <span>Tolak Pengajuan Anggota</span>
+          <textarea className="textarea textarea-bordered w-full" placeholder="Catatan" value={textReject} onChange={(e) => setText(e.target.value)} />
+          <button className='btn btn-outline text-white bg-emeraldGreen w-full' onClick={() => handleVerif(false, data?.id, textReject)}>Simpan</button>
+
+        </div>
+
+      </ModalDetail>
     </div>
   );
 };

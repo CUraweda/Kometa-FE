@@ -1,180 +1,117 @@
-import { useState } from "react";
-import { LuCopy, LuCopyCheck } from "react-icons/lu";
-import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import PaymentMethod from "../components/shared/payment.component";
-import { paymentList } from "../constant/form/payment.list";
-import { modalList } from "../constant/modals";
-import { listedUser } from "../constant/routers/listed";
-import { useModal } from "../hooks/useModal";
-import { useTimer } from "../hooks/useTimer";
-import PaymentLayout from "../layout/payment.layout";
-import { Payment } from "../types/common";
+import { useEffect, useState } from 'react';
+import { LuCopy, LuCopyCheck } from 'react-icons/lu';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { toast } from 'sonner';
+import PaymentMethod from '../components/shared/payment.component';
+import { paymentList } from '../constant/form/payment.list';
+import { modalList } from '../constant/modals';
+import { listedUser } from '../constant/routers/listed';
+import { useModal } from '../hooks/useModal';
+import { useTimer } from '../hooks/useTimer';
+import PaymentLayout from '../layout/payment.layout';
+import { Payment } from '../types/common';
+import QRIS from '@/components/ui/Qris';
+import { paymentRest } from '@/middleware/Rest';
+import { formatRupiah } from '@/helper/formatRupiah';
+import CountdownTimer from '@/components/ui/countDown';
 
 function PaymentPage() {
-  const {
-    state: { payment },
-  } = useLocation();
-
-  const [paymentId, setPaymentId] = useState(payment);
-
-  const { startTimer, element } = useTimer({
-    second: 2,
-    elementBefore: (
-      <LuCopy
-        onClick={() =>
-          navigator.clipboard
-            .writeText("1234 5678 9102")
-            .then(handleStartTimer)
-            .catch(() => {
-              toast.error("Gagal menyalin nomor akun virtual!");
-            })
-        }
-        className="ml-1 w-4 h-4 cursor-pointer"
-      />
-    ),
-    elementAfter: <LuCopyCheck className="ml-1 w-4 h-4 cursor-pointer" />,
-  });
-
-  function handleStartTimer() {
-    toast.info("Nomor Akun Virtual telah disalin!");
-    startTimer();
-  }
-
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { Modal, openModal, closeModal } = useModal();
+  const id = searchParams.get('id');
+  const type = searchParams.get('type');
+  const [qris, setQris] = useState<string | undefined>('');
+  const [expiredDate, setExpired] = useState<string>('');
+  const [data, setData] = useState<any>();
 
-  const handleChangePayment = () => {
-    closeModal(modalList.updatePayment);
-    navigate(listedUser.payment, { state: { payment: paymentId } });
+  useEffect(() => {
+    checkPayment();
+  }, []);
+
+  const checkPayment = async () => {
+    try {
+      const response = await paymentRest.getStatusPayment(id);
+      const data = response?.data?.data;
+      const isPaid = response.data.data.isPaid;
+      if (isPaid) {
+        navigate(listedUser.dahsboardVerfi);
+      }
+      setData(data);
+    } catch (error) {
+      generatePayment();
+      console.log('ini jalan gk ada datanya');
+    }
   };
 
-  const selectedPayment = (
-    paymentList.find((item) => (item as Payment).value == payment) as Payment
-  )?.img;
+  const generatePayment = async () => {
+    const payload = {
+      paymentType: type,
+    };
+    try {
+      const response = await paymentRest.generatePayment(payload);
+      const id = response.data.data.id;
+      const params = new URLSearchParams({
+        id: id,
+      });
+      navigate(`${listedUser.payment}?${params.toString()}`);
+    } catch (error) {
+      console.log('ini jalan gk ada datanya');
+    }
+  };
 
   return (
     <>
       <PaymentLayout>
-        <div className="flex gap-5 w-full min-h-[600px]">
-          <div className="flex flex-col justify-center w-[800px]">
-            <div className="text-center">
-              <div>
-                <p className="text-sm tracking-wide mb-2">Total Pembayaran</p>
-                <span className="flex justify-center">
-                  <pre>Rp</pre>
-                  <h3 className="text-5xl ml-1 font-bold text-emeraldGreen">
-                    5.000
-                  </h3>
-                </span>
-              </div>
-              <div>
-                <img
-                  className="h-40 mx-auto"
-                  src={selectedPayment}
-                  alt="payment-logo"
-                />
-                <div className="relative -top-6 flex gap-4 mx-auto justify-center">
-                  <div className="space-y-1">
-                    <p className="text-xs tracking-wider">Nama Akun</p>
-                    <h3 className="tracking-wider">Kometa</h3>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs tracking-wider">Nomor Akun Virtual</p>
-                    <span className="flex gap-1 items-center">
-                      <h3 className="tracking-wider">1234 5678 9102</h3>
-                      {element}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex justify-center gap-3">
-                  <button
-                    onClick={() => openModal(modalList.updatePayment)}
-                    className="btn btn-outline hover:bg-emeraldGreen border-emeraldGreen hover:border-transparent text-emeraldGreen"
-                  >
-                    Ubah Pembayaran
-                  </button>
-                  <button
-                    onClick={() => navigate(listedUser.paid)}
-                    className="btn btn-outline hover:bg-emeraldGreen border-emeraldGreen hover:border-transparent text-emeraldGreen"
-                  >
-                    Cek Status
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="max-w-5xl px-20 flex flex-col justify-center">
-            <div role="tablist" className="tabs tabs-bordered">
-              {["ATM", "iBanking", "mBanking"].map((item, index) => (
-                <a
-                  key={item}
-                  role="tab"
-                  onClick={() => undefined}
-                  className={`tab ${!index ? "tab-active" : ""}`}
-                >
-                  {item}
-                </a>
-              ))}
-            </div>
-            <div>
-              <p className="font-medium mt-5 mb-1">Cari ATM Terdekat</p>
-              <ul className="px-5 space-y-2">
-                {[
-                  "Masukkan kartu ATM BJB dan PIN Anda",
-                  "Masukkan kartu ATM BJB dan PIN Anda",
-                ].map((item) => (
-                  <li className="list-decimal pl-1 text-sm">{item}</li>
-                ))}
-              </ul>
+        <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-100 p-4">
+          <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+            <h1 className="text-2xl font-bold text-center mb-6">
+              Pembayaran QRIS
+            </h1>
 
-              <p className="font-medium mt-5 mb-1">Cari ATM Terdekat</p>
-              <ul className="px-5 space-y-2">
-                {[
-                  `Pilih Menu "Transaksi Lain"`,
-                  `Pilih "Transfer"`,
-                  `Pilih "Ke Rekening Virtual BJB"`,
-                  `Masukkan Nomor Rekening Virtual 1234 5678 9102
-                Tekan "Benar" untuk melanjutkan`,
-                  `Verifikasi detail Rekening Virtual dan kemudian masukkan jumlah 
-                yang akan ditransfer dan pilih "Benar" untuk mengonfirmasi`,
-                  `Konfirmasi detail transaksi Anda yang ditampilkan`,
-                  `Pilih "Ya" jika detailnya benar atau "Tidak" jika detailnya tidak benar`,
-                ].map((item) => (
-                  <li className="list-decimal pl-1 text-sm">{item}</li>
-                ))}
-              </ul>
+            {/* QR Code Display */}
+            <div className="flex justify-center mb-6">
+              {data && <QRIS qrisLink={data?.qrisLink} />}
+            </div>
+            <div className="w-full flex justify-center my-5">
+              <CountdownTimer expiredDate={data?.expiredDate} />
+            </div>
+            {/* Payment Instructions */}
+            <div className="text-center mb-6">
+              <p className="text-gray-700 mb-2">
+                Silahkan scan QR code di atas untuk melakukan pembayaran.
+              </p>
+              <p className="text-gray-500 text-sm">
+                Pastikan nominal pembayaran sesuai dengan yang tertera.
+              </p>
+            </div>
+
+            {data && (
+              <div className="bg-gray-50 p-4 rounded-lg mb-6 gap-2 flex flex-col">
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Total Pembayaran:</span>
+                  <span className="font-bold text-gray-900">
+                    {formatRupiah(data?.paymentTotal)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-700">Metode Pembayaran:</span>
+                  <span className="text-gray-900">{data?.paymentMethod}</span>
+                </div>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex justify-center gap-4">
+              <button
+                className="btn btn-ghost bg-emeraldGreen text-white"
+                onClick={checkPayment}
+              >
+                Cek Pembayaran
+              </button>
             </div>
           </div>
         </div>
       </PaymentLayout>
-      <Modal
-        id={modalList.updatePayment}
-        title="Ubah Pembayaran"
-        alignTitle="left"
-        width="w-5/12 max-w-2xl"
-      >
-        <PaymentMethod
-          onChange={(item) => setPaymentId(item.value)}
-          selected={paymentId}
-        />
-        <div className="flex gap-3 justify-end mt-6">
-          <button
-            onClick={() => {
-              closeModal(modalList.updatePayment);
-            }}
-            className="btn btn-ghost"
-          >
-            Tutup
-          </button>
-          <button
-            onClick={handleChangePayment}
-            className="btn btn-primary text-white"
-          >
-            Konfirmasi
-          </button>
-        </div>
-      </Modal>
     </>
   );
 }

@@ -110,6 +110,29 @@ export const memberRest = {
             throw new Error(getErrorMessage(error, 'failed. Please try again.'));
         }
     },
+    updateData: async (data: any, id:string) => {
+        try {
+            const formData = new FormData();
+            for (const key in data) {
+                formData.append(key, data[key]);
+            }
+            const response = await restAnggota.update(formData, id)
+            Swal.fire({
+                icon: "success",
+                title: "Update Data Berhasil",
+                text: 'silakan tunggu konfirmasi dari admin',
+            });
+            return response
+             
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: getErrorMessage(error, 'failed. Please try again.'),
+            });
+            throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+        }
+    },
     checkData : async () => {
         try {
             const response = await restAnggota.checkMember()

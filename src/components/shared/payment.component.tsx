@@ -12,8 +12,8 @@ function PaymentMethod({ onChange, selected }: Props) {
   const [activeTab, setActiveTab] = useState("1");
   return (
     <>
-      {/* <div role="tablist" className="tabs tabs-bordered mt-6">
-        {Object.keys(paymentMethod).map((item) => (
+      <div role="tablist" className="tabs tabs-bordered mt-6">
+        {/* {Object.keys(paymentMethod).map((item) => (
           <a
             key={item}
             role="tab"
@@ -26,8 +26,8 @@ function PaymentMethod({ onChange, selected }: Props) {
           >
             {paymentMethod[item as keyof typeof paymentMethod].title}
           </a>
-        ))}
-      </div> */}
+        ))} */}
+      </div>
       <div className="grid grid-cols-2 gap-4 mt-6">
         <CardBox
           data={paymentMethod[activeTab as keyof typeof paymentMethod].data}

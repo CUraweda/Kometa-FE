@@ -5,30 +5,24 @@ import ModalDetail, { openModal } from '@/components/ui/ModalDetail';
 import { IoCheckboxOutline } from "react-icons/io5";
 import { FaRegWindowClose } from "react-icons/fa";
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { landApi } from '@/middleware';
 import { LandData } from '@/middleware/Utils';
-import { landType, statusType } from '@/constant/form/land.data';
-import { Badge } from 'lucide-react';
 import { listedAdmin } from '@/constant/routers/listed';
 
 const Lahan = () => {
-    const fakeData = [
-        { id: "SHM", value: "124.32" },
-        { id: "Girik", value: "124.32" },
-        { id: "Kontrak/ Sewa", value: "124.32" },
-
-    ];
-
     const [data, setData] = useState<any>(undefined);
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         getData()
     }, []);
 
     const getData = async () => {
-        const payload = 'limit=1000&page=1';
+        const id = searchParams.get("id");
+        const filter = `&search=memberId:${id}`
+        const payload = `limit=1000&page=1${id ? filter : ''}`;
         const response = await landApi.getAll(payload);
 
         if (response.data && response.data.data.items) {
@@ -112,10 +106,9 @@ const Lahan = () => {
                                                 <td>{value.wideArea}</td>
                                                 <td>{value.landCondition}</td>
                                                 <td>{value.ownershipStatus}</td>
-                                                <td>{value.status}</td>
+                                                <td> <span className={`badge ${value.status === 'Selesai' ? 'badge-accent' : 'badge-secondary'}`}>{value.status}</span></td>
                                                 <td>
                                                     <div className='w-full flex justify-center'>
-
                                                         <button className='text-xl btn btn-xs btn-ghost' onClick={() => handleDetailLahan(value.id)}>
                                                             <AiOutlineExpandAlt />
                                                         </button>

@@ -3,7 +3,7 @@ import axios, {
   InternalAxiosRequestConfig,
   AxiosRequestHeaders,
 } from "axios";
-import { LandData, Login, LoginResponse, MemberData, MembershipTypeResponse, provinces, Register, typeGetAllMember, verifMember } from "./Utils";
+import { generatePayment, LandData, Login, LoginResponse, MemberData, MembershipTypeResponse, PaymentData, provinces, Register, typeGetAllMember, verifMember } from "./Utils";
 import useAuthStore from "../store/auth.store"; // Zustand store untuk auth
 
 const server = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
@@ -178,6 +178,15 @@ export const restAnggota = {
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
+    }),
+  update: (data: any, id: string): AxiosPromise<any> =>
+    server({
+      method: "PUT",
+      url: `api/member-data/update/${id}`,
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
     })
 }
 
@@ -233,4 +242,45 @@ export const restLand = {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
     })
+}
+
+
+export const paymentRest = {
+  generatePayment: (data: any): AxiosPromise<any> =>
+    server({
+      method: "POST",
+      url: `api/member-data/generate-payment`,
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  getStatusPayment: (id: string | null): AxiosPromise<any> =>
+    server({
+      method: "GET",
+      url: `api/payment-history/show-one/${id}`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+
+}
+
+export const dashboarRest = {
+  codeProvince: (): AxiosPromise<any> =>
+    server({
+      method: "GET",
+      url: `api/dashboard/count-province-code`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  codeDataProvince: (): AxiosPromise<any> =>
+    server({
+      method: "GET",
+      url: `api/dashboard/count-province`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
 }

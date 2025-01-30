@@ -100,15 +100,15 @@ const Anggota = () => {
                                                 <td>
                                                     <div className='w-full flex justify-center'>
 
-                                                        <button className='text-2xl btn btn-sm btn-ghost text-orange-500' onClick={() => handleOpenModal('detail-pendapatan')}>
+                                                        {/* <button className='text-2xl btn btn-sm btn-ghost text-orange-500' onClick={() => handleOpenModal('detail-pendapatan')}>
                                                             <LuPencilLine />
-                                                        </button>
+                                                        </button> */}
                                                         <button className='text-xl btn btn-xs btn-ghost' onClick={() => handleDetailAnggota(value.id)}>
                                                             <AiOutlineExpandAlt />
                                                         </button>
-                                                        <button className='text-2xl btn btn-sm btn-ghost text-red-500' onClick={() => handleOpenModal('detail-pendapatan')}>
+                                                        {/* <button className='text-2xl btn btn-sm btn-ghost text-red-500' onClick={() => handleOpenModal('detail-pendapatan')}>
                                                             <CiTrash />
-                                                        </button>
+                                                        </button> */}
                                                     </div>
                                                 </td>
                                             </tr>

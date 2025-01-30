@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { commonMessage } from "../../constant/form/validation.message";
 import { listedAdmin, listedUser } from "../../constant/routers/listed";
@@ -14,6 +14,7 @@ import { MemberData } from "@/middleware/Utils";
 
 function SignInForm() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const {
     register,
@@ -47,32 +48,42 @@ function SignInForm() {
 
   const checkData = async (role: string) => {
     try {
-      if(role === 'ADMIN'){
+      if (role === 'ADMIN') {
         navigate(listedAdmin.dashboard)
         return;
       }
       const response = await memberRest.checkData();
-     
+
       if (!response || typeof response !== 'object' || !('data' in response)) {
         navigate(listedUser.registerMember);
         return;
       }
-  
+
       const dataRest = response.data as MemberData;
       const isVerified = dataRest?.data?.isVerified;
-  
+      const isPaid = dataRest?.data?.registrationIsPaid;
+      const idPayment = dataRest?.data?.registrationPaymentId;
+
+      if (!isPaid) {
+        const params = new URLSearchParams({
+          id: idPayment ? idPayment : ''
+        });
+
+        navigate(`${listedUser.payment}?${params.toString()}`);
+        return;
+      }
       if (!isVerified) {
         navigate(listedUser.dahsboardVerfi);
         return;
       }
-  
+
       navigate(listedUser.dashboard);
     } catch (error) {
       console.error('Error checking data:', error);
       navigate(listedUser.registerMember);
     }
   };
-  
+
 
   useEffect(() => {
     setFocus("email");

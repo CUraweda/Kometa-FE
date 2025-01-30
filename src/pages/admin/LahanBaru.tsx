@@ -39,7 +39,7 @@ const LahanBaru = () => {
     const handleDetailLahan = (props: any) => {
         const params = new URLSearchParams({
             id: props,
-            type: 'lahan'
+            type: 'lahan-baru'
         });
 
         navigate(`${listedAdmin.detaillahanBaru}?${params.toString()}`);

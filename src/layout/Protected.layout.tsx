@@ -6,6 +6,11 @@ import { useNavigate } from "react-router-dom";
 function ProtectedLayout({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
+
+  if(!isAuthenticated){
+    navigate('/')
+    return
+  }
   
   return isAuthenticated ? (
     children

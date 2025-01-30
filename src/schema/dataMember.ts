@@ -63,5 +63,7 @@ import * as yup from "yup";
       .test("fileType", "Only image jpeg, jpg, png files are allowed", (value) =>
         value ? ["image/jpeg", "image/png"].includes(value.type) : false
       ),
+      registrationFee: yup.number().optional(),
+      registrationPaymentMethod: yup.string().optional()
   });
   

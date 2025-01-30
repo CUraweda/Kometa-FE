@@ -107,8 +107,8 @@ const AnggotaBaru = () => {
                                                 <td>{value.fullName}</td>
                                                 <td>{value.user.phoneWA}</td>
                                                 <td>{value.user.email}</td>
-                                                <td>asjndas@gmail.com</td>
-                                                <td><span className='text-red-600'>Belum Lunas</span></td>
+                                                <td>{value.registrationPaymentMethod}</td>
+                                                <td><span className={`p-1 rounded-md font-bold ${value.registrationIsPaid ? 'bg-green-300 text-green-800' : 'bg-red-300 text-red-800'}`}>{value.registrationIsPaid ? 'Paid' : 'Unpaid'}</span></td>
                                                 <td>
                                                     <div className='w-full flex justify-start'>
 
