@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { convertToRupiah } from "@/utils/rupiah";
-import React from "react";
 
 interface CardProps {
   total?: number;

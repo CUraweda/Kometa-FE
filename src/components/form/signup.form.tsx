@@ -12,8 +12,7 @@ import { SignUp } from "../../types/sign";
 import Header from "../content/header.sign";
 import Input from "../ui/input";
 import Password from "../ui/password";
-import { authentication } from "@/middleware";
-import PhoneInput from 'react-phone-input-2'
+
 import 'react-phone-input-2/lib/style.css'
 
 function SignUpForm() {

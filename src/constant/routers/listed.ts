@@ -15,7 +15,7 @@ export const listedUser = {
   detailLahan: "detail",
   add: "add",
   detail: "detail",
-  land: "land",
+
   planting: "planting",
   supplier: "supplier",
   finance: "finance",

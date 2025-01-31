@@ -4,16 +4,7 @@ import axios, {
   AxiosRequestHeaders,
 } from "axios";
 import { LandData, Login, LoginResponse, MemberData, MembershipTypeResponse,  provinces, Register, typeGetAllMember, verifMember } from "./Utils";
-import {
-  Login,
-  LoginResponse,
-  MemberData,
-  MembershipTypeResponse,
-  provinces,
-  Register,
-  typeGetAllMember,
-  verifMember,
-} from "./Utils";
+
 import useAuthStore from "../store/auth.store"; // Zustand store untuk auth
 import { token } from "@/utils/tokenize";
 

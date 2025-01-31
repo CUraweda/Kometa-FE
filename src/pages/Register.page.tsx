@@ -5,7 +5,6 @@ import SelectLocation from "@/components/ui/SelectLocation";
 import TextArea from "@/components/ui/textarea";
 import { useWilayah } from "@/hooks/dataWilayah";
 import { memberRest } from "@/middleware";
-import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import PaymentMethod from "../components/shared/payment.component";
@@ -21,24 +20,10 @@ import { listedUser } from "../constant/routers/listed";
 import { useModal } from "../hooks/useModal";
 import PaymentLayout from "../layout/payment.layout";
 import { Register } from "../types/register";
-
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaMember } from "@/useForm/dataMember";
 import { Message } from "@/components/form/error.field";
-import { useWilayah } from "@/hooks/dataWilayah";
-import { memberRest } from "@/middleware";
-import Input from "@/components/ui/input";
-import Select from "@/components/ui/select";
-import SelectLocation from "@/components/ui/SelectLocation";
-import { useWilayah } from "@/hooks/dataWilayah";
-import { memberRest } from "@/middleware";
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schemaMember } from "@/schema/dataMember";
-import { Message } from "@/components/form/error.field";
-import { schemaMember } from "@/schema/dataMember";
-import { yupResolver } from "@hookform/resolvers/yup";
-import PaymentMethod from "@/components/shared/payment.component";
 
 function RegisterMember() {
 
