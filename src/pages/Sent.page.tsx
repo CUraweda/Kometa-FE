@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import forgetBackground from "../assets/content/forget.jpg";
-import Header from "../component/content/header.sign";
+import Header from "../components/content/header.sign";
 import SignLayout from "../layout/sign.layout";
 
 function SentPage() {

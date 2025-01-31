@@ -1,17 +1,8 @@
-import bca from "../../assets/logo/bank/bca.png";
-import mandiri from "../../assets/logo/bank/mandiri.png";
-import bri from "../../assets/logo/bank/bri.png";
-import bsi from "../../assets/logo/bank/bsi.png";
-import bni from "../../assets/logo/bank/bni.png";
+
 import bjb from "../../assets/logo/bank/bjb.png";
-import btn from "../../assets/logo/bank/btn.png";
-import permata from "../../assets/logo/bank/permata.png";
-import cimb from "../../assets/logo/bank/cimb.png";
 import jcb from "../../assets/logo/bank/jcb.png";
-import sampoerna from "../../assets/logo/bank/sahabatsampoerna.png";
 import mastercard from "../../assets/logo/bank/mastercard.png";
 import visa from "../../assets/logo/bank/visa.png";
-import neobank from "../../assets/logo/bank/neobank.png";
 import gopay from "../../assets/logo/ewallet/gopay.png";
 import grabpay from "../../assets/logo/ewallet/grabpay.png";
 import shopeepay from "../../assets/logo/ewallet/shopeepay.png";
@@ -27,83 +18,21 @@ import linkaja from "../../assets/logo/bank/linkaja.png";
 export const bank = [
   {
     id: "payment",
-    value: "13455",
+    value: "QRIS",
     img: bjb,
-    label: "Bjb",
+    label: "QRIS",
     price: 5000,
     height: 80,
   },
   {
     id: "payment",
-    value: "413555",
-    img: bca,
-    label: "BCA",
-    price: 5000,
-  },
-  {
-    id: "payment",
-    value: "43455",
-    img: mandiri,
-    label: "Mandiri",
+    value: "VA",
+    img: bjb,
+    label: "VA BANK",
     price: 5000,
     height: 80,
   },
-  {
-    id: "payment",
-    value: "18455",
-    img: bri,
-    label: "BRI",
-    price: 5000,
-  },
-  {
-    id: "payment",
-    value: "13425",
-    img: bni,
-    label: "BNI",
-    price: 5000,
-  },
-  {
-    id: "payment",
-    value: "1305",
-    img: btn,
-    label: "BTN",
-    price: 5000,
-  },
-  {
-    id: "payment",
-    value: "13235",
-    img: bsi,
-    label: "BSI",
-    price: 5000,
-  },
-  {
-    id: "payment",
-    value: "11855",
-    img: cimb,
-    label: "CIMB",
-    price: 5000,
-  },
-  {
-    id: "payment",
-    value: "98324",
-    img: permata,
-    label: "Permata",
-    price: 5000,
-  },
-  {
-    id: "payment",
-    value: "838345",
-    img: sampoerna,
-    label: "Sahabat Sampoerna",
-    price: 5000,
-  },
-  {
-    id: "payment",
-    value: "252",
-    img: neobank,
-    label: "Neo",
-    price: 5000,
-  },
+  
 ];
 
 export const creditCard = [

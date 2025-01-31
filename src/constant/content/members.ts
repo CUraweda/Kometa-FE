@@ -1,4 +1,4 @@
-import { Area, Gear, Money, Suitcase } from "../../assets/icon";
+import { Area, Fish, Gear } from "../../assets/icon";
 
 export const headerMembers = {
   section: "ANGGOTA",
@@ -11,25 +11,19 @@ export const members = [
     icon: Area,
     title: "Anggota Pemilik Aset/Lahan",
     description:
-      "Menyediakan lahan atau aset yang menjadi bagian penting dalam pengelolaan koperasi.",
-  },
-  {
-    icon: Suitcase,
-    title: "Anggota Pemilik Usaha/Bisnis",
-    description:
-      "Berperan sebagai pemilik usaha yang terhubung dengan ekosistem koperasi untuk mendukung pertumbuhan ekonomi.",
+      "Menyediakan lahan yang menjadi bagian penting dalam pengelolaan koperasi, mendukung aktivitas produktif yang selaras dengan tujuan koperasi.",
   },
   {
     icon: Gear,
     title: "Anggota Pemilik Jasa",
     description:
-      "Menyediakan layanan atau keahlian yang berkontribusi pada aktivitas koperasi.",
+      "Berkontribusi dalam bentuk tenaga, keahlian, atau modal, menjadi bagian integral dari operasional dan keberhasilan koperasi.",
   },
   {
-    icon: Money,
-    title: "Anggota Pemberi Modal/Investor",
+    icon: Fish,
+    title: "Anggota Pemilik Budidaya",
     description:
-      "Memberikan dukungan finansial untuk mendorong pengembangan bisnis koperasi.",
+      "Mengelola usaha budidaya yang menjadi sumber utama produk koperasi, mendukung keberlanjutan dan pertumbuhan bersama.",
   },
 ];
 
@@ -54,6 +48,16 @@ export const dummy = [
 ];
 
 export const gender = [
+  {
+    label: "Pria",
+    value: "L",
+  },
+  {
+    label: "Wanita",
+    value: "P",
+  },
+];
+export const domisili = [
   {
     label: "Pria",
     value: "pria",

@@ -4,10 +4,12 @@ export type SignIn = {
 };
 
 export type SignUp = {
-  email: string;
-  phoneNumber: string;
-  password: string;
-  repeatPassword: string;
+  name: string,
+    email: string,
+    password: string,
+    confirm_password: string,
+    phoneWA: string,
+    
 };
 
 export type Reset = Omit<SignUp, "email" | "phoneNumber">;

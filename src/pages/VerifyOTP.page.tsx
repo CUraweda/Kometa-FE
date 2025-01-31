@@ -5,11 +5,11 @@ import OTPInput from "react-otp-input";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import signupBackground from "../assets/content/signup-bg.png";
-import Header from "../component/content/header.sign";
-import { Message } from "../component/form/error.field";
+import Header from "../components/content/header.sign";
+import { Message } from "../components/form/error.field";
 import { commonMessage } from "../constant/form/validation.message";
 import { modalList } from "../constant/modals";
-import { listed } from "../constant/routers/listed";
+import { listedUser } from "../constant/routers/listed";
 import { useCountdown } from "../hooks/useCountdown";
 import { useModal } from "../hooks/useModal";
 import SignLayout from "../layout/sign.layout";
@@ -56,7 +56,7 @@ function VerifyOTPPage() {
       reset();
       handleResetTimer();
       closeModal(modalList.updatePhone);
-      navigate(listed.verify, { state: { phoneNumber: mobilePhoneNumber } });
+      navigate(listedUser.verify, { state: { phoneNumber: mobilePhoneNumber } });
     })();
   };
 
@@ -64,7 +64,7 @@ function VerifyOTPPage() {
     if (otp.length == MAX_OTP) {
       window.alert(otp);
       clear();
-      navigate(listed.registerMember);
+      navigate(listedUser.registerMember);
     }
   };
 

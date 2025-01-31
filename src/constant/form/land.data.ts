@@ -1,19 +1,39 @@
 export const landType = {
   shm: {
-    id: "shm",
+    id: "SHM",
     label: "SHM",
     dark: "#04805A",
     light: "#E7EFEB",
   },
   girik: {
-    id: "girik",
+    id: "Garik",
     label: "Girik",
     dark: "#D6A31F",
     light: "#FEF5E7",
   },
   sewa: {
-    id: "sewa",
+    id: "Kontrak/Sewa",
     label: "Kontrak / Sewa",
+    dark: "#BC2020",
+    light: "#F9E7E7",
+  },
+};
+export const statusType = {
+  selesai: {
+    id: "selesai",
+    label: "Selesai",
+    dark: "#04805A",
+    light: "#E7EFEB",
+  },
+  tinjau: {
+    id: "ditinjau",
+    label: "Ditinjau",
+    dark: "#D6A31F",
+    light: "#FEF5E7",
+  },
+  ditolak: {
+    id: "ditolak",
+    label: "ditolak",
     dark: "#BC2020",
     light: "#F9E7E7",
   },
@@ -34,6 +54,7 @@ export const landFilter = [
 type OwnershipStatus = "shm" | "girik" | "sewa";
 
 interface Property {
+  id: string;
   landArea: number;
   ownershipStatus: OwnershipStatus;
   name: string;
@@ -72,6 +93,7 @@ function generateUniqueRandomData(): Property[] {
 
   while (properties.size < 21) {
     const property: Property = {
+      id: String(Math.floor(Math.random() * 10000) + 34),
       landArea: Math.floor(Math.random() * 1000) + 50,
       ownershipStatus:
         ownershipStatuses[Math.floor(Math.random() * ownershipStatuses.length)],

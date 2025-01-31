@@ -1,9 +1,9 @@
 import CountUp from "react-countup";
 import aboutPetaniPhoto from "../assets/content/about.png";
 import colorLogo from "../assets/logo/color.png";
-import Container from "../component/content/container.component";
-import Header from "../component/content/header.section";
-import CustomMap from "../component/ui/maps";
+import Container from "../components/content/container.component";
+import Header from "../components/content/header.section";
+import CustomMap from "../components/maps/maps";
 import { headerAbout } from "../constant/content/about";
 import {
   achievements,
@@ -20,9 +20,15 @@ import { headerPrograms, programs } from "../constant/content/program";
 import { socials } from "../constant/content/social";
 import { headerTeam, teams } from "../constant/content/team";
 import { useScrollClick } from "../hooks/useScrollClick";
+import pin from '../assets/icon/iconMap.png'
 
 function HomePage() {
   const { handleScrollClick } = useScrollClick();
+  const locations = [
+    { lat: -6.908151, lng: 107.626454, label: "Bandung 1" },
+    { lat: -6.914744, lng: 107.60981, label: "Bandung 2" },
+    { lat: -6.917464, lng: 107.619123, label: "Bandung 3" },
+  ];
   return (
     <>
       <Container className="flex items-center min-h-screen ">
@@ -189,7 +195,12 @@ function HomePage() {
         </div>
       </Container>
       <div id="network">
-        <CustomMap />
+      <CustomMap
+        locations={locations} // Daftar lokasi
+        defaultZoom={13} // Zoom default
+        iconUrl={pin} // URL ikon kustom
+        id="homepage"
+      />
       </div>
 
       <div className="border-t-4 border-t-emeraldGreen"></div>

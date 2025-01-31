@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../component/content/navbar.component";
+import Navbar from "../components/content/navbar.component";
 
 function LandingLayout() {
   return (

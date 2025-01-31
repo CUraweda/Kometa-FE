@@ -1,4 +1,4 @@
-import SignInForm from "../component/form/signin.form";
+import SignInForm from "../components/form/signin.form";
 import SignLayout from "../layout/sign.layout";
 import signinBackground from "../assets/content/signin-bg.png";
 import { useLocation } from "react-router-dom";
