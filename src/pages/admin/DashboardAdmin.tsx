@@ -1,74 +1,106 @@
 import GeoMaps from '@/components/ui/geoMaps';
-import LineChart from '@/components/ui/LineChart';
 import CenterLayout from '@/layout/center.layout';
 import { dashboarRest } from '@/middleware/Rest';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const DashboardAdmin = () => {
-  const fakeData = [
-    { id: 'Total Anggota', value: '124.32' },
-    { id: 'Total Budidaya', value: '564.32' },
-    { id: 'Total Lahan', value: '564.32' },
-    { id: 'Total Simpanan', value: '564.32' },
-  ];
+
   const [data, setData] = useState<[string, number][]>([]);
   const [province, setProvince] = useState<[]>([]);
+  const [statistic, setStatistic] = useState<any>({});
 
   useEffect(() => {
     getData();
     getDataProvonce();
+    getDataStatistic()
   }, []);
 
   const getData = async () => {
     const response = await dashboarRest.codeProvince();
     setData(response.data.data);
   };
+  const getDataStatistic = async () => {
+    const response = await dashboarRest.dataStatistik();
+    setStatistic(response.data.data);
+  };
   const getDataProvonce = async () => {
     const response = await dashboarRest.codeDataProvince();
 
-    const sortedData = (response.data.data || []).sort((a: any, b: any) => 
-        b.count - a.count // Urutkan berdasarkan `count` dari besar ke kecil
-      );
+    const sortedData = (response.data.data || []).sort(
+      (a: any, b: any) => b.count - a.count // Urutkan berdasarkan `count` dari besar ke kecil
+    );
 
     setProvince(sortedData);
   };
 
+  console.log(statistic);
+
   return (
     <div>
-      <CenterLayout className="min-h-[calc(100vh-105px)]">
-        <div className="min-h-[calc(100vh-105px)] w-full">
-          <div className="rounded-lg mt-10 border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full bg-white">
-            {fakeData.map(({ id, value }) => {
-              return (
-                <div className="px-8 flex-1 h-full flex flex-col justify-between items-start">
-                  <h3 className="text-sm font-semibold">{id}</h3>
-                  <span className="text-4xl font-medium">{value}</span>{' '}
+      <CenterLayout className="min-h-[calc(100vh-105px)] justify-start items-start">
+        <div className=" w-full">
+          <div className="card-custom card mb-5 h-44 border-l-[5px] border-green-700 bg-white shadow p-5 gap-2">
+            <p className='text-3xl font-semibold'>Welcome to Kometa Super Apps</p>
+            <p className='text-md'>Aplikasi monitoring & pendataan anggota Koperasi Modern Teknologi Nusantara ( Kometa )</p>
+          </div>
+          <div className='w-full flex-col sm:flex-row flex'>
+            <div className='w-full sm:w-1/3'>
+
+              <div className='card-custom card mb-5 h-32 w-full border-l-[5px] border-blue-700 bg-white shadow p-5 flex flex-col gap-2'>
+                <h3 className="text-xl font-semibold text-blue-500">
+                  Total Anggota
+                </h3>
+                <div className="flex gap-3 items-end">
+                  <span className="text-4xl font-bold ">{statistic?.member}</span>
+                  <span className="text-sm font-medium">Anggota</span>
                 </div>
-              );
-            })}
+              </div>
+            </div>
+            <div className='w-full sm:w-1/3 px-0 sm:px-3'>
+
+              <div className='card-custom card mb-5 h-32 w-full border-l-[5px] border-orange-500 bg-white shadow p-5 flex flex-col gap-2'>
+                <h3 className="text-xl font-semibold text-orange-500">Total Lahan</h3>
+                <div className="flex gap-3 items-end">
+                  <span className="text-4xl font-bold ">{statistic?.land}</span>
+                  <span className="text-sm font-medium">Lahan</span>
+                </div>
+              </div>
+            </div>
+            <div className='w-full sm:w-1/3'>
+
+              <div className='card-custom card mb-5 h-32 w-full border-l-[5px] border-green-700 bg-white shadow p-5 flex flex-col gap-2'>
+                <h3 className="text-xl font-semibold text-green-500">Total Budidaya</h3>
+                <div className="flex gap-3 items-end">
+                  <span className="text-4xl font-bold ">{statistic?.culvitation}</span>
+                  <span className="text-sm font-medium">Budidaya</span>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          <div className="w-full flex sm:flex-row flex-col mt-5">
+
+          <div className="w-full flex sm:flex-row flex-col">
             <div className="w-full sm:w-3/5 p-2">
               <div className="bg-white rounded-md p-3 border border-input">
                 <GeoMaps data={data} />
               </div>
             </div>
             <div className="w-full sm:w-2/5 p-2">
-              <div className="bg-white rounded-md p-3 border border-input max-h-[27%] overflow-y-auto">
-                <div className="overflow-x-auto">
-                  <table className="table ">
-                    <thead className="top-0 sticky">
+              <div className="bg-white rounded-md p-3 border border-input w-full">
+                <div className="max-h-96 w-full overflow-y-auto">
+                  <table className="table border-collapse w-full">
+                    <thead className="sticky top-0 bg-white">
                       <tr>
-                        <th>Provinsi</th>
-                        <th>Total Anggota</th>
+                        <th className="px-4 py-2 text-left border-b" scope="col">Provinsi</th>
+                        <th className="px-4 py-2 text-left border-b" scope="col">Total Anggota</th>
                       </tr>
                     </thead>
                     <tbody>
                       {province?.map((value: any, index: number) => (
-                        <tr key={index}>
-                          <td>{value?.name}</td>
-                          <td>{value?.count}</td>
+                        <tr key={index} className="hover:bg-gray-100">
+                          <td className="px-4 py-2 border-b">{value?.name}</td>
+                          <td className="px-4 py-2 border-b">{value?.count}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -76,17 +108,9 @@ const DashboardAdmin = () => {
                 </div>
               </div>
             </div>
+
           </div>
-          {/* <div className="w-full flex sm:flex-row flex-col mt-5">
-            <div className="w-full sm:w-3/5 p-2">
-              <div className="bg-white rounded-md p-3 border border-input">
-                <LineChart />
-              </div>
-            </div>
-            <div className="w-full sm:w-2/5 p-2">
-              <div className="bg-white rounded-md p-3 border border-input"></div>
-            </div>
-          </div> */}
+
         </div>
       </CenterLayout>
     </div>

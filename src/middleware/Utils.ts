@@ -190,6 +190,7 @@ export interface LandData {
   file: File;// Use `File` type for the file field
 }
 
+
 export interface generatePayment {
   paymentType: string
 }

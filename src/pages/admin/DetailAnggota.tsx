@@ -1,7 +1,4 @@
 import CenterLayout from '@/layout/center.layout'
-import React from 'react'
-import Anggota from './Anggota'
-import InformasiAnggota from './InformasiAnggota'
 import DetailAnggotaBaru from './DetailAnggotaBaru'
 import Lahan from './Lahan'
 

@@ -2,10 +2,8 @@ import CenterLayout from '@/layout/center.layout'
 import { CiSearch, CiTrash } from "react-icons/ci";
 import { AiOutlineExpandAlt } from "react-icons/ai";
 import ModalDetail, { openModal } from '@/components/ui/ModalDetail';
-import { IoCheckboxOutline } from "react-icons/io5";
-import { FaRegWindowClose } from "react-icons/fa";
 import { useEffect, useState } from 'react';
-import { Member, typeGetAllMember } from '@/middleware/Utils';
+import { Member } from '@/middleware/Utils';
 import { memberRest } from '@/middleware';
 import { formatDate } from '@/utils/date';
 import { useNavigate } from 'react-router-dom';

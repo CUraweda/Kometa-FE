@@ -1,15 +1,7 @@
 import { useEffect, useState } from 'react';
-import { LuCopy, LuCopyCheck } from 'react-icons/lu';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { toast } from 'sonner';
-import PaymentMethod from '../components/shared/payment.component';
-import { paymentList } from '../constant/form/payment.list';
-import { modalList } from '../constant/modals';
 import { listedUser } from '../constant/routers/listed';
-import { useModal } from '../hooks/useModal';
-import { useTimer } from '../hooks/useTimer';
 import PaymentLayout from '../layout/payment.layout';
-import { Payment } from '../types/common';
 import QRIS from '@/components/ui/Qris';
 import { paymentRest } from '@/middleware/Rest';
 import { formatRupiah } from '@/helper/formatRupiah';
@@ -20,8 +12,6 @@ function PaymentPage() {
   const navigate = useNavigate();
   const id = searchParams.get('id');
   const type = searchParams.get('type');
-  const [qris, setQris] = useState<string | undefined>('');
-  const [expiredDate, setExpired] = useState<string>('');
   const [data, setData] = useState<any>();
 
   useEffect(() => {
@@ -54,6 +44,7 @@ function PaymentPage() {
         id: id,
       });
       navigate(`${listedUser.payment}?${params.toString()}`);
+      window.location.reload()
     } catch (error) {
       console.log('ini jalan gk ada datanya');
     }

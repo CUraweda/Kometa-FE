@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import PaymentMethod from "../components/shared/payment.component";
@@ -9,7 +9,7 @@ import {
   instructions,
   instuctionId,
 } from "../constant/content/instruction";
-import { gender, memberType } from "../constant/content/members";
+import { gender} from "../constant/content/members";
 import { listedUser } from "../constant/routers/listed";
 import { useModal } from "../hooks/useModal";
 import PaymentLayout from "../layout/payment.layout";
@@ -22,7 +22,7 @@ import { useWilayah } from "@/hooks/dataWilayah";
 import { memberRest } from "@/middleware";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import { schemaMember } from "@/schema/dataMember";
+import { schemaMember } from "@/useForm/dataMember";
 import { Message } from "@/components/form/error.field";
 import { MemberData } from "@/middleware/Utils";
 
@@ -81,7 +81,7 @@ function RegisterMember() {
       ktp: undefined,
       ktp_selfie: undefined,
       registrationFee: 5000,
-      registrationPaymentMethod: ''
+      registrationPaymentMethod: 'QRIS'
     },
     resolver: yupResolver(schemaMember),
   });
@@ -192,7 +192,7 @@ function RegisterMember() {
   const onSubmit: SubmitHandler<Register> = (value) => {
     memberRest.createData(value)
     setValue("registrationFee", 5000)
-    setValue("registrationPaymentMethod", payment)
+    setValue("registrationPaymentMethod", payment ?? 'QRIS')
     const params = new URLSearchParams({
       type: payment
     });
@@ -200,6 +200,7 @@ function RegisterMember() {
     reset();
     navigate(`${listedUser.payment}?${params.toString()}`);
   };
+
   const onUpdate: SubmitHandler<Register> = (value) => {
     memberRest.updateData(value, Id)
     reset();

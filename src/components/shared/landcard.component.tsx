@@ -16,7 +16,7 @@ function LandCard(data: LandData) {
   return (
     <div className="min-w-[calc(100%/3)] ">
       <div
-        onClick={() => navigate(`${location}/detail?id=${data.id}`)}
+        onClick={() => navigate(`${location}/detail?id=${data.id}&type=user`)}
         className="border border-input p-5 rounded-lg hover:cursor-pointer hover:border-emeraldGreen"
       >
         <div className="flex justify-between">

@@ -17,7 +17,7 @@ function CardBox({ data, onChange, selected }: Props) {
   }, [selected]);
 
   return data?.map((item) => {
-    const { id, value, img, label, price } = item;
+    const { id, value,  label, price } = item;
     const isActive = value === currentSelected;
     const handleSlected = () => {
       onChange(item);

@@ -194,7 +194,7 @@ export const dataMember = {
             const response = await previewImage.get(path);
             const blob = new Blob([response.data], { type: response.headers["content-type"] });
             const imageUrl = URL.createObjectURL(blob);
-            return imageUrl; // Kembalikan URL gambar
+            return imageUrl; 
         } catch (error) {
             console.error("Show File Error:", error);
             return undefined;
@@ -203,16 +203,40 @@ export const dataMember = {
 };
 
 export const landApi = {
-    create : async ( data : LandData) : Promise<any> => {
+    create: async (data: LandData): Promise<any> => {
         try {
-            const response = await restLand.create(data)
+            const formData = new FormData();
+            Object.keys(data).forEach((key) => {
+                const typedKey = key as keyof LandData;
+                const value = data[typedKey];
+            
+                if (value instanceof File) {
+                    formData.append(typedKey, value); 
+                } else if (typeof value === "object" && value !== null && "filePath" in value) {
+                    console.warn(`Skipping field ${typedKey}, unexpected object format:`, value);
+                
+                } else if (typeof value === "number") {
+                    formData.append(typedKey, value.toString()); 
+                } else if (typeof value === "boolean") {
+                    formData.append(typedKey, value ? "true" : "false"); 
+                } else if (typeof value === "string") {
+                    formData.append(typedKey, value); 
+                } else if (value === null || value === undefined) {
+                    console.warn(`Skipping null/undefined field: ${typedKey}`);
+                } else {
+                    console.error(`Unexpected field type for ${typedKey}:`, value);
+                }
+            });
+    
+            const response = await restLand.create(formData);
+            
             Swal.fire({
                 title: "Success!",
                 text: "Berhasil menambahkan data lahan",
                 icon: "success"
-              });
-              
-            return response
+            });
+    
+            return response;
         } catch (error) {
             Swal.fire({
                 icon: "error",
@@ -222,6 +246,7 @@ export const landApi = {
             throw new Error(getErrorMessage(error, 'failed. Please try again.'));
         }
     },
+    
     getAllByMember : async (id: string | null) : Promise<any> => {
         try {
             return await restLand.getAllByUser(id)
@@ -261,6 +286,24 @@ export const landApi = {
     verif : async (data: verifMember, id: string) => {
         try {
             const response = await restLand.approv(data, id)
+            Swal.fire({
+                title: "Success!",
+                text: "Berhasil Update Status Anggota",
+                icon: "success"
+              });
+            return response
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: getErrorMessage(error, 'failed. Please try again.'),
+            });
+            throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+        }
+    },
+    update : async (data: LandData, id: string) => {
+        try {
+            const response = await restLand.edit(data, id)
             Swal.fire({
                 title: "Success!",
                 text: "Berhasil Update Status Anggota",

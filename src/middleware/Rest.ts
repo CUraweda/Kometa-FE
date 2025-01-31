@@ -3,7 +3,7 @@ import axios, {
   InternalAxiosRequestConfig,
   AxiosRequestHeaders,
 } from "axios";
-import { generatePayment, LandData, Login, LoginResponse, MemberData, MembershipTypeResponse, PaymentData, provinces, Register, typeGetAllMember, verifMember } from "./Utils";
+import { LandData, Login, LoginResponse, MemberData, MembershipTypeResponse,  provinces, Register, typeGetAllMember, verifMember } from "./Utils";
 import useAuthStore from "../store/auth.store"; // Zustand store untuk auth
 
 const server = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
@@ -200,13 +200,14 @@ export const previewImage = {
 }
 
 export const restLand = {
-  create: (data: LandData): AxiosPromise<LandData> =>
+  create: (data: any): AxiosPromise<LandData> =>
     server({
       method: "POST",
       url: `api/land-data/create`,
       data,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+        "Content-Type": "multipart/form-data",
       },
     }),
   getAllByUser: (id: string | null): AxiosPromise<LandData> =>
@@ -237,6 +238,15 @@ export const restLand = {
     server({
       method: "PUT",
       url: `api/land-data/decision/${id}`,
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  edit: (data: LandData, id?: string): AxiosPromise<LandData> =>
+    server({
+      method: "PUT",
+      url: `api/land-data/update/${id}`,
       data,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
@@ -283,4 +293,13 @@ export const dashboarRest = {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
     }),
+  dataStatistik: (): AxiosPromise<any> =>
+    server({
+      method: "GET",
+      url: `api/dashboard/count-statistic`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+
 }

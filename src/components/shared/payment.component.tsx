@@ -10,6 +10,7 @@ type Props = {
 
 function PaymentMethod({ onChange, selected }: Props) {
   const [activeTab, setActiveTab] = useState("1");
+  setActiveTab('1')
   return (
     <>
       <div role="tablist" className="tabs tabs-bordered mt-6">

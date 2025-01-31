@@ -1,13 +1,8 @@
-import {
-  fakerLand,
-  landFilter,
-  landType,
-  listLand,
-} from "@/constant/form/land.data";
+
 import CenterLayout from "../../layout/center.layout";
-import Input from "@/components/ui/input";
+
 import { useEffect, useState } from "react";
-import Select from "@/components/ui/select";
+
 import LandCard from "@/components/shared/landcard.component";
 // import Pagination from "@/components/ui/pagination";
 import { useNavigate } from "react-router-dom";
@@ -16,20 +11,42 @@ import { landApi } from "@/middleware";
 import useMemberStore from "@/store/home.store";
 import { LandData } from "@/middleware/Utils";
 
+interface LandItem {
+  ownershipStatus: "SHM" | "Girik" | "Kontrak/Sewa";
+  wideArea: number;
+}
+
 function LandPage() {
   const navigate = useNavigate();
   const { idMember } = useMemberStore();
-  const [search, setSearch] = useState("");
+
   const [data, setData] = useState<LandData[]>()
+  const [land, setLand] = useState<any>()
   
   const getData = async () => {
     const response = await landApi.getAllByMember(idMember)
     if (response.data && response.data.data.items) {
       setData(response.data.data.items)
-      // const filteredItems = response.data.data.items.filter((item: Member) => item.isVerified);
-      // setData(filteredItems);
+      const rest = recapLand(response.data.data.items)
+      setLand(rest)
+      
     }
   }
+
+  const recapLand = (data: LandItem[]): Record<string, number> => {
+    if (!Array.isArray(data)) return { SHM: 0, Girik: 0, Kontrak: 0 };
+  
+    return data.reduce(
+      (acc, item) => {
+        const area = item.wideArea ?? 0; // Menghindari kemungkinan undefined/null
+        if (item.ownershipStatus === "SHM") acc.SHM += area;
+        if (item.ownershipStatus === "Girik") acc.Girik += area;
+        if (item.ownershipStatus === "Kontrak/Sewa") acc.Kontrak += area;
+        return acc;
+      },
+      { SHM: 0, Girik: 0, Kontrak: 0 }
+    );
+  };
 
   useEffect(() => {
     getData()
@@ -39,27 +56,44 @@ function LandPage() {
   return (
     <CenterLayout className="min-h-[calc(100vh-105px)] items-start">
       <div className="w-full space-y-3">
-        <div className="rounded-lg border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full ">
-          {/* {fakerLand.map(({ id, value }) => {
-            const land = landType[id as keyof typeof landType];
-            return (
-              <div className="px-8 flex-1 h-full flex flex-col justify-between items-start">
-                <h3
-                  style={{ color: land.dark }}
-                  className="text-sm font-semibold"
-                >
-                  {land.label}
+      <div className='w-full flex-col sm:flex-row flex'>
+            <div className='w-full sm:w-1/3'>
+
+              <div className='card-custom card mb-5 h-32 w-full border-l-[5px] border-blue-700 bg-white shadow p-5 flex flex-col gap-2'>
+                <h3 className="text-xl font-semibold text-blue-500">
+                  Total Lahan SHM
                 </h3>
-                <p>
-                  <span className="text-4xl font-medium">{value}</span>{" "}
-                  <span className="text-gray-500 ml-3">Ha</span>
-                </p>
+                <div className="flex gap-3 items-end">
+                  <span className="text-4xl font-bold ">{land?.SHM}</span>
+                  <span className="text-sm font-medium">Ha</span>
+                </div>
               </div>
-            );
-          })} */}
-        </div>
-        <div className="flex justify-between items-center flex-wrap gap-2">
-          <div className="flex gap-4 w-3xl">
+            </div>
+            <div className='w-full sm:w-1/3 px-0 sm:px-3'>
+
+              <div className='card-custom card mb-5 h-32 w-full border-l-[5px] border-orange-500 bg-white shadow p-5 flex flex-col gap-2'>
+                <h3 className="text-xl font-semibold text-orange-500">Total Lahan Girik</h3>
+                <div className="flex gap-3 items-end">
+                  <span className="text-4xl font-bold ">{land?.Girik}</span>
+                  <span className="text-sm font-medium">Ha</span>
+                </div>
+              </div>
+            </div>
+            <div className='w-full sm:w-1/3'>
+
+              <div className='card-custom card mb-5 h-32 w-full border-l-[5px] border-green-700 bg-white shadow p-5 flex flex-col gap-2'>
+                <h3 className="text-xl font-semibold text-green-500">Total Lahan Kontrak/Sewa</h3>
+                <div className="flex gap-3 items-end">
+                  <span className="text-4xl font-bold ">{land?.Kontrak}</span>
+                  <span className="text-sm font-medium">Ha</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        <div className="flex justify-end items-center flex-wrap gap-2">
+          {/* <div className="flex gap-4 w-3xl">
             <Input
               type="search"
               className=""
@@ -73,7 +107,7 @@ function LandPage() {
               data={landFilter}
               placeholder="Status Kepemilikan"
             />
-          </div>
+          </div> */}
           <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => navigate(listedUser.tambahLahan)}>Tambah</button>
         </div>
         <div className="grid gap-5 w-full sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

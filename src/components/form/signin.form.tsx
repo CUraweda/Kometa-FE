@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { commonMessage } from "../../constant/form/validation.message";
 import { listedAdmin, listedUser } from "../../constant/routers/listed";
@@ -14,7 +14,7 @@ import { MemberData } from "@/middleware/Utils";
 
 function SignInForm() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  // const [searchParams] = useSearchParams();
 
   const {
     register,

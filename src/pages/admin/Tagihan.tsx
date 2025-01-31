@@ -1,9 +1,8 @@
 import CenterLayout from '@/layout/center.layout'
-import { CiSearch, CiTrash } from "react-icons/ci";
+import { CiSearch } from "react-icons/ci";
 import { AiOutlineExpandAlt } from "react-icons/ai";
 import ModalDetail, { openModal } from '@/components/ui/ModalDetail';
-import { IoCheckboxOutline } from "react-icons/io5";
-import { FaRegWindowClose } from "react-icons/fa";
+
 
 const Tagihan = () => {
     const fakeData = [

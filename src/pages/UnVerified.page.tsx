@@ -4,10 +4,9 @@ import { formatDateTime, formatDateString } from '@/helper/formatDate';
 import { formatRupiah } from '@/helper/formatRupiah';
 import CenterLayout from '@/layout/center.layout'
 import { dataMember, memberRest } from '@/middleware';
-import { previewImage } from '@/middleware/Rest';
 import { MemberData } from '@/middleware/Utils';
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 const UnVerifiedPage = () => {
@@ -21,6 +20,9 @@ const UnVerifiedPage = () => {
 
         if (typeof response === 'object' && response !== null && 'data' in response) {
             const dataRest = response.data as MemberData;
+            if(dataRest.data.isVerified){
+                navigate(listedUser.dashboard)
+            }
             setData(dataRest)
         } else {
             console.error('Invalid response structure', response);

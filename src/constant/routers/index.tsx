@@ -11,14 +11,14 @@ import SignUpPage from "../../pages/SignUp.page";
 import VerifyOTPPage from "../../pages/VerifyOTP.page";
 import { listedUser, listedAdmin } from "./listed";
 import NotFoundPage from "../../pages/NotFound.page";
-import DashboardPage from "../../pages/Dashboard.page";
+// import DashboardPage from "../../pages/Dashboard.page";
 import ProtectedLayout from "../../layout/Protected.layout";
 import LandingLayout from "../../layout/Landing.layout";
 import DashboardLayout from "../../layout/Dashboard.layout";
 import PlantingPage from "../../pages/Planting.page";
 import SupplierPage from "../../pages/Supplier.page";
 import FinancePage from "../../pages/Finance.page";
-import ProfilePage from "../../pages/Profile.page";
+// import ProfilePage from "../../pages/Profile.page";
 import Pendapatan from "@/pages/admin/Pendapatan";
 import Anggota from "@/pages/admin/Anggota";
 import AnggotaBaru from "@/pages/admin/AnggotaBaru";
@@ -70,7 +70,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: listedUser.dashboard,
-        element: <DashboardPage />,
+        element: <DashboardAdmin />,
       },
       {
         path: listedUser.land,
@@ -86,7 +86,7 @@ export const router = createBrowserRouter([
       { path: listedUser.planting, element: <PlantingPage /> },
       { path: listedUser.supplier, element: <SupplierPage /> },
       { path: listedUser.finance, element: <FinancePage /> },
-      { path: listedUser.profile, element: <ProfilePage /> },
+      // { path: listedUser.profile, element: <ProfilePage /> },
 
       { path: listedUser.test, element: <Test /> },
       { path: listedUser.dahsboardVerfi, element: <UnVerifiedPage /> },

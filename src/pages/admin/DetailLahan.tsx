@@ -2,19 +2,14 @@ import React, { useEffect, useState, } from 'react';
 import MapComponent from "@/components/maps/MapsComponent";
 import { landApi } from '@/middleware';
 import { LandData } from '@/middleware/Utils';
-import { getLokasi, getNamaWilayah } from '@/helper/mapsHelper';
 import pin from '@/assets/icon/iconMap.png'
 import CustomMap, { Location } from '@/components/maps/maps';
 import ModalDetail, { closeModal, openModal } from '@/components/ui/ModalDetail';
 
-import useMemberStore from '@/store/home.store';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-
-import { listedUser } from '@/constant/routers/listed';
+import {  useSearchParams } from 'react-router-dom';
 import { previewImage } from '@/middleware/Rest';
 import { Skeleton } from '@/components/ui/skeleton';
 import Swal from 'sweetalert2';
-import { Badge } from 'lucide-react';
 
 interface Position {
     lat: number;
@@ -26,9 +21,7 @@ interface TambahLahanProps {
 }
 
 const DetailLahan: React.FC<TambahLahanProps> = () => {
-    const { idMember } = useMemberStore();
     const [searchParams] = useSearchParams();
-    const navigate = useNavigate();
     const [data, setData] = useState<LandData>()
     const [images, setImages] = useState<string>();
     const [loading, setLoading] = useState<boolean>(true);
@@ -37,6 +30,7 @@ const DetailLahan: React.FC<TambahLahanProps> = () => {
         lng: 107.626454,
 
     });
+    const [textReject, setText] = useState<string>('')
 
     const id = searchParams.get("id")
     const type = searchParams.get("type")
@@ -86,12 +80,13 @@ const DetailLahan: React.FC<TambahLahanProps> = () => {
         }
     };
 
-    const handleVerif = async (verify: boolean, id: any, text?: string) => {
+    const handleVerif = async (verify: boolean, id: any, text: string) => {
         const payload = {
             isAccepted: verify,
             decisionMessage: text,
             status: verify ? "Selesai" : "Ditolak"
         }
+        closeModal('reject-lahan')
 
         Swal.fire({
             title: "Are you sure?",
@@ -126,7 +121,7 @@ const DetailLahan: React.FC<TambahLahanProps> = () => {
         <div className="p-6 bg-gray-100 min-h-screen">
             <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
                 <h2 className="text-2xl font-bold mb-4">Lahan</h2>
-               
+
                 <span className={`badge ${data?.isAccepted ? 'badge-accent' : 'badge-secondary'}`}>Status : {data?.isAccepted ? 'Disetujui' : 'Ditolak'}</span>
 
                 {/* Koordinat dan Dimensi Lahan */}
@@ -278,13 +273,17 @@ const DetailLahan: React.FC<TambahLahanProps> = () => {
                         </div>
 
                     </div>
+                    <div className="w-full border border-input p-5 rounded-md flex flex-col gap-2 my-5">
+                        <span>Catatan :</span>
+                        <span>{data?.decisionMessage || 'Tidak ada catatan'}</span>
+                    </div>
                 </div>
 
                 {
                     type !== 'lahan' &&
                     <div className="flex justify-start gap-3 w-full">
-                        <button className="btn btn-ghost bg-red-500 text-white" onClick={() => handleVerif(false, data?.id, 'ditolak')}>Tolak</button>
-                        <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => handleVerif(true, data?.id, 'oke')}>Setuju</button>
+                        <button className="btn btn-ghost bg-red-500 text-white" onClick={() => openModal('reject-lahan')}>Tolak</button>
+                        <button className="btn btn-ghost bg-emeraldGreen text-white" onClick={() => handleVerif(true, data?.id, '-')}>Setuju</button>
                     </div>
                 }
             </div>
@@ -299,6 +298,17 @@ const DetailLahan: React.FC<TambahLahanProps> = () => {
                 <div className='w-full p-5 flex justify-end gap-2'>
 
                     <button className='btn btn-outline text-white bg-emeraldGreen w-32' onClick={() => closeModal('add-lokasi')}>Simpan</button>
+
+                </div>
+
+            </ModalDetail>
+
+            <ModalDetail id='reject-lahan'>
+                <div className='w-full flex flex-col gap-3'>
+
+                    <span>Tolak Pengajuan Lahan</span>
+                    <textarea className="textarea textarea-bordered w-full" placeholder="Catatan" value={textReject} onChange={(e) => setText(e.target.value)} />
+                    <button className='btn btn-outline text-white bg-emeraldGreen w-full' onClick={() => handleVerif(false, data?.id, textReject)}>Simpan</button>
 
                 </div>
 

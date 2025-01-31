@@ -1,24 +1,16 @@
 import CenterLayout from '@/layout/center.layout'
 import { CiSearch, CiTrash } from "react-icons/ci";
 import { AiOutlineExpandAlt } from "react-icons/ai";
-import ModalDetail, { openModal } from '@/components/ui/ModalDetail';
-import { IoCheckboxOutline } from "react-icons/io5";
-import { FaRegWindowClose } from "react-icons/fa";
+import ModalDetail from '@/components/ui/ModalDetail';
+
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { landApi } from '@/middleware';
 import { LandData } from '@/middleware/Utils';
-import { landType, statusType } from '@/constant/form/land.data';
-import { Badge } from 'lucide-react';
+
 import { listedAdmin } from '@/constant/routers/listed';
 
 const LahanBaru = () => {
-    const fakeData = [
-        { id: "SHM", value: "124.32" },
-        { id: "Girik", value: "124.32" },
-        { id: "Kontrak/ Sewa", value: "124.32" },
-
-    ];
 
     const [data, setData] = useState<any>(undefined);
     const navigate = useNavigate();

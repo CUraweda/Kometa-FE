@@ -1,8 +1,6 @@
 // Install dependencies: npm install react react-dom vite typescript tailwindcss daisyui
 // Make sure Tailwind CSS is set up in your Vite project
 
-import React from 'react';
-
 const InformasiAnggota = () => {
   return (
     <div className="container mx-auto p-4">
