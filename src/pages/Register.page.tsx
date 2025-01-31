@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import PaymentMethod from "../components/shared/payment.component";
@@ -9,7 +9,7 @@ import {
   instructions,
   instuctionId,
 } from "../constant/content/instruction";
-import { gender} from "../constant/content/members";
+import { gender } from "../constant/content/members";
 import { listedUser } from "../constant/routers/listed";
 import { useModal } from "../hooks/useModal";
 import PaymentLayout from "../layout/payment.layout";
@@ -24,7 +24,7 @@ import { memberRest } from "@/middleware";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaMember } from "@/useForm/dataMember";
 import { Message } from "@/components/form/error.field";
-import { MemberData } from "@/middleware/Utils";
+// import { MemberData } from "@/middleware/Utils";
 
 
 function RegisterMember() {
@@ -34,7 +34,7 @@ function RegisterMember() {
   const navigate = useNavigate();
 
   const [modalId, setModalId] = useState(instuctionId.photoKTP);
-  const [Id, setId] = useState('');
+  // const [Id, setId] = useState('');
   const [typeMember, setTypeMember] = useState<any>();
   const [payment, setPayment] = useState<string>('');
   const type = searchParams.get('type')
@@ -116,36 +116,50 @@ function RegisterMember() {
   // KTP
   useEffect(() => {
     const id = watch("KtpProvinceId");
-    fetchKtpKabupaten(id);
-  }, [watch("KtpProvinceId")])
+    if (id) {
+      fetchKtpKabupaten(id);
+    }
+  }, [watch]);
+
 
   useEffect(() => {
     const id = watch("KtpCityId");
-    fetchKecamatan(id);
-  }, [watch("KtpCityId")]);
-
+    if (id) {
+      fetchKecamatan(id);
+    }
+  }, [watch]); // ✅ Perbaikan
+  
   useEffect(() => {
     const id = watch("KtpDistrictId");
-    fetchKelurahan(id);
-  }, [watch("KtpDistrictId")]);
+    if (id) {
+      fetchKelurahan(id);
+    }
+  }, [watch]); // ✅ Perbaikan
+  
 
-  // Domisili
   useEffect(() => {
     const id = watch("DomicileProvinceId");
-    fetchDomisiliKabupaten(id);
-  }, [watch("DomicileProvinceId")]);
+    if (id) {
+      fetchDomisiliKabupaten(id);
+    }
+  }, [watch]); // ✅ Perbaikan
+  
 
 
   useEffect(() => {
     const id = watch("DomicileCityId");
-    fetchDomisiliKecamatan(id);
-  }, [watch("DomicileCityId")]);
-
-
+    if (id) {
+      fetchDomisiliKecamatan(id);
+    }
+  }, [watch]); // ✅ Perbaikan
+  
   useEffect(() => {
     const id = watch("DomicileDistrictId");
-    fetchDomisiliKelurahan(id);
-  }, [watch("DomicileDistrictId")]);
+    if (id) {
+      fetchDomisiliKelurahan(id);
+    }
+  }, [watch]); // ✅ Perbaikan
+  
 
   useEffect(() => {
     const fetchTypeMember = async () => {
@@ -182,11 +196,11 @@ function RegisterMember() {
     watch("KtpAddressDetail")
   ]);
 
-  useEffect(() => {
-    if (type) {
-      checkData()
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (type) {
+  //     checkData()
+  //   }
+  // }, []);
 
 
   const onSubmit: SubmitHandler<Register> = (value) => {
@@ -202,48 +216,50 @@ function RegisterMember() {
   };
 
   const onUpdate: SubmitHandler<Register> = (value) => {
-    memberRest.updateData(value, Id)
+    memberRest.updateData(value, 'Id')
     reset();
     navigate('/dashboard/verif');
   };
 
 
-  const checkData = async () => {
-    const response = await memberRest.checkData();
+  // const checkData = async () => {
+  //   const response = await memberRest.checkData();
 
-    if (typeof response === 'object' && response !== null && 'data' in response) {
-      const dataRest = response.data as MemberData;
-      setValue("membershipTypeId", dataRest.data.membershipTypeId)
-      setValue("fullName", dataRest.data.fullName)
-      setValue("nik", dataRest.data.nik)
-      setValue("gender", dataRest.data.gender)
-      setValue("pob", dataRest.data.pob)
-      setValue("dob", dataRest.data.dob)
-      setValue("isVerified", dataRest.data.isVerified)
-      setValue("KtpProvince", dataRest.data.KtpProvince)
-      setValue("KtpProvinceId", dataRest.data.KtpProvinceId)
-      setValue("KtpCity", dataRest.data.KtpCity)
-      setValue("KtpCityId", dataRest.data.KtpCityId)
-      setValue("KtpDistrict", dataRest.data.KtpDistrict)
-      setValue("KtpDistrictId", dataRest.data.KtpDistrictId)
-      setValue("KtpSubDistrict", dataRest.data.KtpSubDistrict)
-      setValue("KtpSubDistrictId", dataRest.data.KtpSubDistrictId)
-      setValue("KtpAddressDetail", dataRest.data.KtpAddressDetail)
-      setValue("addressIsDifferent", dataRest.data.addressIsDifferent)
-      setValue("DomicileProvince", dataRest.data.DomicileProvince)
-      setValue("DomicileProvinceId", dataRest.data.DomicileProvinceId)
-      setValue("DomicileCity", dataRest.data.DomicileCity)
-      setValue("DomicileCityId", dataRest.data.DomicileCityId)
-      setValue("DomicileDistrict", dataRest.data.DomicileDistrict)
-      setValue("DomicileDistrictId", dataRest.data.DomicileDistrictId)
-      setValue("DomicileSubDistrict", dataRest.data.DomicileSubDistrict)
-      setValue("DomicileSubDistrictId", dataRest.data.DomicileSubDistrictId)
-      setValue("DomicileAddressDetail", dataRest.data.DomicileAddressDetail)
-      setId(dataRest.data.id)
-    } else {
-      console.error('Invalid response structure', response);
-    }
-  };
+
+
+  //   if (typeof response === 'object' && response !== null && 'data' in response) {
+  //     const dataRest = response.data as MemberData;
+  //     setValue("membershipTypeId", dataRest.data.membershipTypeId)
+  //     setValue("fullName", dataRest.data.fullName)
+  //     setValue("nik", dataRest.data.nik)
+  //     setValue("gender", dataRest.data.gender)
+  //     setValue("pob", dataRest.data.pob)
+  //     setValue("dob", dataRest.data.dob)
+  //     setValue("isVerified", dataRest.data.isVerified)
+  //     setValue("KtpProvince", dataRest.data.KtpProvince)
+  //     setValue("KtpProvinceId", dataRest.data.KtpProvinceId)
+  //     setValue("KtpCity", dataRest.data.KtpCity)
+  //     setValue("KtpCityId", dataRest.data.KtpCityId)
+  //     setValue("KtpDistrict", dataRest.data.KtpDistrict)
+  //     setValue("KtpDistrictId", dataRest.data.KtpDistrictId)
+  //     setValue("KtpSubDistrict", dataRest.data.KtpSubDistrict)
+  //     setValue("KtpSubDistrictId", dataRest.data.KtpSubDistrictId)
+  //     setValue("KtpAddressDetail", dataRest.data.KtpAddressDetail)
+  //     setValue("addressIsDifferent", dataRest.data.addressIsDifferent)
+  //     setValue("DomicileProvince", dataRest.data.DomicileProvince)
+  //     setValue("DomicileProvinceId", dataRest.data.DomicileProvinceId)
+  //     setValue("DomicileCity", dataRest.data.DomicileCity)
+  //     setValue("DomicileCityId", dataRest.data.DomicileCityId)
+  //     setValue("DomicileDistrict", dataRest.data.DomicileDistrict)
+  //     setValue("DomicileDistrictId", dataRest.data.DomicileDistrictId)
+  //     setValue("DomicileSubDistrict", dataRest.data.DomicileSubDistrict)
+  //     setValue("DomicileSubDistrictId", dataRest.data.DomicileSubDistrictId)
+  //     setValue("DomicileAddressDetail", dataRest.data.DomicileAddressDetail)
+  //     setId(dataRest.data.id)
+  //   } else {
+  //     console.error('Invalid response structure', response);
+  //   }
+  // };
 
   const { photo, title, regulation } = instructions[modalId as InstructionKey];
 
@@ -277,10 +293,18 @@ function RegisterMember() {
                   <Upload
                     id="photo_ktp"
                     label="Unggah Foto KTP"
-                    value={watch("ktp")}
+                    value={watch("ktp") ?? undefined} // Pastikan defaultnya undefined, bukan object kosong
                     className="w-[320px] h-60 hover:border-emeraldGreen"
-                    onChange={(e) => setValue("ktp", e)}
+                    onChange={(file) => {
+                      if (file instanceof File) {
+                        console.log("✅ File berhasil dipilih:", file);
+                        setValue("ktp", file, { shouldValidate: true, shouldDirty: true });
+                      } else {
+                        console.error("❌ File bukan instance File:", file);
+                      }
+                    }}
                   />
+
                   <div className="w-full justify-start">
 
                     <Message
@@ -306,11 +330,19 @@ function RegisterMember() {
                 >
                   <Upload
                     id="ktp_selfie"
-                    label={`Unggah Foto Selfie dengan KTP`}
-                    className="w-[320px] h-60 whitespace-pre-line hover:border-emeraldGreen"
-                    value={watch("ktp_selfie")}
-                    onChange={(e) => setValue("ktp_selfie", e)}
+                    label="Unggah Foto KTP"
+                    value={watch("ktp_selfie") ?? undefined} // Pastikan defaultnya undefined, bukan object kosong
+                    className="w-[320px] h-60 hover:border-emeraldGreen"
+                    onChange={(file) => {
+                      if (file instanceof File) {
+                        console.log("✅ File berhasil dipilih:", file);
+                        setValue("ktp_selfie", file, { shouldValidate: true, shouldDirty: true });
+                      } else {
+                        console.error("❌ File bukan instance File:", file);
+                      }
+                    }}
                   />
+
                   <div className="w-full justify-start">
 
                     <Message
@@ -677,11 +709,12 @@ function RegisterMember() {
             !type &&
 
             <button
-              onClick={() => handleSubmit(onSubmit)()}
+              onClick={handleSubmit(onSubmit)} // ✅ Tidak langsung dieksekusi
               className="btn w-56 btn-ghost bg-emeraldGreen text-white mt-10 mb-20"
             >
               Bayar Sekarang
             </button>
+
           }
 
         </div>

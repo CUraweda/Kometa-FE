@@ -6,7 +6,8 @@ import axios, {
 import { LandData, Login, LoginResponse, MemberData, MembershipTypeResponse,  provinces, Register, typeGetAllMember, verifMember } from "./Utils";
 import useAuthStore from "../store/auth.store"; // Zustand store untuk auth
 
-const server = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
+const server = axios.create({ baseURL: 'https://api-kometa.curaweda.com/' });
+// const server = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
 const datawilayah = axios.create({
   baseURL: "https://www.emsifa.com/api-wilayah-indonesia/api/",
 });
@@ -151,6 +152,7 @@ export const restAnggota = {
       data,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+        "Content-Type": "multipart/form-data",
       },
 
     }),

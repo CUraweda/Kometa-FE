@@ -52,6 +52,7 @@ function SignInForm() {
         navigate(listedAdmin.dashboard)
         return;
       }
+      
       const response = await memberRest.checkData();
 
       if (!response || typeof response !== 'object' || !('data' in response)) {
