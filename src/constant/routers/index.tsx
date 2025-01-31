@@ -15,7 +15,7 @@ import NotFoundPage from "../../pages/NotFound.page";
 import ProtectedLayout from "../../layout/Protected.layout";
 import LandingLayout from "../../layout/Landing.layout";
 import DashboardLayout from "../../layout/Dashboard.layout";
-import PlantingPage from "../../pages/Planting.page";
+import PlantingPage from "../../pages/planting/Planting.page";
 import SupplierPage from "../../pages/Supplier.page";
 import FinancePage from "../../pages/Finance.page";
 // import ProfilePage from "../../pages/Profile.page";
@@ -23,7 +23,7 @@ import Pendapatan from "@/pages/admin/Pendapatan";
 import Anggota from "@/pages/admin/Anggota";
 import AnggotaBaru from "@/pages/admin/AnggotaBaru";
 import DetailAnggotaBaru from "@/pages/admin/DetailAnggotaBaru";
-import AddLandPage from "@/pages/AddLand.page";
+import AddLandPage from "@/pages/land/AddLand.page";
 import DashboardAdminLayout from "../../layout/DashboardAdmin.layout";
 import Lahan from "@/pages/admin/Lahan";
 import DashboardAdmin from "@/pages/admin/DashboardAdmin";
@@ -38,6 +38,8 @@ import LandPage from "@/pages/land/Land.page";
 import UnVerifiedPage from "@/pages/UnVerified.page";
 import DetailAnggota from "@/pages/admin/DetailAnggota";
 import DetailLahan from "@/pages/admin/DetailLahan";
+import AddPlanting from "@/pages/planting/AddPlanting.page";
+import PlantingDetail from "@/pages/planting/PlantingDetail.page";
 
 export const router = createBrowserRouter([
   {
@@ -79,11 +81,21 @@ export const router = createBrowserRouter([
             index: true,
             element: <LandPage />,
           },
-          { path: listedUser.tambahLahan, element: <AddLandPage /> },
-          { path: listedUser.detailLahan, element: <LandDetails /> },
+          { path: listedUser.add, element: <AddLandPage /> },
+          { path: listedUser.detail, element: <LandDetails /> },
         ],
       },
-      { path: listedUser.planting, element: <PlantingPage /> },
+      {
+        path: listedUser.planting,
+        children: [
+          {
+            index: true,
+            element: <PlantingPage />,
+          },
+          { path: listedUser.add, element: <AddPlanting /> },
+          { path: listedUser.detail, element: <PlantingDetail /> },
+        ],
+      },
       { path: listedUser.supplier, element: <SupplierPage /> },
       { path: listedUser.finance, element: <FinancePage /> },
       // { path: listedUser.profile, element: <ProfilePage /> },

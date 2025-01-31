@@ -1,8 +1,10 @@
-import { Outlet } from "react-router-dom";
+import Breadcrumbs from "@/components/ui/breadcrumbs";
+import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "../components/dashboard/sidebar";
 import TopBar from "../components/dashboard/topbar";
 
 function DashboardLayout() {
+  const location = useLocation().pathname.split("/").length > 2;
   return (
     <>
       <div className=" lg:grid">
@@ -14,7 +16,8 @@ function DashboardLayout() {
             
             <TopBar />
             </div>
-            <div className="py-5 px-7 w-full z-0">
+            <div className="min-h-[calc(100vh-105px)] py-5 px-7 w-full z-0">
+              {location ? <Breadcrumbs /> : null}
               <Outlet />
             </div>
           </div>

@@ -1,9 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
-import {  useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
+import { authentication } from "@/middleware";
+import "react-phone-input-2/lib/style.css";
 import { commonMessage } from "../../constant/form/validation.message";
 import { listedUser } from "../../constant/routers/listed";
 import { SignUp } from "../../types/sign";
@@ -11,6 +13,7 @@ import Header from "../content/header.sign";
 import Input from "../ui/input";
 import Password from "../ui/password";
 import { authentication } from "@/middleware";
+import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 
 function SignUpForm() {
@@ -19,7 +22,6 @@ function SignUpForm() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
     setFocus,
   } = useForm<SignUp>({
@@ -36,9 +38,7 @@ function SignUpForm() {
           .string()
           .required(commonMessage.phoneRequired)
           .min(10, commonMessage.phoneMaxDigit),
-        name: yup
-          .string()
-          .required(),
+        name: yup.string().required(),
         email: yup
           .string()
           .required(commonMessage.emailRequired)
@@ -56,24 +56,21 @@ function SignUpForm() {
   });
 
   const onSubmit = async (formData: SignUp) => {
-
     const data = {
       ...formData,
       roleId: "USER",
     };
 
     try {
-      const rest = await authentication.register(data)
-      rest == 200 ? navigate('/signin') : ''
+      const rest = await authentication.register(data);
+      if (rest == 200) navigate(listedUser.signin);
     } catch (error) {
       console.log(error);
     }
-    reset();
-
   };
 
   useEffect(() => {
-    setFocus("phoneWA");
+    setFocus("name");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -87,7 +84,7 @@ function SignUpForm() {
         <div className="space-y-4">
           <Input
             type="text"
-            placeholder="Name"
+            placeholder="Nama"
             error={errors?.name}
             {...register("name")}
           />
@@ -98,38 +95,35 @@ function SignUpForm() {
             {...register("phoneWA")}
           /> */}
           <Input
-            type="text"
+            type="tel"
             placeholder="Nomor Whatsapp"
             error={errors?.phoneWA}
             {...register("phoneWA")}
           />
-
           <Input
             type="text"
             placeholder="Email"
             error={errors?.email}
             {...register("email")}
           />
-
           <Password
             placeholder="Kata Sandi"
             error={errors?.password}
             {...register("password")}
           />
-
           <Password
             placeholder="Ulangi Kata Sandi"
             error={errors?.confirm_password}
             {...register("confirm_password")}
           />
         </div>
-        <button className="font-medium tracking-wider w-full btn bg-emeraldGreen hover:bg-emeraldGreen hover:opacity-95 text-white mt-6">
+        <button className="font-medium tracking-wider w-full btn bg-primary hover:bg-primary hover:opacity-95 text-white mt-6">
           Daftar
         </button>
         <button className="text-sm mt-6">
           Sudah punya akun?
           <Link
-            className="ml-1 text-emeraldGreen font-medium"
+            className="ml-1 text-primary font-medium"
             to={listedUser.signin}
           >
             Masuk

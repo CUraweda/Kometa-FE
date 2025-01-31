@@ -19,12 +19,14 @@ const Password = forwardRef<HTMLInputElement, PasswordProps>(
 
     return (
       <div className="w-full">
-        <label className={twMerge("form-control w-full relative", className)}>
+        <label
+          className={twMerge("form-control w-full relative group", className)}
+        >
           <input
             type={show ? "text" : "password"}
             placeholder={placeholder}
             className={twMerge(
-              `input input-bordered flex items-center ${
+              `group input input-bordered flex items-center ${
                 isError ? "border-red-600" : ""
               }`
             )}
@@ -36,13 +38,13 @@ const Password = forwardRef<HTMLInputElement, PasswordProps>(
               <RiEyeLine
                 size={20}
                 onClick={toggle}
-                className="text-slate-500"
+                className="fill-slate-500 group-focus-within:fill-primary"
               />
             ) : (
               <RiEyeOffLine
                 size={20}
                 onClick={toggle}
-                className="text-slate-500"
+                className="fill-slate-500 group-focus-within:fill-primary"
               />
             )}
           </div>

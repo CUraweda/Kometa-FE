@@ -39,7 +39,7 @@ function LandCard(data: LandData) {
           <div className="flex gap-1 text-sm">
             <button className="group btn btn-ghost btn-xs hover:bg-slate-50">
               <LuPenLine
-                className="group-hover:stroke-emeraldGreen"
+                className="group-hover:stroke-primary"
                 onClick={() => navigate("/detail-lahan")}
               />
             </button>

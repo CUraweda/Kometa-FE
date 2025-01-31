@@ -29,7 +29,7 @@ function DashboardPage() {
                 className={`btn ${
                   isActive
                     ? "btn-primary text-white font-semibold"
-                    : "btn-outline text-primary hover:border-primary hover:bg-transparent hover:text-primary"
+                    : "btn-outline"
                 } font-light`}
                 onClick={() => setFilter(Number(item.split(" ")[0]))}
                 key={item}
@@ -67,7 +67,7 @@ function DashboardPage() {
         <div className="flex gap-8 w-full">
           <div className="flex-1 flex flex-col p-6 space-y-6 border border-[#EBEBEB] rounded-xl">
             <h3 className="text-gray-500">
-              Pengajuan <span className="text-emeraldGreen">Lahan</span>
+              Pengajuan <span className="text-primary">Lahan</span>
             </h3>
             {dataPengajuan.map((item) => {
               const {
@@ -85,7 +85,7 @@ function DashboardPage() {
               return (
                 <div
                   key={`pengajuan-${id}`}
-                  className="flex flex-col gap-6 p-6 border border-[#EBEBEB] rounded-xl hover:border-emeraldGreen cursor-pointer max-h-[220px]"
+                  className="flex flex-col gap-6 p-6 border border-[#EBEBEB] rounded-xl hover:border-primary cursor-pointer max-h-[220px]"
                 >
                   <div className="flex justify-between items-center">
                     <h3 className="text-3xl font-semibold">
@@ -116,7 +116,7 @@ function DashboardPage() {
                     </span>
                     <div className="flex items-center gap-2">
                       <button className="group btn btn-ghost btn-xs hover:bg-slate-50">
-                        <LuPenLine className="group-hover:stroke-emeraldGreen" />
+                        <LuPenLine className="group-hover:stroke-primary" />
                       </button>
                       <span className="group btn btn-ghost btn-xs hover:bg-slate-50">
                         <LuTrash2 className="group-hover:stroke-red-600" />
@@ -130,15 +130,14 @@ function DashboardPage() {
 
           <div className="flex-1 flex flex-col p-6 space-y-6 border border-[#EBEBEB] rounded-xl">
             <h3 className="text-gray-500">
-              Tagihan <span className="text-emeraldGreen">Simpanan</span>
+              Tagihan <span className="text-primary">Simpanan</span>
             </h3>
             {tagihanSimpanan.map((item) => {
               const { id, total, title, jatuh_tempo, isPaid } = item;
-
               return (
                 <div
                   key={`tagihan-${id}`}
-                  className="flex flex-col gap-6 p-6 border border-[#EBEBEB] rounded-xl hover:border-emeraldGreen cursor-pointer"
+                  className="flex flex-col gap-6 p-6 border border-[#EBEBEB] rounded-xl hover:border-primary cursor-pointer"
                 >
                   <div className="flex justify-between items-center">
                     <h3 className="text-3xl font-semibold">

@@ -1,17 +1,29 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { Logo } from "../../assets/logo/white";
-import LogoColor from "../../assets/logo/color.png";
-import { navbarMenu } from "../../constant/routers/navbar";
-import Container from "../../components/content/container.component";
-import { useScrollClick } from "../../hooks/useScrollClick";
-import { TfiViewList } from "react-icons/tfi";
+import { token as tokenize } from "@/utils/tokenize";
 import { RiCloseLargeFill } from "react-icons/ri";
+import { TfiViewList } from "react-icons/tfi";
+import { NavLink, useNavigate } from "react-router-dom";
+import LogoColor from "../../assets/logo/color.png";
+import { Logo } from "../../assets/logo/white";
+import Container from "../../components/content/container.component";
 import { listedUser } from "../../constant/routers/listed";
+import { navbarMenu } from "../../constant/routers/navbar";
+import { useScrollClick } from "../../hooks/useScrollClick";
 
 function Navbar() {
   const navigate = useNavigate();
-  const handleRedirect = (path: string) => () => navigate(path);
   const { handleScrollClick } = useScrollClick();
+
+  const handleSignIn = () => {
+    if (tokenize.get("access") || tokenize.get("refresh")) {
+      navigate(listedUser.dashboard);
+    } else {
+      navigate(listedUser.signin);
+    }
+  };
+
+  const handleSignUp = () => {
+    navigate(listedUser.signup);
+  };
 
   return (
     <Container id="top">
@@ -49,15 +61,15 @@ function Navbar() {
           </div>
           <div className=" items-center gap-2 sm:flex hidden">
             <button
-              onClick={handleRedirect(listedUser.signin)}
+              onClick={handleSignIn}
               style={{ background: "transparent" }}
-              className="btn btn-outline btn-sm sm:btn-md tracking-wider text-white font-bold hover:border-transparent"
+              className="btn btn-sm sm:btn-md tracking-wider text-white"
             >
               Masuk
             </button>
             <button
-              onClick={handleRedirect(listedUser.signup)}
-              className="btn btn-sm sm:btn-md text-emeraldGreen font-bold"
+              onClick={handleSignUp}
+              className="btn btn-sm sm:btn-md btn-primary"
             >
               Daftar
             </button>
@@ -87,14 +99,14 @@ function Navbar() {
             </div>
             <div className="w-full flex justify-between mt-5 gap-1 mb-8">
               <button
-                onClick={handleRedirect("/signin")}
-                className="btn w-1/2 btn-outline bg-emeraldGreen btn-sm sm:btn-md hover:bg-transparent tracking-wider  text-white font-bold"
+                onClick={handleSignIn}
+                className="btn w-1/2 btn-outline btn-sm sm:btn-md hover:bg-transparent tracking-wider"
               >
                 Masuk
               </button>
               <button
-                onClick={handleRedirect("/signup")}
-                className="btn w-1/2 btn-sm sm:btn-md text-emeraldGreen font-bold"
+                onClick={handleSignUp}
+                className="btn btn-primary w-1/2 btn-sm sm:btn-md"
               >
                 Daftar
               </button>
