@@ -42,14 +42,17 @@ function SignUpForm() {
           .string()
           .required(commonMessage.emailRequired)
           .email(commonMessage.emailInvalidFormat),
-        password: yup
+          password: yup
           .string()
           .required(commonMessage.passwordRequired)
-          .min(8, commonMessage.passwordMinDigit),
+          .min(8, commonMessage.passwordMinDigit)
+          .max(10, commonMessage.passwordMaxDigit),
         confirm_password: yup
           .string()
           .required(commonMessage.repeatPasswordRequired)
-          .oneOf([yup.ref("password")], commonMessage.unmatchPassword),
+          .oneOf([yup.ref("password")], commonMessage.unmatchPassword)
+          .max(10, commonMessage.passwordMaxDigit),
+        
       })
     ),
   });

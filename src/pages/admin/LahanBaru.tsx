@@ -1,6 +1,6 @@
-import CenterLayout from '@/layout/center.layout'
-import { CiSearch, CiTrash } from "react-icons/ci";
-import { AiOutlineExpandAlt } from "react-icons/ai";
+import CenterLayout from '@/layout/center.layout';
+import { CiTrash } from 'react-icons/ci';
+import { AiOutlineExpandAlt } from 'react-icons/ai';
 import ModalDetail from '@/components/ui/ModalDetail';
 
 import { useEffect, useState } from 'react';
@@ -9,40 +9,78 @@ import { landApi } from '@/middleware';
 import { LandData } from '@/middleware/Utils';
 
 import { listedAdmin } from '@/constant/routers/listed';
+import Swal from 'sweetalert2';
+import { restLand } from '@/middleware/Rest';
+import getErrorMessage from '@/helper/apiHelper';
 
 const LahanBaru = () => {
+  const [data, setData] = useState<any>(undefined);
+  const navigate = useNavigate();
 
-    const [data, setData] = useState<any>(undefined);
-    const navigate = useNavigate();
+  useEffect(() => {
+    getData();
+  }, []);
 
-    useEffect(() => {
-        getData()
-    }, []);
+  const getData = async () => {
+    const payload = 'limit=1000&page=1';
+    const response = await landApi.getAll(payload);
 
-    const getData = async () => {
-        const payload = 'limit=1000&page=1';
-        const response = await landApi.getAll(payload);
-
-        if (response.data && response.data.data.items) {
-            const filteredItems = response.data.data.items.filter((item: LandData) => !item.isAccepted);
-            setData(filteredItems);
-        }
-    };
-    const handleDetailLahan = (props: any) => {
-        const params = new URLSearchParams({
-            id: props,
-            type: 'lahan-baru'
-        });
-
-        navigate(`${listedAdmin.detaillahanBaru}?${params.toString()}`);
+    if (response.data && response.data.data.items) {
+      const filteredItems = response.data.data.items.filter(
+        (item: LandData) => !item.isAccepted
+      );
+      setData(filteredItems);
     }
+  };
+  const handleDetailLahan = (props: any) => {
+    const params = new URLSearchParams({
+      id: props,
+      type: 'lahan-baru',
+    });
 
-    return (
-        <div>
-            <CenterLayout className="min-h-[calc(100vh-105px)]">
-                <div className=' w-full min-h-[calc(100vh-105px)] flex flex-col'>
-                    <span className='text-xl'>Lahan Baru</span>
-                    {/* <div className="rounded-lg mt-10 border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full bg-white">
+    navigate(`${listedAdmin.detaillahanBaru}?${params.toString()}`);
+  };
+
+  const trigerDelete = (id: string) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDelete(id);
+      }
+    });
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await restLand.delete(id);
+      Swal.fire({
+        title: 'Deleted!',
+        text: 'Your file has been deleted.',
+        icon: 'success',
+      });
+      await getData();
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: getErrorMessage(error, 'failed. Please try again.'),
+      });
+    }
+  };
+
+  return (
+    <div>
+      <CenterLayout className="min-h-[calc(100vh-105px)]">
+        <div className=" w-full min-h-[calc(100vh-105px)] flex flex-col">
+          <span className="text-xl font-bold">Lahan Baru</span>
+          {/* <div className="rounded-lg mt-10 border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full bg-white">
                         {fakeData.map(({ id, value }) => {
 
                             return (
@@ -55,7 +93,7 @@ const LahanBaru = () => {
                             );
                         })}
                     </div> */}
-                    <div className='mt-5 w-full flex justify-end gap-3'>
+          {/* <div className='mt-5 w-full flex justify-end gap-3'>
                         <label className="input input-bordered flex items-center gap-2 ">
                             <CiSearch />
                             <input type="text" className="grow" placeholder="Email" />
@@ -77,70 +115,72 @@ const LahanBaru = () => {
                             <option>Star Trek</option>
                         </select>
 
-                    </div>
+                    </div> */}
 
-                    <div className='w-full bg-white mt-5 shadow-md p-2 rounded-md'>
-                        <div className="overflow-x-auto">
-                            <table className="table table-zebra">
-                                {/* head */}
-                                <thead>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Alamat Lahan</th>
-                                        <th>Luas</th>
-                                        <th>Kondisi Lahan</th>
-                                        <th>Kepemilikan</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        data?.map((value: LandData, index: number) => (
-
-                                            <tr key={index}>
-                                                <td>{value.ownerFullName}</td>
-                                                <td>{value.landAddress}</td>
-                                                <td>{value.wideArea}</td>
-                                                <td>{value.landCondition}</td>
-                                                <td>{value.ownershipStatus}</td>
-                                                <td>{value.status}</td>
-                                                <td>
-                                                    <div className='w-full flex justify-center'>
-
-                                                        <button className='text-xl btn btn-xs btn-ghost' onClick={() => handleDetailLahan(value.id)}>
-                                                            <AiOutlineExpandAlt />
-                                                        </button>
-                                                        <button className='text-xl btn btn-xs btn-ghost text-red-500'>
-                                                            <CiTrash />
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    }
-
-                                </tbody>
-                            </table>
+          <div className="w-full bg-white mt-5 shadow-md p-2 rounded-md">
+            <div className="overflow-x-auto">
+              <table className="table table-zebra">
+                {/* head */}
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Alamat Lahan</th>
+                    <th>Luas</th>
+                    <th>Kondisi Lahan</th>
+                    <th>Kepemilikan</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data?.map((value: LandData, index: number) => (
+                    <tr key={index}>
+                      <td>{value.ownerFullName}</td>
+                      <td>{value.landAddress}</td>
+                      <td>{value.wideArea}</td>
+                      <td>{value.landCondition}</td>
+                      <td>{value.ownershipStatus}</td>
+                      <td>{value.status}</td>
+                      <td>
+                        <div className="w-full flex justify-center">
+                          <button
+                            className="text-xl btn btn-xs btn-ghost"
+                            onClick={() => handleDetailLahan(value.id)}
+                          >
+                            <AiOutlineExpandAlt />
+                          </button>
+                          <button
+                            className="text-xl btn btn-xs btn-ghost text-red-500"
+                            onClick={() => trigerDelete(value.id ?? '')}
+                          >
+                            <CiTrash />
+                          </button>
                         </div>
-                    </div>
-
-                </div>
-            </CenterLayout>
-
-            <ModalDetail id='reject-pendapatan'>
-                <span>Tolak Pendaftaran</span>
-                <div className='w-full mt-3'>
-                    <textarea className="textarea textarea-bordered w-full" placeholder="Keterangan"></textarea>
-                </div>
-                <div className='w-full flex justify-end gap-3 mt-5'>
-                    <button className='btn btn-outline btn-sm'>Close</button>
-                    <button className='btn btn-primary text-white btn-sm'>Kirim</button>
-                </div>
-
-            </ModalDetail>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-    )
-}
+      </CenterLayout>
 
-export default LahanBaru
+      <ModalDetail id="reject-pendapatan">
+        <span>Tolak Pendaftaran</span>
+        <div className="w-full mt-3">
+          <textarea
+            className="textarea textarea-bordered w-full"
+            placeholder="Keterangan"
+          ></textarea>
+        </div>
+        <div className="w-full flex justify-end gap-3 mt-5">
+          <button className="btn btn-outline btn-sm">Close</button>
+          <button className="btn btn-primary text-white btn-sm">Kirim</button>
+        </div>
+      </ModalDetail>
+    </div>
+  );
+};
+
+export default LahanBaru;

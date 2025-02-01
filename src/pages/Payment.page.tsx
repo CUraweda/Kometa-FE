@@ -13,9 +13,11 @@ function PaymentPage() {
   const id = searchParams.get('id');
   const type = searchParams.get('type');
   const [data, setData] = useState<any>();
-
   useEffect(() => {
-    checkPayment();
+   checkPayment();
+    if(!data){
+      generatePayment()
+    }
   }, []);
 
   const checkPayment = async () => {
@@ -23,12 +25,13 @@ function PaymentPage() {
       const response = await paymentRest.getStatusPayment(id);
       const data = response?.data?.data;
       const isPaid = response.data.data.isPaid;
+      
       if (isPaid) {
         navigate(listedUser.dahsboardVerfi);
       }
       setData(data);
     } catch (error) {
-      generatePayment();
+      await generatePayment();
       console.log('ini jalan gk ada datanya');
     }
   };

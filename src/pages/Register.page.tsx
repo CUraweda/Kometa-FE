@@ -1,42 +1,43 @@
-import { useEffect, useState } from "react";
-import Input from "@/components/ui/input";
-import Select from "@/components/ui/select";
-import SelectLocation from "@/components/ui/SelectLocation";
-import TextArea from "@/components/ui/textarea";
-import { useWilayah } from "@/hooks/dataWilayah";
-import { memberRest } from "@/middleware";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import PaymentMethod from "../components/shared/payment.component";
-import Radio from "../components/ui/radio";
-import Upload from "../components/ui/upload";
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+// import PaymentMethod from "../components/shared/payment.component";
+import Radio from '../components/ui/radio';
+import Upload from '../components/ui/upload';
 import {
   InstructionKey,
   instructions,
   instuctionId,
-} from "../constant/content/instruction";
-import { gender } from "../constant/content/members";
-import { listedUser } from "../constant/routers/listed";
-import { useModal } from "../hooks/useModal";
-import PaymentLayout from "../layout/payment.layout";
-import { Register } from "../types/register";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schemaMember } from "@/useForm/dataMember";
-import { Message } from "@/components/form/error.field";
+} from '../constant/content/instruction';
+import { gender } from '../constant/content/members';
+import { listedUser } from '../constant/routers/listed';
+import { useModal } from '../hooks/useModal';
+import PaymentLayout from '../layout/payment.layout';
+import { Register } from '../types/register';
+import Input from '@/components/ui/input';
+import Select from '@/components/ui/select';
+import TextArea from '@/components/ui/textarea';
+import SelectLocation from '@/components/ui/SelectLocation';
+import { useWilayah } from '@/hooks/dataWilayah';
+import { memberRest } from '@/middleware';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schemaMember } from '@/useForm/dataMember';
+import { Message } from '@/components/form/error.field';
+import { MemberData } from '@/middleware/Utils';
+import Swal from 'sweetalert2';
+import PaymentMethod from '@/components/shared/payment.component';
 
 function RegisterMember() {
-
   const [searchParams] = useSearchParams();
   const { Modal, openModal } = useModal();
   const navigate = useNavigate();
 
   const [modalId, setModalId] = useState(instuctionId.photoKTP);
-  // const [Id, setId] = useState('');
+  const [Id, setId] = useState('');
   const [typeMember, setTypeMember] = useState<any>();
-  const [payment, setPayment] = useState<string>('');
-  const type = searchParams.get('type')
-
+  const [payment, setPayment] = useState<any>();
+  const type = searchParams.get('type');
 
   const handleOpenModal = () => openModal(modalId);
 
@@ -50,36 +51,36 @@ function RegisterMember() {
     formState: { errors },
   } = useForm<Register>({
     defaultValues: {
-      membershipTypeId: "",
-      fullName: "",
-      nik: "",
-      gender: "",
-      pob: "",
-      dob: "",
+      membershipTypeId: '',
+      fullName: '',
+      nik: '',
+      gender: '',
+      pob: '',
+      dob: '',
       isVerified: true,
-      KtpProvince: "",
-      KtpProvinceId: "",
-      KtpCity: "",
-      KtpCityId: "",
-      KtpDistrict: "",
-      KtpDistrictId: "",
-      KtpSubDistrict: "",
-      KtpSubDistrictId: "",
-      KtpAddressDetail: "",
+      KtpProvince: '',
+      KtpProvinceId: '',
+      KtpCity: '',
+      KtpCityId: '',
+      KtpDistrict: '',
+      KtpDistrictId: '',
+      KtpSubDistrict: '',
+      KtpSubDistrictId: '',
+      KtpAddressDetail: '',
       addressIsDifferent: true,
-      DomicileProvince: "",
-      DomicileProvinceId: "",
-      DomicileCity: "",
-      DomicileCityId: "",
-      DomicileDistrict: "",
-      DomicileDistrictId: "",
-      DomicileSubDistrict: "",
-      DomicileSubDistrictId: "",
-      DomicileAddressDetail: "",
+      DomicileProvince: '',
+      DomicileProvinceId: '',
+      DomicileCity: '',
+      DomicileCityId: '',
+      DomicileDistrict: '',
+      DomicileDistrictId: '',
+      DomicileSubDistrict: '',
+      DomicileSubDistrictId: '',
+      DomicileAddressDetail: '',
       ktp: undefined,
       ktp_selfie: undefined,
-      registrationFee: 5000,
-      registrationPaymentMethod: 'QRIS'
+      registrationFee: 0,
+      registrationPaymentMethod: '',
     },
     resolver: yupResolver(schemaMember),
   });
@@ -93,7 +94,7 @@ function RegisterMember() {
     fetchKecamatan: fetchKecamatan,
     fetchKelurahan: fetchKelurahan,
     fetchProvinsi: fetchProvinsi,
-  } = useWilayah("ktp");
+  } = useWilayah('ktp');
 
   const {
     provinsi: domisiliProvinsi,
@@ -104,7 +105,7 @@ function RegisterMember() {
     fetchKecamatan: fetchDomisiliKecamatan,
     fetchKelurahan: fetchDomisiliKelurahan,
     fetchProvinsi: fetchDomisiliProvinsi,
-  } = useWilayah("domisili");
+  } = useWilayah('domisili');
 
   useEffect(() => {
     fetchProvinsi();
@@ -113,50 +114,35 @@ function RegisterMember() {
 
   // KTP
   useEffect(() => {
-    const id = watch("KtpProvinceId");
-    if (id) {
-      fetchKtpKabupaten(id);
-    }
-  }, [watch]);
-
+    const id = watch('KtpProvinceId');
+    fetchKtpKabupaten(id);
+  }, [watch('KtpProvinceId')]);
 
   useEffect(() => {
-    const id = watch("KtpCityId");
-    if (id) {
-      fetchKecamatan(id);
-    }
-  }, [watch]); // ✅ Perbaikan
-  
-  useEffect(() => {
-    const id = watch("KtpDistrictId");
-    if (id) {
-      fetchKelurahan(id);
-    }
-  }, [watch]); // ✅ Perbaikan
-  
+    const id = watch('KtpCityId');
+    fetchKecamatan(id);
+  }, [watch('KtpCityId')]);
 
   useEffect(() => {
-    const id = watch("DomicileProvinceId");
-    if (id) {
-      fetchDomisiliKabupaten(id);
-    }
-  }, [watch]); // ✅ Perbaikan
-  
+    const id = watch('KtpDistrictId');
+    fetchKelurahan(id);
+  }, [watch('KtpDistrictId')]);
+
+  // Domisili
+  useEffect(() => {
+    const id = watch('DomicileProvinceId');
+    fetchDomisiliKabupaten(id);
+  }, [watch('DomicileProvinceId')]);
 
   useEffect(() => {
-    const id = watch("DomicileCityId");
-    if (id) {
-      fetchDomisiliKecamatan(id);
-    }
-  }, [watch]); // ✅ Perbaikan
-  
+    const id = watch('DomicileCityId');
+    fetchDomisiliKecamatan(id);
+  }, [watch('DomicileCityId')]);
+
   useEffect(() => {
-    const id = watch("DomicileDistrictId");
-    if (id) {
-      fetchDomisiliKelurahan(id);
-    }
-  }, [watch]); // ✅ Perbaikan
-  
+    const id = watch('DomicileDistrictId');
+    fetchDomisiliKelurahan(id);
+  }, [watch('DomicileDistrictId')]);
 
   useEffect(() => {
     const fetchTypeMember = async () => {
@@ -168,7 +154,7 @@ function RegisterMember() {
         }));
         setTypeMember(formattedData);
       } catch (error) {
-        console.error("Error fetching member type:", error);
+        console.error('Error fetching member type:', error);
       }
     };
 
@@ -176,86 +162,116 @@ function RegisterMember() {
   }, []);
 
   useEffect(() => {
-    const addressIsDifferent = watch("addressIsDifferent");
+    const addressIsDifferent = watch('addressIsDifferent');
     if (addressIsDifferent) {
-      setValue("DomicileProvince", getValues("KtpProvince"));
-      setValue("DomicileProvinceId", getValues("KtpProvinceId"));
-      setValue("DomicileCity", getValues("KtpCity"));
-      setValue("DomicileCityId", getValues("KtpCityId"));
-      setValue("DomicileDistrict", getValues("KtpDistrict"));
-      setValue("DomicileDistrictId", getValues("KtpDistrictId"));
-      setValue("DomicileSubDistrict", getValues("KtpSubDistrict"));
-      setValue("DomicileSubDistrictId", getValues("KtpSubDistrictId"));
-      setValue("DomicileAddressDetail", getValues("KtpAddressDetail"));
+      setValue('DomicileProvince', getValues('KtpProvince'));
+      setValue('DomicileProvinceId', getValues('KtpProvinceId'));
+      setValue('DomicileCity', getValues('KtpCity'));
+      setValue('DomicileCityId', getValues('KtpCityId'));
+      setValue('DomicileDistrict', getValues('KtpDistrict'));
+      setValue('DomicileDistrictId', getValues('KtpDistrictId'));
+      setValue('DomicileSubDistrict', getValues('KtpSubDistrict'));
+      setValue('DomicileSubDistrictId', getValues('KtpSubDistrictId'));
+      setValue('DomicileAddressDetail', getValues('KtpAddressDetail'));
     }
-  }, [watch("addressIsDifferent"), watch("KtpAddressDetail")]);
+  }, [watch('addressIsDifferent'), watch('KtpAddressDetail')]);
 
-  // useEffect(() => {
-  //   if (type) {
-  //     checkData()
-  //   }
-  // }, []);
-
+  useEffect(() => {
+    if (type) {
+      checkData();
+    }
+  }, []);
 
   const onSubmit: SubmitHandler<Register> = (value) => {
-    memberRest.createData(value)
-    setValue("registrationFee", 5000)
-    setValue("registrationPaymentMethod", payment ?? 'QRIS')
-    const params = new URLSearchParams({
-      type: payment
-    });
+    setValue('registrationFee', payment?.price ?? 10000);
+    setValue('registrationPaymentMethod', payment?.value ?? 'QRIS');
+    handleCreate(value);
+  };
 
-    reset();
-    navigate(`${listedUser.payment}?${params.toString()}`);
+  const handleCreate = async (value: any) => {
+    try {
+      const response = await memberRest.createData(value);
+      const id = response?.data?.data?.id;
+   
+      if (id) {
+        const params = new URLSearchParams({
+          type: payment?.value ?? 'QRIS',
+        });
+
+        reset();
+        navigate(
+          `${
+            payment?.value === 'QRIS'
+              ? listedUser.payment
+              : listedUser.paymentVa
+          }?${params.toString()}`
+        );
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Pendaftaran Gagal Silakan coba beberapa saat lagi , pastikan koneksi anda bagus',
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Pendaftaran Gagal Silakan coba beberapa saat lagi',
+      });
+    }
   };
 
   const onUpdate: SubmitHandler<Register> = (value) => {
-    memberRest.updateData(value, 'Id')
+    memberRest.updateData(value, Id);
     reset();
     navigate('/dashboard/verif');
   };
 
+  const checkData = async () => {
+    const response = await memberRest.checkData();
 
-  // const checkData = async () => {
-  //   const response = await memberRest.checkData();
-
-
-
-  //   if (typeof response === 'object' && response !== null && 'data' in response) {
-  //     const dataRest = response.data as MemberData;
-  //     setValue("membershipTypeId", dataRest.data.membershipTypeId)
-  //     setValue("fullName", dataRest.data.fullName)
-  //     setValue("nik", dataRest.data.nik)
-  //     setValue("gender", dataRest.data.gender)
-  //     setValue("pob", dataRest.data.pob)
-  //     setValue("dob", dataRest.data.dob)
-  //     setValue("isVerified", dataRest.data.isVerified)
-  //     setValue("KtpProvince", dataRest.data.KtpProvince)
-  //     setValue("KtpProvinceId", dataRest.data.KtpProvinceId)
-  //     setValue("KtpCity", dataRest.data.KtpCity)
-  //     setValue("KtpCityId", dataRest.data.KtpCityId)
-  //     setValue("KtpDistrict", dataRest.data.KtpDistrict)
-  //     setValue("KtpDistrictId", dataRest.data.KtpDistrictId)
-  //     setValue("KtpSubDistrict", dataRest.data.KtpSubDistrict)
-  //     setValue("KtpSubDistrictId", dataRest.data.KtpSubDistrictId)
-  //     setValue("KtpAddressDetail", dataRest.data.KtpAddressDetail)
-  //     setValue("addressIsDifferent", dataRest.data.addressIsDifferent)
-  //     setValue("DomicileProvince", dataRest.data.DomicileProvince)
-  //     setValue("DomicileProvinceId", dataRest.data.DomicileProvinceId)
-  //     setValue("DomicileCity", dataRest.data.DomicileCity)
-  //     setValue("DomicileCityId", dataRest.data.DomicileCityId)
-  //     setValue("DomicileDistrict", dataRest.data.DomicileDistrict)
-  //     setValue("DomicileDistrictId", dataRest.data.DomicileDistrictId)
-  //     setValue("DomicileSubDistrict", dataRest.data.DomicileSubDistrict)
-  //     setValue("DomicileSubDistrictId", dataRest.data.DomicileSubDistrictId)
-  //     setValue("DomicileAddressDetail", dataRest.data.DomicileAddressDetail)
-  //     setId(dataRest.data.id)
-  //   } else {
-  //     console.error('Invalid response structure', response);
-  //   }
-  // };
+    if (
+      typeof response === 'object' &&
+      response !== null &&
+      'data' in response
+    ) {
+      const dataRest = response.data as MemberData;
+      setValue('membershipTypeId', dataRest.data.membershipTypeId);
+      setValue('fullName', dataRest.data.fullName);
+      setValue('nik', dataRest.data.nik);
+      setValue('gender', dataRest.data.gender);
+      setValue('pob', dataRest.data.pob);
+      setValue('dob', dataRest.data.dob);
+      setValue('isVerified', dataRest.data.isVerified);
+      setValue('KtpProvince', dataRest.data.KtpProvince);
+      setValue('KtpProvinceId', dataRest.data.KtpProvinceId);
+      setValue('KtpCity', dataRest.data.KtpCity);
+      setValue('KtpCityId', dataRest.data.KtpCityId);
+      setValue('KtpDistrict', dataRest.data.KtpDistrict);
+      setValue('KtpDistrictId', dataRest.data.KtpDistrictId);
+      setValue('KtpSubDistrict', dataRest.data.KtpSubDistrict);
+      setValue('KtpSubDistrictId', dataRest.data.KtpSubDistrictId);
+      setValue('KtpAddressDetail', dataRest.data.KtpAddressDetail);
+      setValue('addressIsDifferent', dataRest.data.addressIsDifferent);
+      setValue('DomicileProvince', dataRest.data.DomicileProvince);
+      setValue('DomicileProvinceId', dataRest.data.DomicileProvinceId);
+      setValue('DomicileCity', dataRest.data.DomicileCity);
+      setValue('DomicileCityId', dataRest.data.DomicileCityId);
+      setValue('DomicileDistrict', dataRest.data.DomicileDistrict);
+      setValue('DomicileDistrictId', dataRest.data.DomicileDistrictId);
+      setValue('DomicileSubDistrict', dataRest.data.DomicileSubDistrict);
+      setValue('DomicileSubDistrictId', dataRest.data.DomicileSubDistrictId);
+      setValue('DomicileAddressDetail', dataRest.data.DomicileAddressDetail);
+      setId(dataRest.data.id);
+    } else {
+      console.error('Invalid response structure', response);
+    }
+  };
 
   const { photo, title, regulation } = instructions[modalId as InstructionKey];
+
+  console.log(payment);
 
   return (
     <>
@@ -277,30 +293,22 @@ function RegisterMember() {
                 Informasi Pribadi
               </h2>
               {/* Upload KTP */}
-              <div className="w-full flex gap-4 flex-col sm:flex-row justify-center">
+              <div className="flex gap-4 flex-col sm:flex-row justify-center">
                 <div
                   onMouseEnter={() => setModalId(instuctionId.photoKTP)}
-                  className="w-1/2 flex h-60 gap-1 flex-col items-end justify-center"
+                  className="flex gap-1 flex-col items-end justify-center"
                 >
                   <Upload
                     id="photo_ktp"
                     label="Unggah Foto KTP"
-                    value={watch("ktp") ?? undefined} // Pastikan defaultnya undefined, bukan object kosong
+                    value={watch('ktp')}
                     className="w-[320px] h-60 hover:border-emeraldGreen"
-                    onChange={(file) => {
-                      if (file instanceof File) {
-                        console.log("✅ File berhasil dipilih:", file);
-                        setValue("ktp", file, { shouldValidate: true, shouldDirty: true });
-                      } else {
-                        console.error("❌ File bukan instance File:", file);
-                      }
-                    }}
+                    onChange={(e) => setValue('ktp', e)}
                   />
-
                   <div className="w-full justify-start">
                     <Message
                       isError={Boolean(errors?.ktp)}
-                      message={errors?.ktp?.message || " "}
+                      message={errors?.ktp?.message || ' '}
                     />
                   </div>
                   <div className="w-full flex justify-between mt-1">
@@ -317,27 +325,19 @@ function RegisterMember() {
                 </div>
                 <div
                   onMouseEnter={() => setModalId(instuctionId.selfieKTP)}
-                  className="flex w-1/2 h-60 gap-1 flex-col items-end"
+                  className="flex gap-1 flex-col items-end"
                 >
                   <Upload
                     id="ktp_selfie"
-                    label="Unggah Foto KTP"
-                    value={watch("ktp_selfie") ?? undefined} // Pastikan defaultnya undefined, bukan object kosong
-                    className="w-[320px] h-60 hover:border-emeraldGreen"
-                    onChange={(file) => {
-                      if (file instanceof File) {
-                        console.log("✅ File berhasil dipilih:", file);
-                        setValue("ktp_selfie", file, { shouldValidate: true, shouldDirty: true });
-                      } else {
-                        console.error("❌ File bukan instance File:", file);
-                      }
-                    }}
+                    label={`Unggah Foto Selfie dengan KTP`}
+                    className="w-[320px] h-60 whitespace-pre-line hover:border-emeraldGreen"
+                    value={watch('ktp_selfie')}
+                    onChange={(e) => setValue('ktp_selfie', e)}
                   />
-
                   <div className="w-full justify-start">
                     <Message
                       isError={Boolean(errors?.ktp_selfie)}
-                      message={errors?.ktp_selfie?.message || " "}
+                      message={errors?.ktp_selfie?.message || ' '}
                     />
                   </div>
                   <div className="w-full flex justify-between mt-1">
@@ -363,7 +363,7 @@ function RegisterMember() {
                     className="w-full"
                     placeholder="Keanggotaan"
                     error={errors?.membershipTypeId}
-                    {...register("membershipTypeId")}
+                    {...register('membershipTypeId')}
                   />
                 </div>
                 <div className="w-full">
@@ -373,7 +373,7 @@ function RegisterMember() {
                     error={errors?.nik}
                     placeholder="NIK"
                     className="w-full"
-                    {...register("nik")}
+                    {...register('nik')}
                   />
                 </div>
               </div>
@@ -386,7 +386,7 @@ function RegisterMember() {
                     type="text"
                     error={errors?.fullName}
                     placeholder="Nama Lengkap (Sesuai KTP)"
-                    {...register("fullName")}
+                    {...register('fullName')}
                   />
                 </div>
                 <div className="w-full">
@@ -394,8 +394,8 @@ function RegisterMember() {
                   <Radio
                     id="gender"
                     className="w-full "
-                    onChange={(e) => setValue("gender", e.value)}
-                    selected={getValues("gender")}
+                    onChange={(e) => setValue('gender', e.value)}
+                    selected={getValues('gender')}
                     data={gender}
                     error={errors.gender}
                   />
@@ -410,7 +410,7 @@ function RegisterMember() {
                     type="text"
                     error={errors?.pob}
                     placeholder="Tempat Lahir"
-                    {...register("pob")}
+                    {...register('pob')}
                   />
                 </div>
                 <div className="w-full">
@@ -419,7 +419,7 @@ function RegisterMember() {
                     type="date"
                     error={errors?.dob}
                     placeholder="Tanggal Lahir"
-                    {...register("dob")}
+                    {...register('dob')}
                   />
                 </div>
               </div>
@@ -437,22 +437,22 @@ function RegisterMember() {
                     data={ktpProvinsi}
                     error={errors?.KtpProvinceId}
                     placeholder="Pilih Provinsi"
-                    {...register("KtpProvinceId", {
+                    {...register('KtpProvinceId', {
                       onChange: (e) => {
                         const selectedValue = e.target.value;
                         const selectedProvince = ktpProvinsi.find(
                           (p) => p.id === selectedValue
                         );
-                        setValue("KtpProvinceId", selectedValue);
-                        setValue("KtpProvince", selectedProvince?.name || "");
+                        setValue('KtpProvinceId', selectedValue);
+                        setValue('KtpProvince', selectedProvince?.name || '');
                       },
                     })}
                     onChangeCallback={(value) => {
                       const selectedProvince = ktpProvinsi.find(
                         (p) => p.id === value
                       );
-                      setValue("KtpProvinceId", value);
-                      setValue("KtpProvince", selectedProvince?.name || "");
+                      setValue('KtpProvinceId', value);
+                      setValue('KtpProvince', selectedProvince?.name || '');
                     }}
                   />
                 </div>
@@ -462,20 +462,20 @@ function RegisterMember() {
                     data={ktpKabupaten}
                     error={errors?.KtpCityId}
                     placeholder="Pilih Kabupaten"
-                    {...register("KtpCityId", {
+                    {...register('KtpCityId', {
                       onChange: (e) => {
                         const selectedValue = e.target.value;
                         const selected = ktpKabupaten.find(
                           (p) => p.id === selectedValue
                         );
-                        setValue("KtpCityId", selectedValue);
-                        setValue("KtpCity", selected?.name || "");
+                        setValue('KtpCityId', selectedValue);
+                        setValue('KtpCity', selected?.name || '');
                       },
                     })}
                     onChangeCallback={(value) => {
                       const selected = ktpKabupaten.find((p) => p.id === value);
-                      setValue("KtpCityId", value);
-                      setValue("KtpCity", selected?.name || "");
+                      setValue('KtpCityId', value);
+                      setValue('KtpCity', selected?.name || '');
                     }}
                   />
                 </div>
@@ -488,20 +488,20 @@ function RegisterMember() {
                     data={ktpKecamatan}
                     error={errors?.KtpCityId}
                     placeholder="Pilih Kecamatan"
-                    {...register("KtpDistrictId", {
+                    {...register('KtpDistrictId', {
                       onChange: (e) => {
                         const selectedValue = e.target.value;
                         const selected = ktpKecamatan.find(
                           (p) => p.id === selectedValue
                         );
-                        setValue("KtpDistrictId", selectedValue);
-                        setValue("KtpDistrict", selected?.name || "");
+                        setValue('KtpDistrictId', selectedValue);
+                        setValue('KtpDistrict', selected?.name || '');
                       },
                     })}
                     onChangeCallback={(value) => {
                       const selected = ktpKecamatan.find((p) => p.id === value);
-                      setValue("KtpDistrictId", value);
-                      setValue("KtpDistrict", selected?.name || "");
+                      setValue('KtpDistrictId', value);
+                      setValue('KtpDistrict', selected?.name || '');
                     }}
                   />
                 </div>
@@ -510,21 +510,21 @@ function RegisterMember() {
                   <SelectLocation
                     data={ktpKelurahan}
                     error={errors?.KtpSubDistrictId}
-                    placeholder="Pilih Kecamatan"
-                    {...register("KtpSubDistrictId", {
+                    placeholder="Pilih Kelurahan"
+                    {...register('KtpSubDistrictId', {
                       onChange: (e) => {
                         const selectedValue = e.target.value;
                         const selected = ktpKelurahan.find(
                           (p) => p.id === selectedValue
                         );
-                        setValue("KtpSubDistrictId", selectedValue);
-                        setValue("KtpSubDistrict", selected?.name || "");
+                        setValue('KtpSubDistrictId', selectedValue);
+                        setValue('KtpSubDistrict', selected?.name || '');
                       },
                     })}
                     onChangeCallback={(value) => {
                       const selected = ktpKelurahan.find((p) => p.id === value);
-                      setValue("KtpSubDistrictId", value);
-                      setValue("KtpSubDistrict", selected?.name || "");
+                      setValue('KtpSubDistrictId', value);
+                      setValue('KtpSubDistrict', selected?.name || '');
                     }}
                   />
                 </div>
@@ -536,7 +536,7 @@ function RegisterMember() {
                   error={errors?.KtpAddressDetail}
                   placeholder="Detail Alamat"
                   className="w-full"
-                  {...register("KtpAddressDetail")}
+                  {...register('KtpAddressDetail')}
                 />
               </div>
             </div>
@@ -547,13 +547,13 @@ function RegisterMember() {
               <label className="cursor-pointer label flex justify-start gap-3">
                 <input
                   type="checkbox"
-                  checked={watch("addressIsDifferent")}
-                  {...register("addressIsDifferent")}
+                  checked={watch('addressIsDifferent')}
+                  {...register('addressIsDifferent')}
                   className="checkbox checkbox-accent"
                 />
                 <span className="label-text">Sama Seperti alamat KTP</span>
               </label>
-              {!watch("addressIsDifferent") && (
+              {!watch('addressIsDifferent') && (
                 <div className="space-y-4">
                   {/* Provinsi & Kecamatan */}
                   <div className="flex gap-4 flex-col sm:flex-row">
@@ -563,22 +563,22 @@ function RegisterMember() {
                         data={domisiliProvinsi}
                         error={errors?.KtpProvinceId}
                         placeholder="Pilih Provinsi"
-                        {...register("DomicileProvinceId", {
+                        {...register('DomicileProvinceId', {
                           onChange: (e) => {
                             const selectedValue = e.target.value;
                             const selected = domisiliProvinsi.find(
                               (p) => p.id === selectedValue
                             );
-                            setValue("DomicileProvinceId", selectedValue);
-                            setValue("DomicileProvince", selected?.name || "");
+                            setValue('DomicileProvinceId', selectedValue);
+                            setValue('DomicileProvince', selected?.name || '');
                           },
                         })}
                         onChangeCallback={(value) => {
                           const selected = domisiliProvinsi.find(
                             (p) => p.id === value
                           );
-                          setValue("DomicileProvinceId", value);
-                          setValue("DomicileProvince", selected?.name || "");
+                          setValue('DomicileProvinceId', value);
+                          setValue('DomicileProvince', selected?.name || '');
                         }}
                       />
                     </div>
@@ -588,22 +588,22 @@ function RegisterMember() {
                         data={domisiliKabupaten}
                         error={errors?.KtpCityId}
                         placeholder="Pilih Kabupaten"
-                        {...register("DomicileCityId", {
+                        {...register('DomicileCityId', {
                           onChange: (e) => {
                             const selectedValue = e.target.value;
                             const selected = domisiliKabupaten.find(
                               (p) => p.id === selectedValue
                             );
-                            setValue("DomicileCityId", selectedValue);
-                            setValue("DomicileCity", selected?.name || "");
+                            setValue('DomicileCityId', selectedValue);
+                            setValue('DomicileCity', selected?.name || '');
                           },
                         })}
                         onChangeCallback={(value) => {
                           const selected = domisiliKabupaten.find(
                             (p) => p.id === value
                           );
-                          setValue("DomicileCityId", value);
-                          setValue("DomicileCity", selected?.name || "");
+                          setValue('DomicileCityId', value);
+                          setValue('DomicileCity', selected?.name || '');
                         }}
                       />
                     </div>
@@ -617,22 +617,22 @@ function RegisterMember() {
                         data={domisiliKecamatan}
                         error={errors?.KtpDistrictId}
                         placeholder="Pilih Kecamatan"
-                        {...register("DomicileDistrictId", {
+                        {...register('DomicileDistrictId', {
                           onChange: (e) => {
                             const selectedValue = e.target.value;
                             const selected = domisiliKecamatan.find(
                               (p) => p.id === selectedValue
                             );
-                            setValue("DomicileDistrictId", selectedValue);
-                            setValue("DomicileDistrict", selected?.name || "");
+                            setValue('DomicileDistrictId', selectedValue);
+                            setValue('DomicileDistrict', selected?.name || '');
                           },
                         })}
                         onChangeCallback={(value) => {
                           const selected = domisiliKecamatan.find(
                             (p) => p.id === value
                           );
-                          setValue("DomicileDistrictId", value);
-                          setValue("DomicileDistrict", selected?.name || "");
+                          setValue('DomicileDistrictId', value);
+                          setValue('DomicileDistrict', selected?.name || '');
                         }}
                       />
                     </div>
@@ -641,17 +641,17 @@ function RegisterMember() {
                       <SelectLocation
                         data={domisiliKelurahan}
                         error={errors?.KtpSubDistrictId}
-                        placeholder="Pilih Kecamatan"
-                        {...register("DomicileSubDistrictId", {
+                        placeholder="Pilih Kelurahann"
+                        {...register('DomicileSubDistrictId', {
                           onChange: (e) => {
                             const selectedValue = e.target.value;
                             const selected = domisiliKelurahan.find(
                               (p) => p.id === selectedValue
                             );
-                            setValue("DomicileSubDistrictId", selectedValue);
+                            setValue('DomicileSubDistrictId', selectedValue);
                             setValue(
-                              "DomicileSubDistrict",
-                              selected?.name || ""
+                              'DomicileSubDistrict',
+                              selected?.name || ''
                             );
                           },
                         })}
@@ -659,8 +659,8 @@ function RegisterMember() {
                           const selected = domisiliKelurahan.find(
                             (p) => p.id === value
                           );
-                          setValue("DomicileSubDistrictId", value);
-                          setValue("DomicileSubDistrict", selected?.name || "");
+                          setValue('DomicileSubDistrictId', value);
+                          setValue('DomicileSubDistrict', selected?.name || '');
                         }}
                       />
                     </div>
@@ -673,7 +673,7 @@ function RegisterMember() {
                       error={errors?.DomicileAddressDetail}
                       placeholder="Detail Alamat"
                       className="w-full"
-                      {...register("DomicileAddressDetail")}
+                      {...register('DomicileAddressDetail')}
                     />
                   </div>
                 </div>
@@ -683,38 +683,30 @@ function RegisterMember() {
           <div className="space-y-4 flex-col sm:flex-row bg-white mt-10 p-3 rounded-md">
             <h2 className="font-medium tracking-wide">Metode Pembayaran</h2>
             <PaymentMethod
-              selected={payment}
-              onChange={(item) => setPayment(item.value)}
+              selected={payment?.value}
+              onChange={(item) => setPayment(item)}
             />
           </div>
         </div>
-
         <div className="w-full text-center">
-          {
-            type &&
-
+          {type && (
             <button
               onClick={() => handleSubmit(onUpdate)()}
               className="btn w-56 btn-ghost bg-emeraldGreen text-white mt-10 mb-20"
             >
               Update Data
             </button>
-          }
-          {
-            !type &&
-
+          )}
+          {!type && (
             <button
-              onClick={handleSubmit(onSubmit)} // ✅ Tidak langsung dieksekusi
+              onClick={() => handleSubmit(onSubmit)()}
               className="btn w-56 btn-ghost bg-emeraldGreen text-white mt-10 mb-20"
             >
               Bayar Sekarang
             </button>
-
-          }
-
+          )}
         </div>
       </PaymentLayout>
-
       <Modal id={modalId} title="Instruksi" alignTitle="left">
         {modalId && (
           <div>

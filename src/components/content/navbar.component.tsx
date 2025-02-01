@@ -1,4 +1,3 @@
-import { token as tokenize } from "@/utils/tokenize";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { TfiViewList } from "react-icons/tfi";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -14,11 +13,8 @@ function Navbar() {
   const { handleScrollClick } = useScrollClick();
 
   const handleSignIn = () => {
-    if (tokenize.get("access") || tokenize.get("refresh")) {
-      navigate(listedUser.dashboard);
-    } else {
-      navigate(listedUser.signin);
-    }
+    
+    navigate(listedUser.signin);
   };
 
   const handleSignUp = () => {

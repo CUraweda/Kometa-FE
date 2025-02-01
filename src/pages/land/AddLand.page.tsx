@@ -1,12 +1,30 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import MapComponent from "@/components/maps/MapsComponent";
-import { datawilayah } from '@/middleware';
-import { provinces } from '@/middleware/Utils';
+import React, { useEffect, useState } from 'react';
+import MapComponent from '../../components/maps/MapsComponent';
+import { landApi } from '@/middleware';
+import { LandData } from '@/middleware/Utils';
 import { getLokasi } from '@/helper/mapsHelper';
-import pin from '@/assets/icon/iconMap.png'
+import pin from '../../assets/icon/iconMap.png';
 import CustomMap, { Location } from '@/components/maps/maps';
-import ModalDetail, { closeModal, openModal } from '@/components/ui/ModalDetail';
+import ModalDetail, {
+    closeModal,
+    openModal,
+} from '@/components/ui/ModalDetail';
 import FileUploader from '@/components/ui/fileUpload';
+import { useWilayah } from '@/hooks/dataWilayah';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { landSchema } from '@/useForm/land.schema';
+import { yupResolver } from '@hookform/resolvers/yup';
+import SelectLocation from '@/components/ui/SelectLocation';
+import Select from '@/components/ui/select';
+import Input from '@/components/ui/input';
+import TextArea from '@/components/ui/textarea';
+import { Message } from '@/components/form/error.field';
+import useMemberStore from '@/store/home.store';
+import { useNavigate } from 'react-router-dom';
+import { listedUser } from '@/constant/routers/listed';
+import Map from '@/components/polygonMaps/Maps';
+import { LatLngTuple } from 'leaflet';
+import MapView from '@/components/polygonMaps/MapsView';
 
 interface Position {
     lat: number;
@@ -18,79 +36,83 @@ interface TambahLahanProps {
 }
 
 const AddLandPage: React.FC<TambahLahanProps> = () => {
+    const { idMember } = useMemberStore();
+    const navigate = useNavigate();
     const [position, setPosition] = useState<Location | null>({
         lat: -6.908151,
         lng: 107.626454,
-
     });
     const [error, setError] = useState<string | null>(null);
+    const [polygonCoordinates, setPolygonCoordinates] = useState<LatLngTuple[]>(
+        []
+    );
     const [idWilayah, setIdWilayah] = useState<any>({
         idProvinsi: '',
         idKabupaten: '',
         idKecamatan: '',
         idDesa: '',
     });
-    const [provinsi, setProvinsi] = useState<any>([]);
-    const [kabupaten, setKabupaten] = useState<any>([]);
-    const [kecamatan, setKecamatan] = useState<any>([]);
-    const [kelurahan, setKelurahan] = useState<any>([]);
-  
 
-    const dataProvinsi = useCallback(async () => {
-        try {
-            const response = await datawilayah.dataProvinsi();
-            setProvinsi(response?.data || []);
-        } catch (error) {
-            console.error("Error fetching provinsi:", error);
-        }
-    }, []);
+    const {
+        register,
+        setValue,
+        handleSubmit,
+        reset,
+        watch,
+        formState: { errors },
+    } = useForm<LandData>({
+        defaultValues: {
+            memberId: idMember ? idMember : '',
+            longitudeArea: position?.lng ?? 0,
+            latitudeArea: position?.lat ?? 0,
+            wideArea: 0,
+            ownerFullName: '',
+            ownerProvince: '',
+            ownerCity: '',
+            ownerDistrict: '',
+            ownerSubDistrict: '',
+            ownershipStatus: 'SHM',
+            ownerNotes: '',
+            landCondition: '',
+            landAddress: '',
+            documentShmCertificateNo: '',
+            documentOwnerFullName: '',
+            documentWideArea: 0,
+            status: 'Tinjau',
+            file: undefined, //
+        },
+        mode: 'onChange',
+        resolver: yupResolver(landSchema),
+    });
 
-    const dataKabupaten = useCallback(async () => {
-        if (!idWilayah.idProvinsi) return;
-        try {
-            const response = await datawilayah.dataKabupaten(idWilayah.idProvinsi);
-            setKabupaten(response?.data || []);
-        } catch (error) {
-            console.error("Error fetching kabupaten:", error);
-        }
-    }, [idWilayah.idProvinsi]);
+    const {
+        provinsi: Provinsi,
+        kabupaten: Kabupaten,
+        kecamatan: Kecamatan,
+        kelurahan: Kelurahan,
+        fetchKabupaten: fetchKabupaten,
+        fetchKecamatan: fetchKecamatan,
+        fetchKelurahan: fetchKelurahan,
+        fetchProvinsi: fetchProvinsi,
+    } = useWilayah('lahan');
 
-    const dataKecamatan = useCallback(async () => {
-        if (!idWilayah.idKabupaten) return;
-        try {
-            const response = await datawilayah.dataKecamatan(idWilayah.idKabupaten);
-            setKecamatan(response?.data || []);
-        } catch (error) {
-            console.error("Error fetching kabupaten:", error);
-        }
-    }, [idWilayah.idKabupaten]);
-
-    const dataKelurahan = useCallback(async () => {
-        if (!idWilayah.idKecamatan) return;
-        try {
-            const response = await datawilayah.dataKelurahan(idWilayah.idKecamatan);
-            setKelurahan(response?.data || []);
-        } catch (error) {
-            console.error("Error fetching kabupaten:", error);
-        }
-    }, [idWilayah.idKecamatan]);
-
-    useEffect(() => {
-        dataProvinsi();
-    }, [dataProvinsi]);
 
 
     useEffect(() => {
-        dataKabupaten();
-    }, [dataKabupaten]);
+        fetchProvinsi();
+    }, [fetchProvinsi]);
 
     useEffect(() => {
-        dataKecamatan();
-    }, [dataKecamatan]);
+        fetchKabupaten(idWilayah.idProvinsi);
+    }, [watch('ownerProvince')]);
 
     useEffect(() => {
-        dataKelurahan();
-    }, [dataKelurahan]);
+        fetchKecamatan(idWilayah.idKabupaten);
+    }, [watch('ownerCity')]);
+
+    useEffect(() => {
+        fetchKelurahan(idWilayah.idKecamatan);
+    }, [watch('ownerDistrict')]);
 
     useEffect(() => {
         const fetchLocation = async () => {
@@ -99,178 +121,262 @@ const AddLandPage: React.FC<TambahLahanProps> = () => {
                 setPosition(lokasi);
                 setError(null);
             } catch (err: any) {
-                setError(err.message || "Unable to retrieve location.");
+                setError(err.message || 'Unable to retrieve location.');
             }
         };
 
         fetchLocation();
     }, []);
+
     if (!position && !error) {
         return <p>Detecting your location...</p>;
     }
-    const locations = position
-        ? [position]
-        : [{ lat: 0, lng: 0, label: "Fallback Location" }];
+    const kepemilikan = [
+        { label: 'SHM', value: 'SHM' },
+        { label: 'Girik', value: 'Girik' },
+        { label: 'Kontrak/Sewa', value: 'Kontrak/Sewa' },
+    ];
+    const landkondisi = [
+        { label: 'Kosong', value: 'Kosong' },
+        { label: 'Bangunan', value: 'Bangunan' },
+    ];
 
-  
+    const onSubmit: SubmitHandler<LandData> = async (value) => {
+        await landApi.create(value);
+        navigate(listedUser.land);
+        window.location.reload();
+        reset();
+    };
+    const handlePolygonChange = (coordinates: LatLngTuple[]) => {
+        setPolygonCoordinates(coordinates);
+    };
+
+    const convertToString = (coordinates: LatLngTuple[]) => {
+        // Mengubah array koordinat menjadi string dengan format yang diinginkan
+        return `[${coordinates.map(coord => `${coord[0]}, ${coord[1]}]`).join(', ')}`;
+    };
     return (
-        <div className="p-6 bg-gray-100 min-h-screen">
-            <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
+        <div className="bg-gray-100 min-h-screen">
+            <div className="w-full mx-auto bg-white p-6 rounded-lg shadow">
                 <h2 className="text-2xl font-bold mb-4">Tambah Lahan</h2>
-                <div className="breadcrumb text-sm text-gray-500 mb-6">Lahan / Tambah Lahan</div>
+                <div className="breadcrumb text-sm text-gray-500 mb-6">
+                    Lahan / Tambah Lahan
+                </div>
 
                 {/* Koordinat dan Dimensi Lahan */}
                 <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-2">Koordinat dan Dimensi Lahan</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="border-dashed border-2 border-gray-300 h-64 rounded-md overflow-hidden">
-                            <CustomMap
-                                locations={locations}
-                                defaultZoom={13}
-                                iconUrl={pin}
-                                id={`map-${Math.random()}`} // ID unik untuk setiap instance
-                            />
+                    <h3 className="text-lg font-semibold mb-2">
+                        Koordinat dan Dimensi Lahan
+                    </h3>
+                    <div>
+                        <Map onPolygonChange={handlePolygonChange} />
 
-                        </div>
-                        <div className='w-full gap-2 flex flex-col'>
-
-                            <input
-                                type="text"
-                                value={position?.lng}
-                                readOnly
-                                placeholder="Longitude"
-                                className="input input-bordered w-full"
-                            />
-                            <input
-                                type="text"
-                                value={position?.lat}
-                                readOnly
-                                placeholder="Latitude"
-                                className="input input-bordered w-full"
-                            />
-                            <input type="text" placeholder="Luas" className="input input-bordered w-full"  />
-                            <button className='btn btn-ghost bg-primary text-white' onClick={() => openModal('add-lokasi')}>Edit Lokasi</button>
-                        </div>
                     </div>
+                   
                 </div>
 
                 {/* Informasi Lokasi dan Status Lahan */}
                 <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-2">Informasi Lokasi dan Status Lahan</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                        Informasi Lokasi dan Status Lahan
+                    </h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <input type="text" placeholder="Nama Lengkap" className="input input-bordered w-full" />
-                        <select
-                            className="select select-bordered w-full"
-                            onChange={(e) =>
-                                setIdWilayah((prev: any) => ({
-                                    ...prev,
-                                    idProvinsi: e.target.value,
-                                }))
-                            }
-                        >
-                            <option value="">Provinsi</option>
-                            {provinsi?.map((value: provinces, index: number) => (
-                                <option key={index} value={value.id}>
-                                    {value.name}
-                                </option>
-                            ))}
-                        </select>
-                        <select
-                            className={`select select-bordered w-full ${idWilayah?.idProvinsi ? '' : 'select-disabled'}`}
-                            onChange={(e) =>
-                                setIdWilayah((prev: any) => ({
-                                    ...prev,
-                                    idKabupaten: e.target.value,
-                                }))
-                            }>
-                            <option value={''}>Kota / Kabupaten</option>
-                            {kabupaten?.map((value: provinces, index: number) => (
-                                <option key={index} value={value.id}>
-                                    {value.name}
-                                </option>
-                            ))}
-                        </select>
-                        <select
-                            className={`select select-bordered w-full ${idWilayah?.idKabupaten ? '' : 'select-disabled'}`}
-                            onChange={(e) =>
-                                setIdWilayah((prev: any) => ({
-                                    ...prev,
-                                    idKecamatan: e.target.value,
-                                }))
-                            }>
-                            <option value={''}>Kecamatan</option>
-                            {kecamatan?.map((value: provinces, index: number) => (
-                                <option key={index} value={value.id}>
-                                    {value.name}
-                                </option>
-                            ))}
-                        </select>
-                        <select
-                            className={`select select-bordered w-full ${idWilayah?.idKecamatan ? '' : 'select-disabled'}`}
-                            onChange={(e) =>
-                                setIdWilayah((prev: any) => ({
-                                    ...prev,
-                                    idKelurahan: e.target.value,
-                                }))
-                            }>
-                            <option value={''}>Desa / Kelurahan</option>
-                            {kelurahan?.map((value: provinces, index: number) => (
-                                <option key={index} value={value.id}>
-                                    {value.name}
-                                </option>
-                            ))}
-                        </select>
+                        <Input
+                            type="text"
+                            error={errors?.ownerFullName}
+                            placeholder="Nama Lengkap"
+                            className="w-full"
+                            {...register('ownerFullName')}
+                        />
 
-                        <input type="text" placeholder="Alamat Lahan" className="input input-bordered w-full" />
-                        <select className="select select-bordered w-full">
-                            <option>Status Kepemilikan</option>
-                        </select>
-                        <select className="select select-bordered w-full">
-                            <option>Kondisi Lahan</option>
-                        </select>
-                        <textarea placeholder="Catatan" className="textarea textarea-bordered w-full" maxLength={500}></textarea>
+                        <SelectLocation
+                            data={Provinsi}
+                            error={errors?.ownerProvince}
+                            value={idWilayah?.idProvinsi}
+                            placeholder="Pilih Provinsi"
+                            onChange={(e) => {
+                                const selectedValue = e.target.value;
+                                const selectedProvince = Provinsi.find(
+                                    (p) => p.id === selectedValue
+                                );
+
+                                // Simpan Nama Provinsi di useForm
+                                setValue('ownerProvince', selectedProvince?.name || '');
+                                setIdWilayah((prev: any) => ({
+                                    ...prev,
+                                    idProvinsi: selectedValue,
+                                    idKabupaten: '', // Reset Kabupaten saat Provinsi berubah
+                                    idKecamatan: '',
+                                    idKelurahan: '',
+                                }));
+                            }}
+                        />
+
+                        <SelectLocation
+                            data={Kabupaten}
+                            error={errors?.ownerCity}
+                            value={idWilayah?.idKabupaten}
+                            placeholder="Pilih Kabupaten / Kota"
+                            onChange={(e) => {
+                                const selectedValue = e.target.value;
+                                const selectedKabupaten = Kabupaten.find(
+                                    (p) => p.id === selectedValue
+                                );
+
+                                setValue('ownerCity', selectedKabupaten?.name || ''); // Simpan Nama Kabupaten
+                                setIdWilayah((prev: any) => ({
+                                    ...prev,
+                                    idKabupaten: selectedValue,
+                                    idKecamatan: '', // Reset Kecamatan saat Kabupaten berubah
+                                    idKelurahan: '',
+                                }));
+                            }}
+                        />
+
+                        <SelectLocation
+                            data={Kecamatan}
+                            error={errors?.ownerDistrict}
+                            value={idWilayah?.idKecamatan}
+                            placeholder="Pilih Kecamatan"
+                            onChange={(e) => {
+                                const selectedValue = e.target.value;
+                                const selectedKecamatan = Kecamatan.find(
+                                    (p) => p.id === selectedValue
+                                );
+
+                                setValue('ownerDistrict', selectedKecamatan?.name || ''); // Simpan Nama Kecamatan
+                                setIdWilayah((prev: any) => ({
+                                    ...prev,
+                                    idKecamatan: selectedValue,
+                                    idKelurahan: '', // Reset Kelurahan saat Kecamatan berubah
+                                }));
+                            }}
+                        />
+
+                        <SelectLocation
+                            data={Kelurahan}
+                            error={errors?.ownerSubDistrict}
+                            value={idWilayah?.idKelurahan}
+                            placeholder="Pilih Kelurahan"
+                            onChange={(e) => {
+                                const selectedValue = e.target.value;
+                                const selectedKelurahan = Kelurahan.find(
+                                    (p) => p.id === selectedValue
+                                );
+
+                                setValue('ownerSubDistrict', selectedKelurahan?.name || ''); // Simpan Nama Kelurahan
+                                setIdWilayah((prev: any) => ({
+                                    ...prev,
+                                    idKelurahan: selectedValue,
+                                }));
+                            }}
+                        />
+
+                        <Select
+                            data={kepemilikan}
+                            className="w-full"
+                            placeholder="Status Kepemilikan"
+                            error={errors?.ownershipStatus}
+                            {...register('ownershipStatus')}
+                        />
+                        <Select
+                            data={landkondisi}
+                            className="w-full"
+                            placeholder="Kondisi Lahan"
+                            error={errors?.landCondition}
+                            {...register('landCondition')}
+                        />
+                        <TextArea
+                            error={errors?.landAddress}
+                            placeholder="Alamat Lahan"
+                            className="w-full"
+                            {...register('landAddress')}
+                        />
+                        <TextArea
+                            error={errors?.ownerNotes}
+                            placeholder="Catatan"
+                            className="w-full"
+                            {...register('ownerNotes')}
+                        />
                     </div>
                 </div>
 
-                {/* Detail Kepemilikan Lahan */}
                 <div className="mb-6">
-                    <h3 className="text-lg font-semibold mb-2">Detail Kepemilikan Lahan</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                        Detail Kepemilikan Lahan
+                    </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className='flex flex-col gap-2'>
+                        <div className="flex flex-col gap-2">
                             <p>File Sertifikat</p>
-                            <FileUploader />
-                        </div>
-                        <div className='flex gap-2 flex-col pt-8'>
+                            <FileUploader
+                                value={watch('file') ?? undefined}
+                                onChange={(file) => {
+                                    if (file) {
+                                        setValue('file', file, { shouldValidate: true });
+                                    }
+                                }}
+                            />
 
-                            <input type="text" placeholder="Nomor Sertifikat SHM" className="input input-bordered w-full" />
-                            <input type="text" placeholder="Nama Lengkap Pemilik Dokumen" className="input input-bordered w-full" />
-                            <input type="text" placeholder="Luas Lahan" className="input input-bordered w-full" />
+                            <Message
+                                isError={Boolean(errors?.file)}
+                                message={errors?.file?.message || ' '}
+                            />
                         </div>
-
+                        <div className="flex gap-2 flex-col pt-8">
+                            <Input
+                                type="number"
+                                error={errors?.documentShmCertificateNo}
+                                placeholder="Nomor Sertifikat SHM"
+                                className="w-full"
+                                {...register('documentShmCertificateNo')}
+                            />
+                            <Input
+                                type="text"
+                                error={errors?.documentOwnerFullName}
+                                placeholder="Nama Lengkap Pemilik Dokumen"
+                                className="w-full"
+                                {...register('documentOwnerFullName')}
+                            />
+                            <label htmlFor="">Luas Lahan</label>
+                            <Input
+                                type="number"
+                                error={errors?.documentWideArea}
+                                placeholder="Luas Lahan"
+                                className="w-full"
+                                {...register('documentWideArea')}
+                            />
+                        </div>
                     </div>
                 </div>
 
-                {/* Buttons */}
+
                 <div className="flex justify-end gap-3">
-                    <button className="btn btn-outline">Kembali</button>
-                    <button className="btn btn-primary text-white">Simpan</button>
+                    <button
+                        className="btn btn-ghost bg-emeraldGreen text-white"
+                        onClick={handleSubmit(onSubmit)}
+                    >
+                        Simpan
+                    </button>
                 </div>
             </div>
 
-            <ModalDetail id='add-lokasi' width='w-11/12 max-w-5xl p-0'>
-                <MapComponent
+            {/* <ModalDetail id="add-lokasi" width="w-11/12 max-w-5xl p-0">
+        <Map />
+        <MapComponent
                     position={position || { lat: 0, lng: 0 }}
                     setPosition={setPosition}
                     radius={10}
                     markerIconUrl={pin}
                 />
-                <div className='w-full p-5 flex justify-end gap-2'>
-
-                    <button className='btn btn-outline text-primary w-32' onClick={() => closeModal('add-lokasi')}>Kambali</button>
-                    <button className='btn btn-primary text-white w-32'>simpan</button>
+                <div className="w-full p-5 flex justify-end gap-2">
+                    <button
+                        className="btn btn-outline text-white bg-emeraldGreen w-32"
+                        onClick={() => closeModal('add-lokasi')}
+                    >
+                        Simpan
+                    </button>
                 </div>
-
-            </ModalDetail>
+      </ModalDetail> */}
         </div>
     );
 };

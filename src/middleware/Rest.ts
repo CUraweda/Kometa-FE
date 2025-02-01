@@ -8,8 +8,8 @@ import { LandData, Login, LoginResponse, MemberData, MembershipTypeResponse,  pr
 import useAuthStore from "../store/auth.store"; // Zustand store untuk auth
 import { token } from "@/utils/tokenize";
 
-const server = axios.create({ baseURL: 'https://api-kometa.curaweda.com/' });
-// const server = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
+// const server = axios.create({ baseURL: 'https://api-kometa.curaweda.com/' });
+const server = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
 const datawilayah = axios.create({
   baseURL: "https://www.emsifa.com/api-wilayah-indonesia/api/",
 });
@@ -251,6 +251,14 @@ export const restLand = {
       method: "PUT",
       url: `api/land-data/update/${id}`,
       data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  delete: (id?: string): AxiosPromise<LandData> =>
+    server({
+      method: "DELETE",
+      url: `api/land-data/delete/${id}`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },

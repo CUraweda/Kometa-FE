@@ -1,5 +1,5 @@
 import CenterLayout from '@/layout/center.layout'
-import { CiSearch, CiTrash } from "react-icons/ci";
+import { CiTrash } from "react-icons/ci";
 import { AiOutlineExpandAlt } from "react-icons/ai";
 import ModalDetail from '@/components/ui/ModalDetail';
 
@@ -42,7 +42,7 @@ const Lahan = () => {
         <div>
             <CenterLayout className="min-h-[calc(100vh-105px)]">
                 <div className=' w-full min-h-[calc(100vh-105px)] flex flex-col'>
-                    <span className='text-xl'>Lahan</span>
+                    <span className='text-xl font-bold'>Lahan Anggota</span>
                     {/* <div className="rounded-lg mt-10 border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full bg-white">
                         {fakeData.map(({ id, value }) => {
 
@@ -56,7 +56,7 @@ const Lahan = () => {
                             );
                         })}
                     </div> */}
-                    <div className='mt-5 w-full flex justify-end gap-3'>
+                    {/* <div className='mt-5 w-full flex justify-end gap-3'>
                         <label className="input input-bordered flex items-center gap-2 ">
                             <CiSearch />
                             <input type="text" className="grow" placeholder="Email" />
@@ -78,7 +78,7 @@ const Lahan = () => {
                             <option>Star Trek</option>
                         </select>
 
-                    </div>
+                    </div> */}
 
                     <div className='w-full bg-white mt-5 shadow-md p-2 rounded-md'>
                         <div className="overflow-x-auto">

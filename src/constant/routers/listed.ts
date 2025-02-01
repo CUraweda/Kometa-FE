@@ -7,6 +7,7 @@ export const listedUser = {
   verify: "/verify",
   registerMember: "/register",
   payment: "/payment",
+  paymentVa: "/paymentVa",
   paid: "/paid",
   error: "/*",
   dashboard: "/dashboard",

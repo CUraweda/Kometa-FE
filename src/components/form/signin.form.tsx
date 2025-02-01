@@ -114,13 +114,13 @@ function SignInForm() {
         />
 
         <div className="flex justify-end mt-2">
-          <button
+          {/* <button
             type="button"
             onClick={() => navigate(listedUser.forget)}
             className="text-sm justify-self-end text-blue-700"
           >
             Lupa kata sandi?
-          </button>
+          </button> */}
         </div>
         <button className="font-medium tracking-wider w-full btn bg-primary hover:bg-primary hover:opacity-95 text-white mt-6">
           Masuk
