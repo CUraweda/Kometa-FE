@@ -52,6 +52,7 @@ function SignInForm() {
         navigate(listedAdmin.dashboard)
         return;
       }
+      
       const response = await memberRest.checkData();
 
       if (!response || typeof response !== 'object' || !('data' in response)) {
@@ -113,21 +114,21 @@ function SignInForm() {
         />
 
         <div className="flex justify-end mt-2">
-          <button
+          {/* <button
             type="button"
             onClick={() => navigate(listedUser.forget)}
             className="text-sm justify-self-end text-blue-700"
           >
             Lupa kata sandi?
-          </button>
+          </button> */}
         </div>
-        <button className="font-medium tracking-wider w-full btn bg-emeraldGreen hover:bg-emeraldGreen hover:opacity-95 text-white mt-6">
+        <button className="font-medium tracking-wider w-full btn bg-primary hover:bg-primary hover:opacity-95 text-white mt-6">
           Masuk
         </button>
         <button className="text-sm mt-6">
           Belum punya akun?
           <Link
-            className="ml-1 text-emeraldGreen font-medium"
+            className="ml-1 text-primary font-medium"
             to={listedUser.signup}
           >
             Daftar

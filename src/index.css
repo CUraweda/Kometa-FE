@@ -8,11 +8,11 @@
 .select-bordered,
 .textarea,
 .textarea-bordered {
-  @apply outline-0 ring-0 focus:outline-none focus:ring-0 active:outline-none active:ring-0 shadow-none focus:border-emeraldGreen active:border-emeraldGreen;
+  @apply outline-0 ring-0 focus:outline-none focus:ring-0 active:outline-none active:ring-0 shadow-none focus:border-primary;
 }
 
 .tab-active {
-  @apply border-none border-b !border-b-emeraldGreen;
+  @apply border-none border-b !border-b-primary;
 }
 
 .image-container {
@@ -34,10 +34,8 @@
   transform: scale(1.2);
 }
 
-
 @layer base {
   :root {
     --radius: 0.5rem;
-   
   }
 }

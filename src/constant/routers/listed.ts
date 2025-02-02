@@ -7,12 +7,16 @@ export const listedUser = {
   verify: "/verify",
   registerMember: "/register",
   payment: "/payment",
+  paymentVa: "/paymentVa",
   paid: "/paid",
   error: "/*",
   dashboard: "/dashboard",
   land: "/land",
   tambahLahan: "tambah",
   detailLahan: "detail",
+  add: "add",
+  detail: "detail",
+
   planting: "planting",
   supplier: "supplier",
   finance: "finance",
@@ -37,5 +41,4 @@ export const listedAdmin = {
   budidaya: "/admin/budidaya",
   simpanan: "/admin/simpanan",
   tagihan: "/admin/tagihan",
-  
 };

@@ -5,7 +5,7 @@ function Breadcrumbs() {
   const pathname = useLocation().pathname;
   const arrPath = pathname.slice(1, pathname.length).split("/");
   return (
-    <div className="breadcrumbs text-sm w-full">
+    <div className="breadcrumbs mb-3 text-sm w-full">
       <ul>
         {arrPath.map((item, index) => (
           <li key={item}>

@@ -11,7 +11,7 @@ const ButtomMenu = () => {
                         key={path}
                         to={path}
                         className={({ isActive }) =>
-                            `group flex  items-center cursor-pointer rounded-lg hover:text-emeraldGreen ${isActive ? "text-emeraldGreen p-2" : ""
+                            `group flex  items-center cursor-pointer rounded-lg hover:text-primary ${isActive ? "text-primary p-2" : ""
                             }`
                         }
                     >
@@ -19,8 +19,8 @@ const ButtomMenu = () => {
                             <div className="flex flex-col justify-center items-center text-wrap">
                                 <Icon
                                     className={`w-7 h-8 ${isActive
-                                        ? "fill-emeraldGreen"
-                                        : "group-hover:fill-emeraldGreen"
+                                        ? "fill-primary"
+                                        : "group-hover:fill-primary"
                                         }`}
                                 />
                                 <span className="text-xs">{label}</span>

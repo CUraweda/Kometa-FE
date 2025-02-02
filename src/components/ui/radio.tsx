@@ -29,7 +29,7 @@ function Radio({ id, data, error, onChange, selected, className }: Props) {
               htmlFor={value}
               className={twMerge(
                 "border input-bordered rounded-lg p-2 px-3 text-gray-500 flex flex-1 items-center justify-between cursor-pointer",
-                isSelected ? "border-emeraldGreen" : ""
+                isSelected ? "border-primary" : ""
               )}
             >
               <label htmlFor={value} className="cursor-pointer">
@@ -39,7 +39,7 @@ function Radio({ id, data, error, onChange, selected, className }: Props) {
                 id={value}
                 type="radio"
                 name={id}
-                className="radio radio-xs checked:bg-emeraldGreen"
+                className="radio radio-xs checked:bg-primary"
                 onClick={() => {
                   onChange(item);
                   setCurrentSelected(value);

@@ -3,6 +3,7 @@ import { FieldError } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { Message } from "../form/error.field";
 import { RiSearchLine } from "react-icons/ri";
+import { Email } from "../../assets/icon";
 
 type InputProps = {
   error?: string | FieldError;
@@ -30,6 +31,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const selectedIcon = {
       search: <RiSearchLine />,
+      email: <Email />,
     };
 
     return (
@@ -37,7 +39,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <label
           className={twMerge(
             icon
-              ? "input input-bordered flex items-center gap-2"
+              ? "border h-[48px] rounded-lg px-3 flex items-center gap-2 focus-within:border-primary fill-[#b3b3b3] focus-within:fill-primary"
               : "form-control w-full",
             className
           )}
@@ -48,10 +50,25 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             type={type}
             placeholder={placeholder}
+            onKeyDown={(e) => {
+              if (type == "tel") {
+                const allowedKeys = /[0-9]/;
+                const specialKeys = [
+                  "Backspace",
+                  "Delete",
+                  "ArrowLeft",
+                  "ArrowRight",
+                ];
+
+                if (!allowedKeys.test(e.key) && !specialKeys.includes(e.key)) {
+                  e.preventDefault();
+                }
+              }
+            }}
             className={twMerge(
-              `${icon ? "grow" : "input input-bordered"} w-full ${
-                error ? "border-red-600" : ""
-              }`,
+              `${
+                icon ? "grow outline-none group" : "input input-bordered"
+              } w-full ${error ? "border-red-600" : ""}`,
               className
             )}
             {...rest}

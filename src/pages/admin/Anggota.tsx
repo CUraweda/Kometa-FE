@@ -1,5 +1,5 @@
 import CenterLayout from '@/layout/center.layout'
-import { CiSearch } from "react-icons/ci";
+// import { CiSearch } from "react-icons/ci";
 import { AiOutlineExpandAlt } from "react-icons/ai";
 import ModalDetail from '@/components/ui/ModalDetail';
 import { useEffect, useState } from 'react';
@@ -42,9 +42,9 @@ const Anggota = () => {
         <div>
             <CenterLayout className="min-h-[calc(100vh-105px)]">
                 <div className=' w-full min-h-[calc(100vh-105px)] flex flex-col'>
-                    <span className='text-xl'>Anggota Kometa</span>
+                    <span className='text-xl font-bold'>Anggota Kometa</span>
 
-                    <div className='mt-5 w-full flex justify-end gap-3'>
+                    {/* <div className='mt-5 w-full flex justify-end gap-3'>
                         <label className="input input-bordered flex items-center gap-2 ">
                             <CiSearch />
                             <input type="text" className="grow" placeholder="Email" />
@@ -61,7 +61,7 @@ const Anggota = () => {
 
                             <input type="date" className="grow" placeholder="Email" />
                         </label>
-                    </div>
+                    </div> */}
 
                     <div className='w-full bg-white mt-5 shadow-md p-2 rounded-md'>
                         <div className="overflow-x-auto">

@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { Email } from "../../assets/icon";
 import { commonMessage } from "../../constant/form/validation.message";
 import { listedUser } from "../../constant/routers/listed";
 import { Forget } from "../../types/sign";
 import Header from "../content/header.sign";
 import { Message } from "./error.field";
+import Input from "../ui/input";
 
 function ForgetForm() {
   const navigate = useNavigate();
@@ -53,25 +53,14 @@ function ForgetForm() {
           reset kata sandi.`}
       />
       <form className="mt-8" onSubmit={handleSubmit(onSubmit)}>
-        <label
-          className="input input-bordered flex items-center gap-2 mb-1 focus:border-emeraldGreen"
-          style={{ outline: "none" }}
-        >
-          <Email />
-          <input
-            type="text"
-            placeholder="Email"
-            className={`grow ${errors.email ? "border-red-600" : ""}`}
-            {...register("email")}
-          />
-        </label>
+        <Input type="text" icon="email" placeholder="Email" {...register("email")} />
         <div className="flex justify-end">
           <Message
             isError={Boolean(errors.email)}
             message={errors.email?.message}
           />
         </div>
-        <button className="font-medium tracking-wider w-full btn bg-emeraldGreen hover:bg-emeraldGreen hover:opacity-95 text-white mt-6">
+        <button className="font-medium tracking-wider w-full btn bg-primary hover:bg-primary hover:opacity-95 text-white mt-6">
           Kirim
         </button>
       </form>

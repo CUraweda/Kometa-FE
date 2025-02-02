@@ -1,7 +1,6 @@
 import CenterLayout from '@/layout/center.layout'
-import { CiSearch, CiTrash } from "react-icons/ci";
 import { AiOutlineExpandAlt } from "react-icons/ai";
-import ModalDetail, { openModal } from '@/components/ui/ModalDetail';
+import ModalDetail from '@/components/ui/ModalDetail';
 import { useEffect, useState } from 'react';
 import { Member } from '@/middleware/Utils';
 import { memberRest } from '@/middleware';
@@ -31,10 +30,6 @@ const AnggotaBaru = () => {
         }
     };
 
-
-    const handleOpenModal = (props: string) => {
-        openModal(props);
-    }
     const handleDetailAnggota = (props: string) => {
         const params = new URLSearchParams({
             id: props,
@@ -48,7 +43,7 @@ const AnggotaBaru = () => {
         <div>
             <CenterLayout className="min-h-[calc(100vh-105px)]">
                 <div className=' w-full min-h-[calc(100vh-105px)] flex flex-col'>
-                    <span className='text-xl'>Anggota Baru Kometa</span>
+                    <span className='text-xl font-bold'>Anggota Baru Kometa</span>
                     {/* <div className="rounded-lg mt-10 border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full bg-white">
                         {fakeData.map(({ id, value }) => {
 
@@ -62,7 +57,7 @@ const AnggotaBaru = () => {
                             );
                         })}
                     </div> */}
-                    <div className='mt-5 w-full flex justify-end gap-3'>
+                    {/* <div className='mt-5 w-full flex justify-end gap-3'>
                         <label className="input input-bordered flex items-center gap-2 ">
                             <CiSearch />
                             <input type="text" className="grow" placeholder="Email" />
@@ -79,7 +74,7 @@ const AnggotaBaru = () => {
 
                             <input type="date" className="grow" placeholder="Email" />
                         </label>
-                    </div>
+                    </div> */}
 
                     <div className='w-full bg-white mt-5 shadow-md p-2 rounded-md'>
                         <div className="overflow-x-auto">
@@ -113,9 +108,7 @@ const AnggotaBaru = () => {
                                                         <button className='text-xl btn btn-xs btn-ghost' onClick={() => handleDetailAnggota(value.id)}>
                                                             <AiOutlineExpandAlt />
                                                         </button>
-                                                        <button className='text-xl btn btn-xs btn-ghost text-red-500' onClick={() => handleOpenModal('detail-pendapatan')}>
-                                                            <CiTrash />
-                                                        </button>
+                                                        
                                                     </div>
                                                 </td>
                                             </tr>

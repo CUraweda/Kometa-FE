@@ -77,7 +77,7 @@ function VerifyOTPPage() {
             <p>Masukkan 6 digit kode yang telah dikirim</p>
             <p>
               ke Whatsapp
-              <span className="text-emeraldGreen ml-1 font-bold">
+              <span className="text-primary ml-1 font-bold">
                 +62 {phone}
               </span>
             </p>
@@ -106,7 +106,7 @@ function VerifyOTPPage() {
           const { className, ...rest } = props;
           return (
             <input
-              className="outline-none border border-darkMetal focus:border-emeraldGreen"
+              className="outline-none border border-darkMetal focus:border-primary"
               {...rest}
             />
           );
@@ -115,11 +115,11 @@ function VerifyOTPPage() {
       />
       <div className="flex justify-between text-sm mt-3 px-2">
         {isNull ? (
-          <button onClick={handleResetTimer} className="text-emeraldGreen">
+          <button onClick={handleResetTimer} className="text-primary">
             Kirim Ulang
           </button>
         ) : (
-          <span className="text-emeraldGreen">{time}</span>
+          <span className="text-primary">{time}</span>
         )}
         <button
           className="text-blue-700"

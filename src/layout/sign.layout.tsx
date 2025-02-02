@@ -24,7 +24,7 @@ function SignLayout({ children, bg, hideBack = false }: Props) {
           {hideBack ? null : (
             <button
               onClick={() => navigate(-1)}
-              className="text-emeraldGreen text-sm flex items-center"
+              className="text-primary text-sm flex items-center"
             >
               <RiArrowDropLeftLine size={25} /> Kembali
             </button>

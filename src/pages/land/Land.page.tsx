@@ -54,7 +54,7 @@ function LandPage() {
 
 
   return (
-    <CenterLayout className="min-h-[calc(100vh-105px)] items-start">
+    <CenterLayout className="items-start">
       <div className="w-full space-y-3">
       <div className='w-full flex-col sm:flex-row flex'>
             <div className='w-full sm:w-1/3'>

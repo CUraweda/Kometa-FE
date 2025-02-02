@@ -18,9 +18,10 @@ import {
 import { headerProduct, products } from "../constant/content/product";
 import { headerPrograms, programs } from "../constant/content/program";
 import { socials } from "../constant/content/social";
-import { headerTeam, teams } from "../constant/content/team";
+// import { headerTeam, teams } from "../constant/content/team";
 import { useScrollClick } from "../hooks/useScrollClick";
-import pin from '../assets/icon/iconMap.png'
+import pin from "../assets/icon/iconMap.png";
+import { twMerge } from "tailwind-merge";
 
 function HomePage() {
   const { handleScrollClick } = useScrollClick();
@@ -44,8 +45,8 @@ function HomePage() {
             </p>
             <div className="flex mt-14 space-x-5">
               <div className="avatar-group -space-x-6 rtl:space-x-reverse">
-                {dummyPhoto.map((item) => (
-                  <div className="avatar">
+                {dummyPhoto.map((item,index) => (
+                  <div key={`dummyPhoto-${index}`} className="avatar">
                     <div className="w-10">
                       <img key={item} src={item} alt={item} loading="eager" />
                     </div>
@@ -105,7 +106,7 @@ function HomePage() {
               >
                 <span className="text-3xl sm:text-5xl font-bold">
                   {index < achievements.length - 1 ? (
-                    <div className="flex text-emeraldGreen">
+                    <div className="flex text-primary">
                       <CountUp
                         className=" font-bold"
                         end={value}
@@ -115,7 +116,7 @@ function HomePage() {
                       <span>+</span>
                     </div>
                   ) : (
-                    <div className="flex items-end text-emeraldGreen">
+                    <div className="flex items-end text-primary">
                       <span>Rp +</span>
                       <CountUp
                         className="font-bold"
@@ -137,9 +138,9 @@ function HomePage() {
       </Container>
       <Container id="member" className="py-10">
         <Header {...headerMembers} />
-        <div className="flex mt-14  flex-wrap">
+        <div className="flex mt-14 flex-wrap">
           {members.map((item, index) => (
-            <List key={`member-${index}`} {...item} />
+            <List key={`member-${index}`} className="sm:w-1/3" {...item} />
           ))}
         </div>
       </Container>
@@ -171,7 +172,7 @@ function HomePage() {
           </div>
         </Container>
       </div>
-      <Container id="team" className="py-10 p-3">
+      {/* <Container id="team" className="py-10 p-3">
         <Header {...headerTeam} />
         <div className="flex flex-wrap  mt-14">
           {teams.map(({ photoPath, position, name }, index) => (
@@ -193,19 +194,18 @@ function HomePage() {
             </div>
           ))}
         </div>
-      </Container>
+      </Container> */}
       <div id="network">
-      <CustomMap
-        locations={locations} // Daftar lokasi
-        defaultZoom={13} // Zoom default
-        iconUrl={pin} // URL ikon kustom
-        id="homepage"
-      />
+        <CustomMap
+          locations={locations} // Daftar lokasi
+          defaultZoom={13} // Zoom default
+          iconUrl={pin} // URL ikon kustom
+          id="homepage"
+        />
       </div>
-
-      <div className="border-t-4 border-t-emeraldGreen"></div>
+      <div className="border-t-4 border-t-primary"></div>
       <Container className="pt-16 pb-10 px-3">
-        <div className="">
+        <div>
           <div className="flex flex-wrap w-full  ">
             <div className="w-full sm:w-1/3 p-4">
               <a href="top" onClick={handleScrollClick}>
@@ -262,13 +262,20 @@ function List({
   icon: Icon,
   title,
   description,
+  className,
 }: {
   icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
   title: string;
   description: string;
+  className?: string;
 }) {
   return (
-    <div className="w-full sm:w-1/4 items-center sm:items-start text-center sm:text-start flex flex-col p-4">
+    <div
+      className={twMerge(
+        "w-full sm:w-1/4 items-center sm:items-start text-center sm:text-start flex flex-col p-4",
+        className
+      )}
+    >
       <Icon />
       <h2 className="mt-6 text-lg font-medium text-slate-700">{title}</h2>
       <p className="mt-2 tracking-wide text-sm text-slate-400">{description}</p>

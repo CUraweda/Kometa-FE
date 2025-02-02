@@ -9,4 +9,5 @@ export const commonMessage = {
   unmatchPassword: "Kata sandi tidak cocok.",
   notanumber: "Nomor telepon harus angka",
   nameRequired: "Nama tidak boleh kosong.",
+  passwordMaxDigit: "Password maksimal 10 karakter", 
 };

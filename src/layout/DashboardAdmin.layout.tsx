@@ -1,6 +1,6 @@
+import TopBarAdmin from "@/components/dashboard/topbarAdmin";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/dashboard/sidebar";
-import TopBarAdmin from "@/components/dashboard/topbarAdmin";
 
 function DashboardAdminLayout() {
   return (
@@ -14,7 +14,7 @@ function DashboardAdminLayout() {
             
             <TopBarAdmin />
             </div>
-            <div className="py-5 px-7 w-full">
+            <div className="py-5 px-7 w-full z-0">
               <Outlet />
             </div>
           </div>
