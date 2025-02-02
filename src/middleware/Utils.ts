@@ -164,9 +164,6 @@ export interface verifMember {
 export interface LandData {
   id?: string
   memberId: string;
-  longitudeArea: number;
-  latitudeArea: number;
-  wideArea: number;
   ownerFullName: string;
   ownerProvince: string;
   ownerCity: string;
@@ -187,7 +184,8 @@ export interface LandData {
   landFile?: {
     filePath: string
   }
-  file: File;// Use `File` type for the file field
+  file_certificate: File;
+  arrayLocation: string// Use `File` type for the file field
 }
 
 

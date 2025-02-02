@@ -137,7 +137,7 @@ const LahanBaru = () => {
                     <tr key={index}>
                       <td>{value.ownerFullName}</td>
                       <td>{value.landAddress}</td>
-                      <td>{value.wideArea}</td>
+                      <td>{value.documentWideArea}</td>
                       <td>{value.landCondition}</td>
                       <td>{value.ownershipStatus}</td>
                       <td>{value.status}</td>

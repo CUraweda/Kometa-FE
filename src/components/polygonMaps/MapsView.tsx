@@ -3,7 +3,6 @@ import { MapContainer, TileLayer, Polygon, useMap } from 'react-leaflet';
 import { LatLngTuple, LatLngBounds } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
-import L from 'leaflet';
 import 'leaflet-draw'; // Impor leaflet-draw
 
 interface MapComponentProps {

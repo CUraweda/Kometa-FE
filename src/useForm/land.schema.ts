@@ -1,23 +1,11 @@
-import * as yup from "yup";
+import * as yup from 'yup';
 
 export const landSchema = yup.object().shape({
     memberId: yup.string().required("Member ID wajib diisi"),
-    longitudeArea: yup
-      .number()
-      .typeError("Longitude harus berupa angka")
-      .required("Longitude wajib diisi"),
-    latitudeArea: yup
-      .number()
-      .typeError("Latitude harus berupa angka")
-      .required("Latitude wajib diisi"),
-    wideArea: yup
-      .number()
-      .typeError("Luas area harus berupa angka")
-      .positive("Luas area harus lebih dari 0")
-      .required("Luas area wajib diisi"),
     ownerFullName: yup.string().required("Nama pemilik wajib diisi"),
     ownerProvince: yup.string().required("Provinsi pemilik wajib diisi"),
     ownerCity: yup.string().required("Kota pemilik wajib diisi"),
+    arrayLocation: yup.string().required("Data Pemetaan Tanah Wajib diisi"),
     ownerDistrict: yup.string().required("Kecamatan pemilik wajib diisi"),
     ownerSubDistrict: yup.string().required("Kelurahan/Desa wajib diisi"),
     ownershipStatus: yup
@@ -36,11 +24,11 @@ export const landSchema = yup.object().shape({
       .required("Luas dokumen wajib diisi"),
     status: yup.string().required("Status wajib diisi"),
     
-   file: yup
+    file_certificate: yup
          .mixed<File>()
          .required()
          .defined()
-         .required("sertifikat file is required")
+         .required("Sertifikat file is required")
          .test(
            "fileSize",
            "File size must not exceed 2MB",

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { LuCopy, LuCopyCheck } from 'react-icons/lu';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import {useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import PaymentMethod from '../components/shared/payment.component';
 import { paymentList } from '../constant/form/payment.list';
@@ -11,6 +11,8 @@ import { useTimer } from '../hooks/useTimer';
 import PaymentLayout from '../layout/payment.layout';
 import { Payment } from '../types/common';
 import { paymentRest } from '@/middleware/Rest';
+import { formatRupiah } from '@/helper/formatRupiah';
+import CountdownTimer from '@/components/ui/countDown';
 
 function PaymentVaPage() {
   const [searchParams] = useSearchParams();
@@ -20,7 +22,7 @@ function PaymentVaPage() {
   const [data, setData] = useState<any>();
 
   const navigate = useNavigate();
-  const { Modal, openModal, closeModal } = useModal();
+  const { Modal, closeModal } = useModal();
 
   useEffect(() => {
     checkPayment();
@@ -35,9 +37,9 @@ function PaymentVaPage() {
       const data = response?.data?.data;
       const isPaid = response.data.data.isPaid;
 
-      // if (isPaid) {
-      //   navigate(listedUser.dahsboardVerfi);
-      // }
+      if (isPaid) {
+        navigate(listedUser.dahsboardVerfi);
+      }
       setData(data);
     } catch (error) {
       await generatePayment();
@@ -50,21 +52,20 @@ function PaymentVaPage() {
       paymentType: type,
     };
     console.log(payload);
-    
+
     try {
       const response = await paymentRest.generatePayment(payload);
       const id = response.data.data.id;
       const params = new URLSearchParams({
         id: id,
+        type: type ?? 'QRIS',
       });
-      // navigate(`${listedUser.payment}?${params.toString()}`);
-      // window.location.reload()
+      navigate(`${listedUser.paymentVa}?${params.toString()}`);
+      window.location.reload();
     } catch (error) {
       console.log('ini jalan gk ada datanya');
     }
   };
-
-
 
   const [paymentId, setPaymentId] = useState('payment');
 
@@ -74,7 +75,7 @@ function PaymentVaPage() {
       <LuCopy
         onClick={() =>
           navigator.clipboard
-            .writeText('1234 5678 9102')
+            .writeText(data?.virtualAccountNo)
             .then(handleStartTimer)
             .catch(() => {
               toast.error('Gagal menyalin nomor akun virtual!');
@@ -103,15 +104,14 @@ function PaymentVaPage() {
   return (
     <>
       <PaymentLayout>
-        <div className="flex  w-full min-h-[600px]">
-          <div className="flex flex-col justify-center w-1/2">
+        <div className="flex flex-col sm:flex-row w-full min-h-[600px] mb-10">
+          <div className="flex flex-col justify-center w-full sm:w-1/2 mt-5">
             <div className="text-center">
               <div>
-                <p className="text-sm tracking-wide mb-2">Total Pembayaran</p>
+                <p className="text-xl tracking-wide mb-2">Total Pembayaran</p>
                 <span className="flex justify-center">
-                  <pre>Rp</pre>
                   <h3 className="text-5xl ml-1 font-bold text-primary">
-                    5.000
+                    {formatRupiah(data?.paymentTotal)}
                   </h3>
                 </span>
               </div>
@@ -121,51 +121,116 @@ function PaymentVaPage() {
                   src={selectedPayment}
                   alt="payment-logo"
                 />
-                <div className="relative -top-6 flex gap-4 mx-auto justify-center">
-                  <div className="space-y-1">
-                    <p className="text-xs tracking-wider">Nama Akun</p>
-                    <h3 className="tracking-wider">Kometa</h3>
+                <div className="relative -top-6 flex flex-col px-10 gap-4 mx-auto justify-center">
+                  <div className="w-full flex justify-center my-5">
+                    <CountdownTimer expiredDate={data?.expiredDate} />
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-xs tracking-wider">Nomor Akun Virtual</p>
-                    <span className="flex gap-1 items-center">
-                      <h3 className="tracking-wider">1234 5678 9102</h3>
-                      {element}
-                    </span>
-                  </div>
+                  <table className="table text-start">
+                    <tr>
+                      <td className="text-end">Id Transaksi</td>
+                      <td>
+                        <span className="flex gap-1 items-start">
+                          {data?.transactionId}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="text-end">Nomor Virtual Account ( VA Pembayaran )</td>
+                      <td>
+                        <span className="flex gap-1 items-center">
+                          <h3 className="tracking-wider font-bold">
+                            {data?.virtualAccountNo}
+                          </h3>
+                          {element}
+                        </span>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
                 <div className="flex justify-center gap-3">
-
                   <button
-                    onClick={() => navigate(listedUser.paid)}
-                    className="btn btn-outline hover:bg-primary border-primary hover:border-transparent text-primary"
+                    className="btn btn-ghost bg-emeraldGreen text-white"
+                    onClick={checkPayment}
                   >
-                    Cek Status
+                    Cek Pembayaran
                   </button>
                 </div>
               </div>
             </div>
           </div>
-          <div className='w-1/2 flex flex-col justify-start '>
+          <div className="w-full sm:w-1/2 flex flex-col justify-start px-5 mt-5">
+            <span className="my-5 text-xl font-bold">Cara Pembayaran</span>
+            <div role="tablist" className="tabs tabs-bordered w-full">
+              <input
+                type="radio"
+                name="my_tabs_1"
+                role="tab"
+                className="tab w-full"
+                aria-label="ATM"
+                defaultChecked
+              />
+              <div role="tabpanel" className="tab-content p-10">
+                <ul className="list-decimal pl-6 space-y-2">
+                  <li>Masukkan kartu ATM dan PIN.</li>
+                  <li>Pilih menu "Pembayaran" atau "Transaksi Lainnya."</li>
+                  <li>Pilih jenis pembayaran seperti "Virtual Account."</li>
+                  <li>Masukkan nomor Virtual Account yang telah diberikan.</li>
+                  <li>Konfirmasi jumlah yang harus dibayar.</li>
+                  <li>
+                    Pilih metode pembayaran yang diinginkan (misalnya, saldo
+                    tabungan atau giro).
+                  </li>
+                  <li>Selesaikan pembayaran dan simpan struk sebagai bukti.</li>
+                </ul>
+              </div>
 
-          <div role="tablist" className="tabs tabs-bordered w-full">
-            <input type="radio" name="my_tabs_1" role="tab" className="tab" aria-label="ATM" defaultChecked/>
-            <div role="tabpanel" className="tab-content p-10">ATM</div>
+              <input
+                type="radio"
+                name="my_tabs_1"
+                role="tab"
+                className="tab"
+                aria-label="iBanking"
+              />
+              <div role="tabpanel" className="tab-content p-10">
+                <ul className="list-decimal pl-6 space-y-2">
+                  <li>
+                    Login ke akun iBanking menggunakan username dan password.
+                  </li>
+                  <li>Pilih menu "Pembayaran" atau "Transfer."</li>
+                  <li>
+                    Pilih opsi "Virtual Account" atau "Pembayaran ke Virtual
+                    Account."
+                  </li>
+                  <li>Masukkan nomor Virtual Account yang sudah diberikan.</li>
+                  <li>Verifikasi jumlah yang harus dibayar.</li>
+                  <li>Pilih rekening yang akan digunakan untuk pembayaran.</li>
+                  <li>Konfirmasi pembayaran dan simpan bukti pembayaran.</li>
+                </ul>
+              </div>
 
-            <input
-              type="radio"
-              name="my_tabs_1"
-              role="tab"
-              className="tab"
-              aria-label="iBanking"
-               />
-            <div role="tabpanel" className="tab-content p-10">Tab content 2</div>
-
-            <input type="radio" name="my_tabs_1" role="tab" className="tab" aria-label="mBanking" />
-            <div role="tabpanel" className="tab-content p-10">Tab content 3</div>
+              <input
+                type="radio"
+                name="my_tabs_1"
+                role="tab"
+                className="tab"
+                aria-label="mBanking"
+              />
+              <div role="tabpanel" className="tab-content p-10">
+                <ul className="list-decimal pl-6 space-y-2">
+                  <li>
+                    Login ke aplikasi mBanking menggunakan username dan
+                    password.
+                  </li>
+                  <li>Pilih menu "Pembayaran" atau "Transfer."</li>
+                  <li>Pilih jenis pembayaran "Virtual Account."</li>
+                  <li>Masukkan nomor Virtual Account yang diberikan.</li>
+                  <li>Periksa jumlah yang akan dibayar.</li>
+                  <li>Pilih sumber dana (tabungan atau giro).</li>
+                  <li>Konfirmasi transaksi dan simpan bukti pembayaran.</li>
+                </ul>
+              </div>
+            </div>
           </div>
-          </div>
-         
         </div>
       </PaymentLayout>
       <Modal

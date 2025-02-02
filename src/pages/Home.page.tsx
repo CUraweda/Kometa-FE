@@ -18,7 +18,7 @@ import {
 import { headerProduct, products } from "../constant/content/product";
 import { headerPrograms, programs } from "../constant/content/program";
 import { socials } from "../constant/content/social";
-import { headerTeam, teams } from "../constant/content/team";
+// import { headerTeam, teams } from "../constant/content/team";
 import { useScrollClick } from "../hooks/useScrollClick";
 import pin from "../assets/icon/iconMap.png";
 import { twMerge } from "tailwind-merge";
@@ -172,7 +172,7 @@ function HomePage() {
           </div>
         </Container>
       </div>
-      <Container id="team" className="py-10 p-3">
+      {/* <Container id="team" className="py-10 p-3">
         <Header {...headerTeam} />
         <div className="flex flex-wrap  mt-14">
           {teams.map(({ photoPath, position, name }, index) => (
@@ -194,7 +194,7 @@ function HomePage() {
             </div>
           ))}
         </div>
-      </Container>
+      </Container> */}
       <div id="network">
         <CustomMap
           locations={locations} // Daftar lokasi

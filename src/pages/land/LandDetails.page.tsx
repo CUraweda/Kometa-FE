@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { landApi } from '@/middleware';
 import { LandData } from '@/middleware/Utils';
-import pin from '@/assets/icon/iconMap.png';
-import CustomMap, { Location } from '@/components/maps/maps';
-
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { previewImage, restLand } from '@/middleware/Rest';
 import { Skeleton } from '@/components/ui/skeleton';
 import Swal from 'sweetalert2';
 import getErrorMessage from '@/helper/apiHelper';
 import { listedUser } from '@/constant/routers/listed';
+import { LatLngTuple } from 'leaflet';
+import MapView from '@/components/polygonMaps/MapsView';
 
 interface Position {
   lat: number;
@@ -26,10 +25,10 @@ const LandDetails: React.FC<TambahLahanProps> = () => {
   const [data, setData] = useState<LandData>();
   const [images, setImages] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
-  const [position, setPosition] = useState<Location | null>({
-    lat: -6.908151,
-    lng: 107.626454,
-  });
+  
+  const [polygonCoordinates, setPolygonCoordinates] = useState<LatLngTuple[]>(
+    []
+  );
 
   const id = searchParams.get('id');
 
@@ -37,13 +36,26 @@ const LandDetails: React.FC<TambahLahanProps> = () => {
     const response = await landApi.getOne(id);
     const rest: LandData = response.data.data;
     setData(rest);
-    setPosition({
-      lat: rest.latitudeArea,
-      lng: rest.longitudeArea,
-    });
+    convertStringToArray(rest.arrayLocation)
     if (rest.landFile?.filePath) {
       await loadImages(rest.landFile?.filePath);
     }
+  };
+
+  const convertStringToArray = (str: string) => {
+    const cleanedString = str.replace(/\"/g, "");
+    const coordinatePairs = cleanedString.split("], [");
+  
+    const coordinatesArray: LatLngTuple[] = coordinatePairs.map(pair => {
+      const [latitude, longitude] = pair
+        .replace("[", "")
+        .replace("]", "")
+        .split(",") 
+        .map(Number); 
+      return [latitude, longitude]; 
+    });
+  
+    setPolygonCoordinates(coordinatesArray)
   };
 
   useEffect(() => {
@@ -55,10 +67,6 @@ const LandDetails: React.FC<TambahLahanProps> = () => {
 
     fetchData();
   }, []);
-
-  const locations = position
-    ? [position]
-    : [{ lat: 0, lng: 0, label: 'Fallback Location' }];
 
   const getFile = async (path: string): Promise<string | undefined> => {
     try {
@@ -82,37 +90,37 @@ const LandDetails: React.FC<TambahLahanProps> = () => {
 
   const trigerDelete = (id: string) => {
     Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-      }).then((result) => {
-        if (result.isConfirmed) {
-            handleDelete(id)
-        }
-      });
-  }
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDelete(id);
+      }
+    });
+  };
 
   const handleDelete = async (id: string) => {
     try {
-        await restLand.delete(id)
-        Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success"
-          });
-          navigate(listedUser.land)
+      await restLand.delete(id);
+      Swal.fire({
+        title: 'Deleted!',
+        text: 'Your file has been deleted.',
+        icon: 'success',
+      });
+      navigate(listedUser.land);
     } catch (error) {
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: getErrorMessage(error, 'failed. Please try again.'),
-        });
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: getErrorMessage(error, 'failed. Please try again.'),
+      });
     }
-  }
+  };
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -121,7 +129,11 @@ const LandDetails: React.FC<TambahLahanProps> = () => {
 
         <span
           className={`badge ${
-            data?.status === "Selesai" ? 'badge-accent' : data?.status === "Tinjau" ? 'badge-warning' : "badge-error"
+            data?.status === 'Selesai'
+              ? 'badge-accent'
+              : data?.status === 'Tinjau'
+              ? 'badge-warning'
+              : 'badge-error'
           }`}
         >
           Status : {data?.status}
@@ -132,40 +144,10 @@ const LandDetails: React.FC<TambahLahanProps> = () => {
           <h3 className="text-lg font-semibold mb-2">
             Koordinat dan Dimensi Lahan
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="border-dashed border-2 border-gray-300 h-64 rounded-md overflow-hidden z-0">
-              <CustomMap
-                locations={locations}
-                defaultZoom={13}
-                iconUrl={pin}
-                id={`map-${Math.random()}`} // ID unik untuk setiap instance
-              />
-            </div>
-            <div className="w-full gap-2 flex flex-col">
-              <input
-                type="text"
-                value={position?.lng}
-                readOnly
-                placeholder="Longitude"
-                className="input input-bordered w-full"
-              />
-              <input
-                type="text"
-                value={position?.lat}
-                readOnly
-                placeholder="Latitude"
-                className="input input-bordered w-full"
-              />
-              <label htmlFor="">Luas</label>
-              <input
-                type="text"
-                value={data?.wideArea}
-                readOnly
-                placeholder="Luas"
-                className="input input-bordered w-full"
-              />
-              {/* <button className='btn btn-ghost bg-emeraldGreen text-white' onClick={() => openModal('add-lokasi')}>Edit Lokasi</button> */}
-            </div>
+          <div className="flex w-full">
+            {polygonCoordinates && 
+            <MapView polygonCoordinates={polygonCoordinates} />
+            }
           </div>
         </div>
 
@@ -293,27 +275,27 @@ const LandDetails: React.FC<TambahLahanProps> = () => {
             <span>{data?.decisionMessage || 'Tidak ada catatan'}</span>
           </div>
         </div>
-        {
-            data?.status === 'Ditolak' &&
-        <div className="flex justify-start gap-3 w-full">
-          <button
-            className="btn btn-ghost bg-emeraldGreen text-white"
-            onClick={() => navigate(`/land/tambah?id=${id}&type=tinjau-lahan`)}
-          >
-            Tinjau Lahan
-          </button>
-        </div>
-        }
+        {data?.status === 'Ditolak' && (
+          <div className="flex justify-start gap-3 w-full">
+            <button
+              className="btn btn-ghost bg-emeraldGreen text-white"
+              onClick={() =>
+                navigate(`/land/tambah?id=${id}&type=tinjau-lahan`)
+              }
+            >
+              Tinjau Lahan
+            </button>
+          </div>
+        )}
 
-        {!data?.isAccepted && 
+        {!data?.isAccepted && (
           <button
             className="btn btn-ghost bg-red-500 text-white"
             onClick={() => trigerDelete(data?.id ?? '')}
           >
             Hapus Lahan
           </button>
-        }
-
+        )}
       </div>
     </div>
   );

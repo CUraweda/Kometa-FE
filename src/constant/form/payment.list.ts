@@ -63,7 +63,7 @@ export const bank = [
     id: "payment",
     value: "QRIS",
     img: qris,
-    label: "Permata",
+    label: "QRIS",
     price: 10000,
   },
  

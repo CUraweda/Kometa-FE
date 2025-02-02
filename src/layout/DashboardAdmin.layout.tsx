@@ -14,7 +14,7 @@ function DashboardAdminLayout() {
             
             <TopBarAdmin />
             </div>
-            <div className="py-5 px-7 w-full">
+            <div className="py-5 px-7 w-full z-0">
               <Outlet />
             </div>
           </div>

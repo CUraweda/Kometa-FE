@@ -21,7 +21,7 @@ function LandCard(data: LandData) {
       >
         <div className="flex justify-between">
           <p className="flex items-baseline text-xl font-medium">
-            {data.wideArea}
+            {data.documentWideArea}
             <p className="ml-1 text-sm text-gray-600 font-light">Ha</p>
           </p>
           <div className="flex gap-2">

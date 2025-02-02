@@ -16,6 +16,8 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 
     return (
       <>
+      <div>
+
         <textarea
           ref={ref}
           rows={rows}
@@ -27,6 +29,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           {...rest}
         ></textarea>
         <Message isError={Boolean(errorMessage)} message={errorMessage} />
+      </div>
       </>
     );
   }
