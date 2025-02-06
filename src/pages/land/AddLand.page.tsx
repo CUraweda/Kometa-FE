@@ -137,7 +137,6 @@ const AddLandPage: React.FC<TambahLahanProps> = () => {
   const onSubmit: SubmitHandler<LandData> = async (value) => {
     await landApi.create(value);
     navigate(listedUser.land);
-    window.location.reload();
     reset();
   };
   const handlePolygonChange = (coordinates: LatLngTuple[]) => {

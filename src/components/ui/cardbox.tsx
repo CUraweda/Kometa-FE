@@ -17,7 +17,7 @@ function CardBox({ data, onChange, selected }: Props) {
   }, [selected]);
 
   return data?.map((item) => {
-    const { id, value, img, label, price } = item;
+    const { id, value, img, label, price, active } = item;
     const isActive = value === currentSelected;
     const handleSlected = () => {
       onChange(item);
@@ -28,11 +28,11 @@ function CardBox({ data, onChange, selected }: Props) {
       <label
         key={value}
         htmlFor={value}
-        onClick={value === "QRIS" ? handleSlected : (e) => e.preventDefault()}
+        onClick={handleSlected}
         className={twMerge(
           "border rounded-lg p-4 flex flex-1 justify-between cursor-pointer bg-transparent z-[999]",
           isActive ? "border-primary" : "",
-          value !== "QRIS" && "cursor-not-allowed opacity-50 bg-gray-300 border-gray-400 text-gray-600" // Menambahkan warna abu-abu ketika value bukan QRIS
+          !active && "cursor-not-allowed opacity-50 bg-gray-300 border-gray-400 text-gray-600" // Menambahkan warna abu-abu ketika value bukan QRIS
         )}
         
       >
@@ -64,7 +64,7 @@ function CardBox({ data, onChange, selected }: Props) {
         </label>
         <label htmlFor={value}>
           <img
-            className="rounded overflow-hidden h-14"
+            className="rounded overflow-hidden w-14"
             src={img}
             alt={`bank-${value}`}
           />

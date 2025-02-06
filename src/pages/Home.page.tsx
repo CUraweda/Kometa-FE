@@ -22,6 +22,7 @@ import { socials } from "../constant/content/social";
 import { useScrollClick } from "../hooks/useScrollClick";
 import pin from "../assets/icon/iconMap.png";
 import { twMerge } from "tailwind-merge";
+import { useEffect } from "react";
 
 function HomePage() {
   const { handleScrollClick } = useScrollClick();
@@ -30,6 +31,8 @@ function HomePage() {
     { lat: -6.914744, lng: 107.60981, label: "Bandung 2" },
     { lat: -6.917464, lng: 107.619123, label: "Bandung 3" },
   ];
+
+  
   return (
     <>
       <Container className="flex items-center min-h-screen ">
