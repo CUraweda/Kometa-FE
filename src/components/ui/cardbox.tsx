@@ -28,11 +28,13 @@ function CardBox({ data, onChange, selected }: Props) {
       <label
         key={value}
         htmlFor={value}
-        onClick={handleSlected}
+        onClick={value === "QRIS" ? handleSlected : (e) => e.preventDefault()}
         className={twMerge(
-          "border hover:border-primary rounded-lg p-4 flex flex-1 justify-between cursor-pointer bg-transparent z-[999]",
-          isActive ? "border-primary" : ""
+          "border rounded-lg p-4 flex flex-1 justify-between cursor-pointer bg-transparent z-[999]",
+          isActive ? "border-primary" : "",
+          value !== "QRIS" && "cursor-not-allowed opacity-50 bg-gray-300 border-gray-400 text-gray-600" // Menambahkan warna abu-abu ketika value bukan QRIS
         )}
+        
       >
         <label onClick={handleSlected} className="flex gap-4">
           <input
@@ -43,6 +45,7 @@ function CardBox({ data, onChange, selected }: Props) {
             onClick={handleSlected}
             value={currentSelected}
             defaultChecked={isActive}
+            
           />
           <label className="flex flex-col -m-1 cursor-pointer">
             <label

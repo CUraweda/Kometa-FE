@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { listedUser } from '../constant/routers/listed';
 import PaymentLayout from '../layout/payment.layout';
-import QRIS from '@/components/ui/Qris';
 import { paymentRest } from '@/middleware/Rest';
 import { formatRupiah } from '@/helper/formatRupiah';
 import CountdownTimer from '@/components/ui/countDown';
@@ -13,6 +12,7 @@ function PaymentPage() {
   const id = searchParams.get('id');
   const type = searchParams.get('type');
   const [data, setData] = useState<any>();
+
   useEffect(() => {
    checkPayment();
     if(!data){
@@ -25,9 +25,19 @@ function PaymentPage() {
       const response = await paymentRest.getStatusPayment(id);
       const data = response?.data?.data;
       const isPaid = response.data.data.isPaid;
+      const type = response.data.data.paymentMethod
+      const idTransaksi = response.data.data.id;
+      console.log(type);
       
       if (isPaid) {
         navigate(listedUser.dahsboardVerfi);
+      }
+      if(type !== 'QRIS'){
+        const params = new URLSearchParams({
+          id: idTransaksi,
+          type: type
+        });
+        navigate(`${listedUser.paymentVa}?${params.toString()}`);
       }
       setData(data);
     } catch (error) {
@@ -64,7 +74,8 @@ function PaymentPage() {
 
             {/* QR Code Display */}
             <div className="flex justify-center mb-6">
-              {data && <QRIS qrisLink={data?.qrisLink} />}
+              <img src={data?.qrisLink} alt="" />
+              {/* {data && <QRIS qrisLink={data?.qrisLink} />} */}
             </div>
             <div className="w-full flex justify-center my-5">
               <CountdownTimer expiredDate={data?.expiredDate} />

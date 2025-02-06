@@ -16,7 +16,7 @@ function PaymentMethod({ onChange, selected }: Props) {
       <div role="tablist" className="tabs tabs-bordered mt-6">
         
       </div>
-      <div className="grid grid-cols-2 gap-4 mt-6">
+      <div className="grid grid-cols-2 gap-4 mt-6 ">
         <CardBox
           data={paymentMethod[activeTab as keyof typeof paymentMethod].data}
           onChange={(item) => onChange(item)}
