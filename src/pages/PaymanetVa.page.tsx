@@ -26,9 +26,7 @@ function PaymentVaPage() {
 
   useEffect(() => {
     checkPayment();
-    if (!data) {
-      generatePayment();
-    }
+   
   }, []);
 
   const checkPayment = async () => {
@@ -51,8 +49,7 @@ function PaymentVaPage() {
     const payload = {
       paymentType: type,
     };
-    console.log(payload);
-
+  
     try {
       const response = await paymentRest.generatePayment(payload);
       const id = response.data.data.id;
@@ -139,7 +136,7 @@ function PaymentVaPage() {
                       <td>
                         <span className="flex gap-1 items-center">
                           <h3 className="tracking-wider font-bold">
-                            {data?.virtualAccountNo}
+                            {data?.virtualAccountNo ?? 'Virtual Account Tidak Tersedia'}
                           </h3>
                           {element}
                         </span>

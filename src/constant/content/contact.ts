@@ -3,16 +3,14 @@ import { Email, Phone, Pin } from "../../assets/icon";
 export const contact = [
   {
     icon: Pin,
-    description: `Gedung Roxy Square, lantai 1 blok B No.3 
-    Jl.Kyai Tapa No.1, Kel. Tomang, Kec. 
-    Grogol Petamburan, Jakarta Barat 11440`,
+    description: `Gedung Cenntenial Tower Lt.29 Unit D-F, Jl. Jend. Gatot Subroto Kav. 24-25 RT. 002 RW 002, Kel. Karet Semanggi, Kec. Setiabudi Jakarta Selatan - DKI Jakarta`,
   },
   {
     icon: Email,
-    description: "email@kometa.com",
+    description: "halo@kometa.com",
   },
   {
     icon: Phone,
-    description: "+62 9999 9999 9999",
+    description: "0815 185 5008",
   },
 ];
