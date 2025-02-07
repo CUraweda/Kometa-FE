@@ -8,4 +8,5 @@ export type Payment = Option & {
   id: string;
   price: number;
   img: string;
+  active: boolean
 };
