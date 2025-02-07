@@ -1,4 +1,4 @@
-import getErrorMessage from "@/helper/apiHelper";
+import getErrorMessage from "@/utils/apiHelper";
 import { authApi, datawilayahIndonesia, previewImage, restAnggota, restLand } from "./Rest"
 import { LandData, Login, Register, verifMember } from "./Utils";
 import Swal from 'sweetalert2'

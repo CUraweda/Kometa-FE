@@ -1,7 +1,7 @@
 import ModalDetail, { closeModal, openModal } from '@/components/ui/ModalDetail';
 import { Skeleton } from '@/components/ui/skeleton';
-import { formatDateString, formatDateTime } from '@/helper/formatDate';
-import { formatRupiah } from '@/helper/formatRupiah';
+import { formatDateString, formatDateTime } from '@/utils/formatDate';
+import { formatRupiah } from '@/utils/formatRupiah';
 import { memberRest } from '@/middleware';
 import { previewImage } from '@/middleware/Rest';
 import { useEffect, useState } from 'react';

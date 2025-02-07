@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { previewImage, restLand } from '@/middleware/Rest';
 import { Skeleton } from '@/components/ui/skeleton';
 import Swal from 'sweetalert2';
-import getErrorMessage from '@/helper/apiHelper';
+import getErrorMessage from '@/utils/apiHelper';
 import { listedUser } from '@/constant/routers/listed';
 import { LatLngTuple } from 'leaflet';
 import MapView from '@/components/polygonMaps/MapsView';

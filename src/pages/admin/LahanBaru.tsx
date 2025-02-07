@@ -11,7 +11,7 @@ import { LandData } from '@/middleware/Utils';
 import { listedAdmin } from '@/constant/routers/listed';
 import Swal from 'sweetalert2';
 import { restLand } from '@/middleware/Rest';
-import getErrorMessage from '@/helper/apiHelper';
+import getErrorMessage from '@/utils/apiHelper';
 
 const LahanBaru = () => {
   const [data, setData] = useState<any>(undefined);

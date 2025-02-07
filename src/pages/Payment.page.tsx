@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { listedUser } from '../constant/routers/listed';
 import PaymentLayout from '../layout/payment.layout';
 import { paymentRest } from '@/middleware/Rest';
-import { formatRupiah } from '@/helper/formatRupiah';
+import { formatRupiah } from '@/utils/formatRupiah';
 import CountdownTimer from '@/components/ui/countDown';
 
 function PaymentPage() {

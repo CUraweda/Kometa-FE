@@ -11,7 +11,7 @@ import { useTimer } from '../hooks/useTimer';
 import PaymentLayout from '../layout/payment.layout';
 import { Payment } from '../types/common';
 import { paymentRest } from '@/middleware/Rest';
-import { formatRupiah } from '@/helper/formatRupiah';
+import { formatRupiah } from '@/utils/formatRupiah';
 import CountdownTimer from '@/components/ui/countDown';
 
 function PaymentVaPage() {
