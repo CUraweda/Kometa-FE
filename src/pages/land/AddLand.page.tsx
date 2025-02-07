@@ -339,7 +339,7 @@ const AddLandPage: React.FC<TambahLahanProps> = () => {
                 className="w-full"
                 {...register('documentOwnerFullName')}
               />
-              <label htmlFor="">Luas Lahan</label>
+              <label htmlFor="">Luas Lahan ( m² )</label>
               <Input
                 type="number"
                 error={errors?.documentWideArea}

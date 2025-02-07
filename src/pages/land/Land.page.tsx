@@ -65,7 +65,7 @@ function LandPage() {
                 </h3>
                 <div className="flex gap-3 items-end">
                   <span className="text-4xl font-bold ">{land?.SHM}</span>
-                  <span className="text-sm font-medium">Ha</span>
+                  <span className="text-sm font-medium ">m²</span>
                 </div>
               </div>
             </div>
@@ -75,7 +75,7 @@ function LandPage() {
                 <h3 className="text-xl font-semibold text-orange-500">Total Lahan Girik</h3>
                 <div className="flex gap-3 items-end">
                   <span className="text-4xl font-bold ">{land?.Girik}</span>
-                  <span className="text-sm font-medium">Ha</span>
+                  <span className="text-sm font-medium">m²</span>
                 </div>
               </div>
             </div>
@@ -85,7 +85,7 @@ function LandPage() {
                 <h3 className="text-xl font-semibold text-green-500">Total Lahan Kontrak/Sewa</h3>
                 <div className="flex gap-3 items-end">
                   <span className="text-4xl font-bold ">{land?.Kontrak}</span>
-                  <span className="text-sm font-medium">Ha</span>
+                  <span className="text-sm font-medium">m²</span>
                 </div>
               </div>
             </div>

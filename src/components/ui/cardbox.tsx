@@ -28,21 +28,21 @@ function CardBox({ data, onChange, selected }: Props) {
       <label
         key={value}
         htmlFor={value}
-        onClick={handleSlected}
+        onClick={active ? handleSlected : (e) => e.preventDefault()}
         className={twMerge(
           "border rounded-lg p-4 flex flex-1 justify-between cursor-pointer bg-transparent z-[999]",
           isActive ? "border-primary" : "",
-          !active && "cursor-not-allowed opacity-50 bg-gray-300 border-gray-400 text-gray-600" // Menambahkan warna abu-abu ketika value bukan QRIS
+          !active && "cursor-not-allowed opacity-50 bg-gray-200 border-gray-400 text-gray-600" // Menambahkan warna abu-abu ketika value bukan QRIS
         )}
         
       >
-        <label onClick={handleSlected} className="flex gap-4">
+        <label onClick={active ? handleSlected : (e) => e.preventDefault()} className="flex gap-4">
           <input
             id={value}
             name={id}
             type="radio"
             className="radio radio-xs checked:bg-primary"
-            onClick={handleSlected}
+            onClick={active ? handleSlected : (e) => e.preventDefault()}
             value={currentSelected}
             defaultChecked={isActive}
             
@@ -60,6 +60,17 @@ function CardBox({ data, onChange, selected }: Props) {
             >
               {convertToRupiah(price)}
             </label>
+            {
+              !active && 
+              <>
+            <label
+              htmlFor={value}
+              className="text-sm font-medium text-red-500 cursor-pointer"
+            >
+              under maintenance
+            </label>
+              </>
+            }
           </label>
         </label>
         <label htmlFor={value}>
