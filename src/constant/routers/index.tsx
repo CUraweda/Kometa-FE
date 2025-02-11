@@ -42,6 +42,12 @@ import AddPlanting from '@/pages/planting/AddPlanting.page';
 import PlantingDetail from '@/pages/planting/PlantingDetail.page';
 import ComingSoon from '@/pages/ComingSoon';
 import PaymentVaPage from '@/pages/PaymanetVa.page';
+import Simpanan from '@/pages/admin/Simpanan';
+import Tagihan from '@/pages/admin/Tagihan';
+import TagihanDetailMember from '@/pages/admin/TagihanDetailMember';
+import FinancePage from '@/pages/Finance.page';
+import HistoryPayment from '@/pages/admin/RekapPaymentHistori';
+import RekapPaymentHistori from '@/pages/admin/RekapPaymentHistori';
 
 export const router = createBrowserRouter([
   {
@@ -100,7 +106,7 @@ export const router = createBrowserRouter([
         ],
       },
       { path: listedUser.supplier, element: <SupplierPage /> },
-      { path: listedUser.finance, element: <ComingSoon /> },
+      { path: listedUser.finance, element: <FinancePage /> },
       // { path: listedUser.profile, element: <ProfilePage /> },
 
       { path: listedUser.test, element: <Test /> },
@@ -124,8 +130,9 @@ export const router = createBrowserRouter([
       { path: listedAdmin.pendapatan, element: <ComingSoon /> },
       { path: listedAdmin.lahanBaru, element: <LahanBaru /> },
       { path: listedAdmin.budidaya, element: <ComingSoon /> },
-      { path: listedAdmin.simpanan, element: <ComingSoon/> },
-      { path: listedAdmin.tagihan, element: <ComingSoon/> },
+      { path: listedAdmin.historyPayment, element: <RekapPaymentHistori /> },
+      { path: listedAdmin.tagihan, element: <Tagihan /> },
+      { path: listedAdmin.tagihanDetail, element: <TagihanDetailMember /> },
     ],
   },
 ]);

@@ -39,6 +39,7 @@ export const listedAdmin = {
   detaillahanBaru: "/admin/lahan-baru/detail",
   pendapatan: "/admin/pendapatan",
   budidaya: "/admin/budidaya",
-  simpanan: "/admin/simpanan",
+  historyPayment: "/admin/history-payment",
   tagihan: "/admin/tagihan",
+  tagihanDetail: "/admin/tagihan/detail",
 };

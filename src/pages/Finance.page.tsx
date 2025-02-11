@@ -1,64 +1,64 @@
-import CardFinance from "@/components/shared/cardFinance";
-import Input from "@/components/ui/input";
-import CenterLayout from "../layout/center.layout";
+import CardFinance from '@/components/shared/cardFinance';
+import Input from '@/components/ui/input';
+import CenterLayout from '../layout/center.layout';
 
 function FinancePage() {
   const cards = [
     {
       total: 100000,
-      status: "Belum Dibayar",
-      name: "Pendaftaran",
-      tempo: "20 januari 2025",
-      tanggalBayar: "20 januari 2025",
-      methodeBayar: "Bank BCA",
-      transaksiId: "TRX-001",
+      status: 'Belum Dibayar',
+      name: 'Pendaftaran',
+      tempo: '20 januari 2025',
+      tanggalBayar: '20 januari 2025',
+      methodeBayar: 'Bank BCA',
+      transaksiId: 'TRX-001',
     },
     {
       total: 100000,
-      status: "Belum Dibayar",
-      name: "Pendaftaran",
-      tempo: "20 januari 2025",
-      tanggalBayar: "20 januari 2025",
-      methodeBayar: "Bank BCA",
-      transaksiId: "TRX-001",
+      status: 'Belum Dibayar',
+      name: 'Pendaftaran',
+      tempo: '20 januari 2025',
+      tanggalBayar: '20 januari 2025',
+      methodeBayar: 'Bank BCA',
+      transaksiId: 'TRX-001',
     },
     {
       total: 100000,
-      status: "Belum Dibayar",
-      name: "Pendaftaran",
-      tempo: "20 januari 2025",
-      tanggalBayar: "20 januari 2025",
-      methodeBayar: "Bank BCA",
-      transaksiId: "TRX-001",
+      status: 'Belum Dibayar',
+      name: 'Pendaftaran',
+      tempo: '20 januari 2025',
+      tanggalBayar: '20 januari 2025',
+      methodeBayar: 'Bank BCA',
+      transaksiId: 'TRX-001',
     },
   ];
   const cardsLunas = [
     {
       total: 100000,
-      status: "Lunas",
-      name: "Pendaftaran",
-      tempo: "20 januari 2025",
-      tanggalBayar: "20 januari 2025",
-      methodeBayar: "Bank BCA",
-      transaksiId: "TRX-001",
+      status: 'Lunas',
+      name: 'Pendaftaran',
+      tempo: '20 januari 2025',
+      tanggalBayar: '20 januari 2025',
+      methodeBayar: 'Bank BCA',
+      transaksiId: 'TRX-001',
     },
     {
       total: 100000,
-      status: "Lunas",
-      name: "Pendaftaran",
-      tempo: "20 januari 2025",
-      tanggalBayar: "20 januari 2025",
-      methodeBayar: "Bank BCA",
-      transaksiId: "TRX-001",
+      status: 'Lunas',
+      name: 'Pendaftaran',
+      tempo: '20 januari 2025',
+      tanggalBayar: '20 januari 2025',
+      methodeBayar: 'Bank BCA',
+      transaksiId: 'TRX-001',
     },
     {
       total: 100000,
-      status: "Lunas",
-      name: "Pendaftaran",
-      tempo: "20 januari 2025",
-      tanggalBayar: "20 januari 2025",
-      methodeBayar: "Bank BCA",
-      transaksiId: "TRX-001",
+      status: 'Lunas',
+      name: 'Pendaftaran',
+      tempo: '20 januari 2025',
+      tanggalBayar: '20 januari 2025',
+      methodeBayar: 'Bank BCA',
+      transaksiId: 'TRX-001',
     },
   ];
 
@@ -80,18 +80,7 @@ function FinancePage() {
           </div>
         </div>
 
-        <div className="flex w-full my-5 justify-end gap-3 ">
-          <Input
-            type="search"
-            className="max-w-xs"
-            placeholder="Cari"
-            icon="search"
-          />
-          <button className="btn btn-primary text-white">
-            Tambah Budidaya
-          </button>
-        </div>
-        <div className="w-full flex flex-col justify-start mb-5 space-y-3">
+        <div className="w-full flex flex-col justify-start mb-5 space-y-3 mt-5">
           <span className="font-bold">Daftar Tagihan</span>
           <div className="grid gap-5 w-full sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {cards.map((card, index) => (
@@ -100,7 +89,7 @@ function FinancePage() {
           </div>
         </div>
         <div className="w-full flex flex-col justify-start space-y-3">
-          <span className="font-bold">Histori PEmbayaran</span>
+          <span className="font-bold">Histori Pembayaran</span>
           <div className="grid gap-5 w-full sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {cardsLunas.map((card, index) => (
               <CardFinance key={index} {...card} />

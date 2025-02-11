@@ -1,6 +1,6 @@
 import getErrorMessage from "@/utils/apiHelper";
-import { authApi, datawilayahIndonesia, previewImage, restAnggota, restLand } from "./Rest"
-import { LandData, Login, Register, verifMember } from "./Utils";
+import { authApi, datawilayahIndonesia, paymentRest, previewImage, restAnggota, restLand } from "./Rest"
+import { LandData, Login, Register, Simpanan, verifMember } from "./Utils";
 import Swal from 'sweetalert2'
 import useAuthStore from "@/store/auth.store";
 
@@ -319,4 +319,30 @@ export const landApi = {
             throw new Error(getErrorMessage(error, 'failed. Please try again.'));
         }
     }
+}
+
+export const PaymentRest = {
+    createBillByReference: async (data: Simpanan[]): Promise<string[]> => {
+        const successfulMemberIds: string[] = []; 
+        try { 
+            const promises = data.map(async (simpanan) => {
+              await paymentRest.createSimpananByReference(simpanan)
+              successfulMemberIds.push(simpanan.memberId);
+            });
+            await Promise.all(promises);
+            Swal.fire({
+                title: "Success!",
+                text: "Berhasil Menambahkan Tagihan Anggota",
+                icon: "success"
+              });
+            return successfulMemberIds;
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: getErrorMessage(error, 'failed. Please try again.'),
+            });
+            throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+        }
+    },
 }

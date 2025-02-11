@@ -1,6 +1,7 @@
 import CenterLayout from '@/layout/center.layout'
 import DetailAnggotaBaru from './DetailAnggotaBaru'
 import Lahan from './Lahan'
+import PaymentHistory from './PaymentHistory'
 
 const DetailAnggota = () => {
     return (
@@ -33,8 +34,10 @@ const DetailAnggota = () => {
                             <Lahan/>
                         </div>
 
-                        <input type="radio" name="my_tabs_1" role="tab" className="tab" aria-label="Budidaya" />
-                        <div role="tabpanel" className="tab-content p-10">Tab content 3</div>
+                        <input type="radio" name="my_tabs_1" role="tab" className="tab" aria-label="Histori Pembayaran" />
+                        <div role="tabpanel" className="tab-content p-10">
+                            <PaymentHistory/>
+                        </div>
                     </div>
                 </div>
             </div>

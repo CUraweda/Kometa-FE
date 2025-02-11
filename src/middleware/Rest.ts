@@ -2,16 +2,32 @@ import axios, {
   AxiosPromise,
   InternalAxiosRequestConfig,
   AxiosRequestHeaders,
-} from "axios";
-import { LandData, Login, LoginResponse, MemberData, MembershipTypeResponse,  provinces, Register, typeGetAllMember, verifMember } from "./Utils";
+} from 'axios';
+import {
+  BillDatas,
+  BillReferenceResponse,
+  createBillData,
+  getPaymentHistoryResponse,
+  LandData,
+  Login,
+  LoginResponse,
+  MemberData,
+  MembershipTypeResponse,
+  PaymentData,
+  provinces,
+  Register,
+  Simpanan,
+  typeGetAllMember,
+  verifMember,
+} from './Utils';
 
-import useAuthStore from "../store/auth.store"; // Zustand store untuk auth
-import { token } from "@/utils/tokenize";
+import useAuthStore from '../store/auth.store'; // Zustand store untuk auth
+import { token } from '@/utils/tokenize';
 
 // const server = axios.create({ baseURL: 'https://api-kometa.curaweda.com/' });
 const server = axios.create({ baseURL: import.meta.env.VITE_REACT_API_URL });
 const datawilayah = axios.create({
-  baseURL: "https://www.emsifa.com/api-wilayah-indonesia/api/",
+  baseURL: 'https://www.emsifa.com/api-wilayah-indonesia/api/',
 });
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -20,7 +36,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 // Interceptor untuk request
 server.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const accessToken = localStorage.getItem("access_token");
+    const accessToken = localStorage.getItem('access_token');
 
     if (accessToken) {
       if (!config.headers) {
@@ -45,12 +61,12 @@ server.interceptors.response.use(
       originalRequest._retry = true; // Tandai permintaan ini sudah di-retry
 
       try {
-        const refreshToken = token.get("refresh");
+        const refreshToken = token.get('refresh');
         if (!refreshToken) {
-          throw new Error("Refresh token is missing");
+          throw new Error('Refresh token is missing');
         }
 
-        const refreshResponse = await server.post("api/auth/refresh", {
+        const refreshResponse = await server.post('api/auth/refresh', {
           refreshToken,
         });
 
@@ -58,8 +74,8 @@ server.interceptors.response.use(
           refreshResponse.data;
 
         // Simpan token baru di localStorage
-        token.set("access", newAccessToken);
-        token.set("refresh", newRefreshToken);
+        token.set('access', newAccessToken);
+        token.set('refresh', newRefreshToken);
 
         // Perbarui header Authorization dengan token baru
         if (!originalRequest.headers) {
@@ -71,11 +87,11 @@ server.interceptors.response.use(
         // Ulangi permintaan asli
         return server(originalRequest);
       } catch (refreshError) {
-        console.error("Failed to refresh token:", refreshError);
+        console.error('Failed to refresh token:', refreshError);
 
         // Bersihkan status login
-        token.delete("access");
-        token.delete("refresh");
+        token.delete('access');
+        token.delete('refresh');
 
         return Promise.reject(refreshError);
       }
@@ -89,22 +105,22 @@ server.interceptors.response.use(
 export const datawilayahIndonesia = {
   provinsi: (): AxiosPromise<provinces> =>
     datawilayah({
-      method: "GET",
-      url: "provinces.json",
+      method: 'GET',
+      url: 'provinces.json',
     }),
   kabupaten: (id: string): AxiosPromise<provinces> =>
     datawilayah({
-      method: "GET",
+      method: 'GET',
       url: `regencies/${id}.json`,
     }),
   kecamatan: (id: string): AxiosPromise<provinces> =>
     datawilayah({
-      method: "GET",
+      method: 'GET',
       url: `districts/${id}.json`,
     }),
   kelurahan: (id: string): AxiosPromise<provinces> =>
     datawilayah({
-      method: "GET",
+      method: 'GET',
       url: `villages/${id}.json`,
     }),
 };
@@ -113,14 +129,14 @@ export const datawilayahIndonesia = {
 export const authApi = {
   register: (data: Register): AxiosPromise<Register> =>
     server({
-      method: "POST",
-      url: "api/auth/register",
+      method: 'POST',
+      url: 'api/auth/register',
       data,
     }),
   login: (data: Login): AxiosPromise<LoginResponse> =>
     server({
-      method: "POST",
-      url: "api/auth/login",
+      method: 'POST',
+      url: 'api/auth/login',
       data,
     }),
 };
@@ -128,38 +144,38 @@ export const authApi = {
 export const authUser = {
   profil: () =>
     server({
-      method: "GET",
-      url: "",
+      method: 'GET',
+      url: '',
     }),
 };
 
 export const restAnggota = {
   typeMember: (): AxiosPromise<MembershipTypeResponse> =>
     server({
-      method: "GET",
-      url: "api/membership/show-all",
+      method: 'GET',
+      url: 'api/membership/show-all',
     }),
   checkMember: (): AxiosPromise<MemberData> =>
     server({
-      method: "GET",
-      url: "api/member-data/show-by-user",
+      method: 'GET',
+      url: 'api/member-data/show-by-user',
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
     }),
   createMemberData: (data: unknown) =>
     server({
-      method: "POST",
-      url: "api/member-data/create",
+      method: 'POST',
+      url: 'api/member-data/create',
       data,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
     }),
   getAll: (payload: string): AxiosPromise<typeGetAllMember> =>
     server({
-      method: "GET",
+      method: 'GET',
       url: `api/member-data/show-all?${payload}`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
@@ -167,7 +183,7 @@ export const restAnggota = {
     }),
   getOne: (payload: string | null): AxiosPromise<MemberData> =>
     server({
-      method: "GET",
+      method: 'GET',
       url: `api/member-data/show-one/${payload}`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
@@ -175,7 +191,7 @@ export const restAnggota = {
     }),
   verif: (data: verifMember, id: string): AxiosPromise<MemberData> =>
     server({
-      method: "PUT",
+      method: 'PUT',
       url: `api/member-data/verify/${id}`,
       data,
       headers: {
@@ -184,38 +200,38 @@ export const restAnggota = {
     }),
   update: (data: any, id: string): AxiosPromise<any> =>
     server({
-      method: "PUT",
+      method: 'PUT',
       url: `api/member-data/update/${id}`,
       data,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
-    })
-}
+    }),
+};
 
 export const previewImage = {
   get: (path: string) =>
     server({
-      method: "GET",
+      method: 'GET',
       url: `api/download?path=${path}`,
-      responseType: "arraybuffer",
-    })
-}
+      responseType: 'arraybuffer',
+    }),
+};
 
 export const restLand = {
   create: (data: any): AxiosPromise<LandData> =>
     server({
-      method: "POST",
+      method: 'POST',
       url: `api/land-data/create`,
       data,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
     }),
   getAllByUser: (id: string | null): AxiosPromise<LandData> =>
     server({
-      method: "GET",
+      method: 'GET',
       url: `api/land-data/show-all?memberId=${id}&limit=100`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
@@ -223,7 +239,7 @@ export const restLand = {
     }),
   getAll: (params?: string): AxiosPromise<LandData> =>
     server({
-      method: "GET",
+      method: 'GET',
       url: `api/land-data/show-all?${params}`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
@@ -231,7 +247,7 @@ export const restLand = {
     }),
   getOne: (id?: string): AxiosPromise<LandData> =>
     server({
-      method: "GET",
+      method: 'GET',
       url: `api/land-data/show-one/${id}`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
@@ -239,7 +255,7 @@ export const restLand = {
     }),
   approv: (data: verifMember, id?: string): AxiosPromise<LandData> =>
     server({
-      method: "PUT",
+      method: 'PUT',
       url: `api/land-data/decision/${id}`,
       data,
       headers: {
@@ -248,7 +264,7 @@ export const restLand = {
     }),
   edit: (data: LandData, id?: string): AxiosPromise<LandData> =>
     server({
-      method: "PUT",
+      method: 'PUT',
       url: `api/land-data/update/${id}`,
       data,
       headers: {
@@ -257,19 +273,18 @@ export const restLand = {
     }),
   delete: (id?: string): AxiosPromise<LandData> =>
     server({
-      method: "DELETE",
+      method: 'DELETE',
       url: `api/land-data/delete/${id}`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
-    })
-}
-
+    }),
+};
 
 export const paymentRest = {
   generatePayment: (data: any): AxiosPromise<any> =>
     server({
-      method: "POST",
+      method: 'POST',
       url: `api/member-data/generate-payment`,
       data,
       headers: {
@@ -278,19 +293,60 @@ export const paymentRest = {
     }),
   getStatusPayment: (id: string | null): AxiosPromise<any> =>
     server({
-      method: "GET",
+      method: 'GET',
       url: `api/payment-history/show-one/${id}`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
     }),
-
-}
+  getPaymentHistory: (payload: string): AxiosPromise<any> =>
+    server({
+      method: 'GET',
+      url: `api/payment-history/show-all?${payload}`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  getBillReference: (payload: string): AxiosPromise<BillReferenceResponse> =>
+    server({
+      method: 'GET',
+      url: `api/savings-reference/show-all?${payload}`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  getBillData: (payload: string): AxiosPromise<BillDatas> =>
+    server({
+      method: 'GET',
+      url: `api/savings-data/show-all?${payload}`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  generateBillReference: (data: createBillData): AxiosPromise<any> =>
+    server({
+      method: 'POST',
+      url: `api/savings-reference/create`,
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  createSimpananByReference: (data: Simpanan): AxiosPromise<any> =>
+    server({
+      method: 'POST',
+      url: `api/savings-data/create-by-reference`,
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+};
 
 export const dashboarRest = {
   codeProvince: (): AxiosPromise<any> =>
     server({
-      method: "GET",
+      method: 'GET',
       url: `api/dashboard/count-province-code`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
@@ -298,7 +354,7 @@ export const dashboarRest = {
     }),
   codeDataProvince: (): AxiosPromise<any> =>
     server({
-      method: "GET",
+      method: 'GET',
       url: `api/dashboard/count-province`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
@@ -306,11 +362,10 @@ export const dashboarRest = {
     }),
   dataStatistik: (): AxiosPromise<any> =>
     server({
-      method: "GET",
+      method: 'GET',
       url: `api/dashboard/count-statistic`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
     }),
-
-}
+};

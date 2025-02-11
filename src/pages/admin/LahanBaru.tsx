@@ -12,14 +12,18 @@ import { listedAdmin } from '@/constant/routers/listed';
 import Swal from 'sweetalert2';
 import { restLand } from '@/middleware/Rest';
 import getErrorMessage from '@/utils/apiHelper';
+import Pagination from '@/components/ui/pagination';
 
 const LahanBaru = () => {
   const [data, setData] = useState<any>(undefined);
+  const [totalItems, setTotalItems] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 10;
   const navigate = useNavigate();
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [currentPage]);
 
   const getData = async () => {
     const payload = 'limit=1000&page=1';
@@ -30,8 +34,14 @@ const LahanBaru = () => {
         (item: LandData) => !item.isAccepted
       );
       setData(filteredItems);
+      setTotalItems(response.data.data.total_items);
     }
   };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   const handleDetailLahan = (props: any) => {
     const params = new URLSearchParams({
       id: props,
@@ -161,6 +171,14 @@ const LahanBaru = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+            <div className="w-full mt-5 flex justify-end">
+              <Pagination
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
             </div>
           </div>
         </div>

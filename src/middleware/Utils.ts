@@ -209,5 +209,109 @@ export interface PaymentData {
   customerNo?: string | null; // Bisa `null` atau tidak ada
   virtualAccountNo?: string | null; // Bisa `null` atau tidak ada
   expiredDate: string;
+  createdAt: string;
+  member : Member
 }
 
+export interface BillItem {
+  id: string;
+  differer: string | null;
+  description: string;
+  paymentDueDate: string | null;
+  totalPayment: number;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface BillReferenceResponse {
+  status: boolean;
+  message: string;
+  data: {
+      total_items: number;
+      page: number;
+      limit: number;
+      total_pages: number;
+      items: BillItem[];
+  };
+}
+export interface getPaymentHistoryResponse {
+  status: boolean;
+  message: string;
+  data: {
+      total_items: number;
+      page: number;
+      limit: number;
+      total_pages: number;
+      items: PaymentData[];
+  };
+}
+
+export interface createBillData {
+  description : string
+  paymentDueDate : string
+  totalPayment: number
+  createPayment: boolean
+}
+
+interface SavingReference {
+  id: string;
+  differer: string | null;
+  description: string;
+  paymentDueDate: string;
+  totalPayment: number;
+  updatedAt: string;
+  createdAt: string;
+}
+
+interface Payment {
+  id: string;
+  memberId: string;
+  status: string;
+  purpose: string;
+  transactionId: string;
+  isPaid: boolean;
+  paymentMethod: string | null;
+  paymentTotal: number;
+  paymentDate: string | null;
+  merchantTradeNo: string | null;
+  platformTradeNo: string | null;
+  qrisLink: string | null;
+  customerNo: string | null;
+  virtualAccountNo: string | null;
+  expiredDate: string | null;
+  filePath: string | null;
+}
+
+export interface SavingData {
+  id: string;
+  memberId: string;
+  paymentId: string;
+  savingRefId: string;
+  status: string;
+  totalPayment: number;
+  isPaymentSuccess: boolean;
+  createdAt: string;
+  SavingReference: SavingReference;
+  payment: Payment;
+  member: Member;
+}
+
+export interface BillDatas {
+  status: boolean;
+  message: string;
+  data: {
+    total_items: number;
+    page: number;
+    limit: number;
+    total_pages: number;
+    items: SavingData[];
+  };
+}
+
+
+export interface Simpanan {
+  memberId: string
+  savingRefId : string
+  status: string
+  isPaymentSuccess?: boolean
+}
