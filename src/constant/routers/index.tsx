@@ -42,11 +42,11 @@ import AddPlanting from '@/pages/planting/AddPlanting.page';
 import PlantingDetail from '@/pages/planting/PlantingDetail.page';
 import ComingSoon from '@/pages/ComingSoon';
 import PaymentVaPage from '@/pages/PaymanetVa.page';
-import Simpanan from '@/pages/admin/Simpanan';
+// import Simpanan from '@/pages/admin/Simpanan';
 import Tagihan from '@/pages/admin/Tagihan';
 import TagihanDetailMember from '@/pages/admin/TagihanDetailMember';
 import FinancePage from '@/pages/Finance.page';
-import HistoryPayment from '@/pages/admin/RekapPaymentHistori';
+// import HistoryPayment from '@/pages/admin/RekapPaymentHistori';
 import RekapPaymentHistori from '@/pages/admin/RekapPaymentHistori';
 
 export const router = createBrowserRouter([

@@ -1,21 +1,22 @@
+import Pagination from '@/components/ui/pagination';
 import { paymentRest } from '@/middleware/Rest';
 import { PaymentData } from '@/middleware/Utils';
 import { formatDate } from '@/utils/date';
 import { formatRupiah } from '@/utils/formatRupiah';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 const PaymentHistory = () => {
   const [dataPayment, setDataPayment] = useState<PaymentData[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 10;
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchParams] = useSearchParams();
   const id = searchParams.get('id');
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [currentPage, itemsPerPage]);
 
   const getData = async () => {
     const payload = `whare=memberId:${id}&limit=${itemsPerPage}&page=${currentPage}`;
@@ -26,6 +27,9 @@ const PaymentHistory = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage);
   };
   return (
     <div>
@@ -60,6 +64,15 @@ const PaymentHistory = () => {
           </tbody>
         </table>
       </div>
+      <div className="w-full mt-5 flex justify-end">
+      <Pagination
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+                onItemsPerPageChange={handleItemsPerPageChange}
+              />
+            </div>
     </div>
   );
 };

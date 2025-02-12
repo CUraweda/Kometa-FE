@@ -65,13 +65,7 @@ export const sidebarListAdmin = [
     subLabel: [],
   },
   
-  {
-    label: 'Admin',
-    path: listedAdmin.finance,
-    icon: 'FaUserGear',
-    subMenu: false,
-    subLabel: [],
-  },
+ 
 ];
 
 // export const sidebarListAdmin = [

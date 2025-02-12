@@ -5,9 +5,9 @@ import { paymentRest } from '@/middleware/Rest';
 import { PaymentData } from '@/middleware/Utils';
 import { formatDate } from '@/utils/date';
 import { formatRupiah } from '@/utils/formatRupiah';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
-import { addDays, format, startOfMonth, endOfMonth } from "date-fns";
+import { startOfMonth, endOfMonth } from "date-fns";
 
 const RekapPaymentHistori = () => {
   const [dataPayment, setDataPayment] = useState<PaymentData[]>([]);
@@ -15,11 +15,11 @@ const RekapPaymentHistori = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [dateRange, setDateRange] = useState<any>({from: startOfMonth(new Date()), to: endOfMonth(new Date()) })
   const [search, setSearch] = useState<string>('');
-  const itemsPerPage = 20;
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     getData();
-  }, [search, dateRange]);
+  }, [search, dateRange, itemsPerPage]);
 
   const getData = async () => {
     const payload = `limit=${itemsPerPage}&page=${currentPage}&search=transactionId:${search}&gte=createdAt:${dateRange?.from}&lte=createdAt:${dateRange?.to}`;
@@ -31,11 +31,14 @@ const RekapPaymentHistori = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage);
+  };
   const handleDateChange = (dateRange: any) => {
     if (dateRange?.from && dateRange?.to) {
       const date ={ 
-        from : dateRange.from.toLocaleDateString('id-ID'),
-        to: dateRange.to.toLocaleDateString('id-ID')
+        from : dateRange.from,
+        to: dateRange.to
       }
      setDateRange(date)
       console.log(dateRange, "okeee");
@@ -46,7 +49,7 @@ const RekapPaymentHistori = () => {
     <div>
       <CenterLayout className="min-h-[calc(100vh-105px)]">
         <div className=" w-full min-h-[calc(100vh-105px)] flex flex-col">
-          <span className="text-xl font-bold">Histori Pebayaran Anggota</span>
+          <span className="text-xl font-bold">Histori Pembayaran Anggota</span>
           <div className="w-full flex justify-end my-5 gap-3 items-center">
             <DatePickerWithRange onSelect={handleDateChange} />
             <label className="input input-bordered flex items-center gap-2">
@@ -98,11 +101,12 @@ const RekapPaymentHistori = () => {
               </table>
             </div>
             <div className="w-full mt-5 flex justify-end">
-              <Pagination
+            <Pagination
                 totalItems={totalItems}
                 itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
+                onItemsPerPageChange={handleItemsPerPageChange}
               />
             </div>
           </div>

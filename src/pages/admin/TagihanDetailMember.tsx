@@ -17,6 +17,9 @@ import { useSearchParams } from 'react-router-dom';
 
 import { memberRest, PaymentRest } from '@/middleware';
 import Pagination from '@/components/ui/pagination';
+import Swal from 'sweetalert2';
+import getErrorMessage from '@/utils/apiHelper';
+import { CiTrash } from 'react-icons/ci';
 
 const TagihanDetailMember = () => {
   const [billData, setBill] = useState<SavingData[]>([]);
@@ -24,12 +27,12 @@ const TagihanDetailMember = () => {
   const [idMember, setIdMember] = useState<Member[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 10;
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [currentPage, itemsPerPage]);
 
   const id = searchParams.get('id');
 
@@ -56,7 +59,9 @@ const TagihanDetailMember = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage);
+  };
 
   const handleAddBillMember = async () => {
     const data: Simpanan[] = []
@@ -76,6 +81,40 @@ const TagihanDetailMember = () => {
     getData()
   }
 
+  const trigerDelete = async (id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDelete(id)
+      }
+    });
+  }
+
+  const handleDelete = async (id: string) => {
+    try {
+      await paymentRest.deleteSavingData(id)
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your data has been deleted.",
+        icon: "success"
+      });
+      getData()
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: getErrorMessage(error, 'failed. Please try again.'),
+    });
+    throw new Error(getErrorMessage(error, 'failed. Please try again.'));
+    }
+  }
 
   return (
     <div>
@@ -122,10 +161,10 @@ const TagihanDetailMember = () => {
                       <td>
                         <div className="w-full flex justify-start">
                           <button
-                            className="text-xl btn btn-xs btn-ghost"
-                            onClick={() => openModal('detail-pendapatan')}
+                            className="text-xl btn btn-xs btn-ghost text-red-500"
+                            onClick={() => trigerDelete(bill.id)}
                           >
-                            <AiOutlineExpandAlt />
+                           <CiTrash />
                           </button>
                         </div>
                       </td>
@@ -135,11 +174,12 @@ const TagihanDetailMember = () => {
               </table>
             </div>
             <div className="w-full mt-5 flex justify-end">
-              <Pagination
+            <Pagination
                 totalItems={totalItems}
                 itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
+                onItemsPerPageChange={handleItemsPerPageChange}
               />
             </div>
           </div>

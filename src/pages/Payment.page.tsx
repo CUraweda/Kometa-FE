@@ -71,16 +71,14 @@ function PaymentPage() {
             <h1 className="text-2xl font-bold text-center mb-6">
               Pembayaran QRIS
             </h1>
-
-            {/* QR Code Display */}
             <div className="flex justify-center mb-6">
               <img src={data?.qrisLink} alt="" />
-              {/* {data && <QRIS qrisLink={data?.qrisLink} />} */}
+             
             </div>
             <div className="w-full flex justify-center my-5">
               <CountdownTimer expiredDate={data?.expiredDate} />
             </div>
-            {/* Payment Instructions */}
+          
             <div className="text-center mb-6">
               <p className="text-gray-700 mb-2">
                 Silahkan scan QR code di atas untuk melakukan pembayaran.

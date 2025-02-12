@@ -1,6 +1,9 @@
 import React from 'react';
-
-import { convertToRupiah } from "@/utils/rupiah";
+import { convertToRupiah } from '@/utils/rupiah';
+import { formatDateString } from '@/utils/formatDate';
+import { openModal } from '../ui/ModalDetail';
+import { useNavigate } from 'react-router-dom';
+import { listedUser } from '@/constant/routers/listed';
 
 interface CardProps {
   total?: number;
@@ -21,21 +24,31 @@ const CardFinance: React.FC<CardProps> = ({
   methodeBayar,
   transaksiId,
 }) => {
+  const navigate = useNavigate();
+  const handlePayment = () => {
+    navigate(`/${listedUser.finance}?id=${transaksiId}`);
+    openModal('create-payment');
+  };
+  const handleDetail = () => {
+    navigate(
+      `${
+        methodeBayar === 'QRIS' ? listedUser.payment : listedUser.paymentVa
+      }?id=${transaksiId}`
+    );
+  };
   return (
     <div className="min-w-[calc(100%/3)]">
       <div className="border border-input p-5 rounded-lg shadow-md">
         <div className="flex justify-between items-center mb-2">
           <span className="text-green-600 font-semibold text-sm">
-            {total ? convertToRupiah(total) : "-"}
+            {total ? convertToRupiah(total) : '-'}
           </span>
           <span
             className={` ${
-              status == "Lunas"
-                ? "text-green-800 bg-green-200"
-                : "text-red-600 bg-red-200"
+              status ? 'text-green-800 bg-green-200' : 'text-red-600 bg-red-200'
             } text-sm py-1 px-2 rounded-md`}
           >
-            {status}
+            {status ? 'Lunas' : 'Belum Bayar'}
           </span>
         </div>
         <div className="mb-2">
@@ -43,12 +56,27 @@ const CardFinance: React.FC<CardProps> = ({
           <p className="text-gray-500">{methodeBayar}</p>
         </div>
 
-        {status !== "Lunas" ? (
+        {!status ? (
           <div className="flex justify-between items-center">
-            <span className="text-xs">Jatuh Tempo {tempo}</span>
-            <button className="btn btn-ghost btn-sm btn-outline text-green-500">
-              Bayar
-            </button>
+            <span className="text-xs flex flex-col">
+              Jatuh Tempo <span>{formatDateString(tempo)}</span>
+            </span>
+            {methodeBayar && (
+              <button
+                className="btn btn-ghost btn-sm btn-outline text-green-500"
+                onClick={handleDetail}
+              >
+                Detail
+              </button>
+            )}
+            {!methodeBayar && (
+              <button
+                className="btn btn-ghost btn-sm  bg-emeraldGreen text-white"
+                onClick={handlePayment}
+              >
+                Bayar
+              </button>
+            )}
           </div>
         ) : (
           <div className="flex justify-between items-center">
@@ -57,8 +85,8 @@ const CardFinance: React.FC<CardProps> = ({
               <p className="text-sm">{transaksiId}</p>
             </div>
             <div className="flex flex-col gap-2">
-              <p className="text-xs">Tanggal</p>
-              <p className="text-sm">{tanggalBayar}</p>
+              <p className="text-xs">Tanggal Bayar</p>
+              <p className="text-sm">{formatDateString(tanggalBayar)}</p>
             </div>
           </div>
         )}

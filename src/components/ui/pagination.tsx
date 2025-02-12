@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface PaginationProps {
   totalItems: number;
   itemsPerPage: number;
   currentPage: number;
   onPageChange: (page: number) => void;
+  onItemsPerPageChange: (itemsPerPage: number) => void; // Fungsi untuk mengubah itemsPerPage
 }
 
 const Pagination: React.FC<PaginationProps> = ({
@@ -12,6 +13,7 @@ const Pagination: React.FC<PaginationProps> = ({
   itemsPerPage,
   currentPage,
   onPageChange,
+  onItemsPerPageChange,
 }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -39,8 +41,15 @@ const Pagination: React.FC<PaginationProps> = ({
   const handlePrevious = () => {
     if (currentPage > 1) onPageChange(currentPage - 1);
   };
+
   const handleNext = () => {
     if (currentPage < totalPages) onPageChange(currentPage + 1);
+  };
+
+  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newItemsPerPage = Number(e.target.value);
+    onItemsPerPageChange(newItemsPerPage); // Mengubah itemsPerPage
+    onPageChange(1); // Reset halaman ke 1 saat itemsPerPage berubah
   };
 
   const pageNumbers = getPageNumbers();
@@ -52,7 +61,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={currentPage === 1}
         className="btn btn-sm bg-gray-600"
       >
-        prev
+        Prev
       </button>
 
       {pageNumbers.map((page, index) => {
@@ -68,7 +77,7 @@ const Pagination: React.FC<PaginationProps> = ({
           <button
             key={page}
             onClick={() => onPageChange(Number(page))}
-            className="btn btn-sm bg-gray-300 "
+            className="btn btn-sm bg-gray-300"
           >
             {page}
           </button>
@@ -82,6 +91,23 @@ const Pagination: React.FC<PaginationProps> = ({
       >
         Next
       </button>
+
+      <select
+        value={itemsPerPage}
+        onChange={handleItemsPerPageChange}
+        className="select select-bordered w-24 select-sm"
+      >
+        <option value={10}>10</option>
+        <option value={20}>20</option>
+        <option value={30}>30</option>
+        <option value={40}>40</option>
+        <option value={50}>50</option>
+        <option value={60}>60</option>
+        <option value={70}>70</option>
+        <option value={80}>80</option>
+        <option value={90}>90</option>
+        <option value={100}>100</option>
+      </select>
     </div>
   );
 };

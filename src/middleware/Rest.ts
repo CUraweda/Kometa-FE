@@ -5,15 +5,16 @@ import axios, {
 } from 'axios';
 import {
   BillDatas,
+  BillItem,
   BillReferenceResponse,
   createBillData,
-  getPaymentHistoryResponse,
+
   LandData,
   Login,
   LoginResponse,
   MemberData,
   MembershipTypeResponse,
-  PaymentData,
+ 
   provinces,
   Register,
   Simpanan,
@@ -315,6 +316,14 @@ export const paymentRest = {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
     }),
+  getBillReferenceById: (id: string): AxiosPromise<any> =>
+    server({
+      method: 'GET',
+      url: `api/savings-reference/show-one/${id}`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
   getBillData: (payload: string): AxiosPromise<BillDatas> =>
     server({
       method: 'GET',
@@ -341,6 +350,41 @@ export const paymentRest = {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },
     }),
+    createPayment: (data: any): AxiosPromise<any> =>
+    server({
+      method: 'POST',
+      url: `api/payment-history/payment/create`,
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+    updateReferencePayment: (data: any, id: string): AxiosPromise<any> =>
+    server({
+      method: 'PUT',
+      url: `api/savings-reference/update/${id}`,
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+    deleteSavingData: (id: string): AxiosPromise<any> =>
+    server({
+      method: 'DELETE',
+      url: `api/savings-data/delete/${id}`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+    deleteReferenceData: (id: string): AxiosPromise<any> =>
+    server({
+      method: 'DELETE',
+      url: `api/savings-reference/delete/${id}`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+   
 };
 
 export const dashboarRest = {

@@ -12,14 +12,21 @@ import mandiri from "../../assets/logo/bank/mandiri.png";
 import qris from "@/assets/logo/bank/qris.png"
 
 export const bank = [
-  
+  {
+    id: "payment",
+    value: "QRIS",
+    img: qris,
+    label: "QRIS",
+    price: 10000,
+    active: true
+  },
   {
     id: "payment",
     value: "MaybankVA",
     img: maybank,
     label: "Maybank",
     price: 10000,
-    active: true
+    active: false
   },
   {
     id: "payment",
@@ -27,7 +34,7 @@ export const bank = [
     img: DanamonVA,
     label: "Bank Danamon",
     price: 10000,
-    active: true
+    active: false
   },
   {
     id: "payment",
@@ -35,7 +42,7 @@ export const bank = [
     img: bnc,
     label: "Bank Neo Commerce",
     price: 10000,
-    active: true
+    active: false
   },
   {
     id: "payment",
@@ -43,7 +50,7 @@ export const bank = [
     img: ina,
     label: "Bank INA",
     price: 10000,
-    active: true
+    active: false
   },
   {
     id: "payment",
@@ -59,7 +66,7 @@ export const bank = [
     img: permata,
     label: "Bank Permata",
     price: 10000,
-    active: true
+    active: false
   },
   {
     id: "payment",
@@ -67,7 +74,7 @@ export const bank = [
     img: muamalat,
     label: "Bank Permata",
     price: 10000,
-    active: true
+    active: false
   },
   {
     id: "payment",
@@ -75,7 +82,7 @@ export const bank = [
     img: bsi,
     label: "Bank Syariah Indonesia ( BSI )",
     price: 10000,
-    active: true
+    active: false
   },
   {
     id: "payment",
@@ -83,7 +90,7 @@ export const bank = [
     img: bri,
     label: "Bank Rakyat Indonesia ( BRI )",
     price: 10000,
-    active: true
+    active: false
   },
   {
     id: "payment",
@@ -91,16 +98,9 @@ export const bank = [
     img: mandiri,
     label: "Bank Mandiri",
     price: 10000,
-    active: true
+    active: false
   },
-  {
-    id: "payment",
-    value: "QRIS",
-    img: qris,
-    label: "QRIS",
-    price: 10000,
-    active: true
-  },
+  
  
 ];
 

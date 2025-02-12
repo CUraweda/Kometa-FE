@@ -5,7 +5,7 @@ export const sidebarList = [
   { label: "Dashboard", path: listedUser.dashboard, icon: 'RiHome5Line' },
   { label: "Lahan", path: listedUser.land, icon: 'FiMapPin' },
   { label: "Budidaya", path: listedUser.planting, icon: 'PiPlantThin' },
-  { label: "Simpanan", path: listedUser.finance, icon: 'BsCashStack' },
+  { label: "Biaya", path: listedUser.finance, icon: 'BsCashStack' },
 ];
 
 export const sidebarListUnverif = [

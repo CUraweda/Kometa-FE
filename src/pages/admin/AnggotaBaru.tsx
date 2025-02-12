@@ -8,20 +8,22 @@ import { formatDate } from '@/utils/date';
 import { useNavigate } from 'react-router-dom';
 import { listedAdmin } from '@/constant/routers/listed';
 import Pagination from '@/components/ui/pagination';
+import { IoSearchOutline } from 'react-icons/io5';
 
 const AnggotaBaru = () => {
   const [data, setData] = useState<any>(undefined);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 10;
+  const [search, setSearch] = useState<string>('');
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const navigate = useNavigate();
 
   useEffect(() => {
     getData();
-  }, [currentPage]);
+  }, [currentPage, search, itemsPerPage]);
 
   const getData = async () => {
-    const payload = `limit=${itemsPerPage}&page=${currentPage}`;
+    const payload = `limit=${itemsPerPage}&page=${currentPage}&search=fullName:${search}`;
     const response = await memberRest.getAll(payload);
 
     if (response.data && response.data.data.items) {
@@ -35,6 +37,9 @@ const AnggotaBaru = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage);
   };
 
   const handleDetailAnggota = (props: string) => {
@@ -51,37 +56,18 @@ const AnggotaBaru = () => {
       <CenterLayout className="min-h-[calc(100vh-105px)]">
         <div className=" w-full min-h-[calc(100vh-105px)] flex flex-col">
           <span className="text-xl font-bold">Anggota Baru Kometa</span>
-          {/* <div className="rounded-lg mt-10 border h-36 flex items-center divide-x py-5 px-2 divide-gray-200 gap w-full bg-white">
-                        {fakeData.map(({ id, value }) => {
-
-                            return (
-                                <div className="px-8 flex-1 h-full flex flex-col justify-between items-start">
-                                    <h3 className="text-sm font-semibold">
-                                        {id}
-                                    </h3>
-                                    <span className="text-4xl font-medium">{value}</span>{" "}
-                                </div>
-                            );
-                        })}
-                    </div> */}
-          {/* <div className='mt-5 w-full flex justify-end gap-3'>
-                        <label className="input input-bordered flex items-center gap-2 ">
-                            <CiSearch />
-                            <input type="text" className="grow" placeholder="Email" />
-                        </label>
-                        <select className="select select-bordered">
-                            <option disabled selected>Pick one</option>
-                            <option>Star Wars</option>
-                            <option>Harry Potter</option>
-                            <option>Lord of the Rings</option>
-                            <option>Planet of the Apes</option>
-                            <option>Star Trek</option>
-                        </select>
-                        <label className="input input-bordered flex items-center gap-2 ">
-
-                            <input type="date" className="grow" placeholder="Email" />
-                        </label>
-                    </div> */}
+          <div className="mt-5 w-full flex justify-end gap-3">
+            <label className="input input-bordered flex items-center gap-2">
+              <input
+                type="text"
+                className="grow"
+                placeholder="Nama Anggota"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <IoSearchOutline />
+            </label>
+          </div>
 
           <div className="w-full bg-white mt-5 shadow-md p-2 rounded-md">
             <div className="overflow-x-auto">
@@ -132,14 +118,14 @@ const AnggotaBaru = () => {
                   ))}
                 </tbody>
               </table>
-             
             </div>
             <div className="w-full mt-5 flex justify-end">
-              <Pagination
+            <Pagination
                 totalItems={totalItems}
                 itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
+                onItemsPerPageChange={handleItemsPerPageChange}
               />
             </div>
           </div>

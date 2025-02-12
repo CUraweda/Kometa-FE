@@ -9,22 +9,24 @@ import { Member } from '@/middleware/Utils';
 import { formatDate } from '@/utils/date';
 import { listedAdmin } from '@/constant/routers/listed';
 import Pagination from '@/components/ui/pagination';
+import { IoSearchOutline } from 'react-icons/io5';
 
 const Anggota = () => {
   const [data, setData] = useState<any>(undefined);
   const navigate = useNavigate();
   const [totalItems, setTotalItems] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 10;
+  const [search, setSearch] = useState<string>('');
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     getData();
-  }, [currentPage]);
+  }, [currentPage, search, itemsPerPage]);
 
   const getData = async () => {
-    const payload = `limit=${itemsPerPage}&page=${currentPage}`;
+    const payload = `limit=${itemsPerPage}&page=${currentPage}&search=fullName:${search}`;
     const response = await memberRest.getAll(payload);
-  
+
     if (response.data && response.data.data.items) {
       const filteredItems = response.data.data.items.filter(
         (item: Member) => item.isVerified
@@ -35,7 +37,10 @@ const Anggota = () => {
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page); 
+    setCurrentPage(page);
+  };
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage);
   };
 
   const handleDetailAnggota = (props: string) => {
@@ -53,24 +58,18 @@ const Anggota = () => {
         <div className=" w-full min-h-[calc(100vh-105px)] flex flex-col">
           <span className="text-xl font-bold">Anggota Kometa</span>
 
-          {/* <div className='mt-5 w-full flex justify-end gap-3'>
-                        <label className="input input-bordered flex items-center gap-2 ">
-                            <CiSearch />
-                            <input type="text" className="grow" placeholder="Email" />
-                        </label>
-                        <select className="select select-bordered">
-                            <option disabled selected>Pick one</option>
-                            <option>Star Wars</option>
-                            <option>Harry Potter</option>
-                            <option>Lord of the Rings</option>
-                            <option>Planet of the Apes</option>
-                            <option>Star Trek</option>
-                        </select>
-                        <label className="input input-bordered flex items-center gap-2 ">
-
-                            <input type="date" className="grow" placeholder="Email" />
-                        </label>
-                    </div> */}
+          <div className="mt-5 w-full flex justify-end gap-3">
+            <label className="input input-bordered flex items-center gap-2">
+              <input
+                type="text"
+                className="grow"
+                placeholder="Nama Anggota"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <IoSearchOutline />
+            </label>
+          </div>
 
           <div className="w-full bg-white mt-5 shadow-md p-2 rounded-md">
             <div className="overflow-x-auto">
@@ -129,6 +128,7 @@ const Anggota = () => {
                 itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
+                onItemsPerPageChange={handleItemsPerPageChange}
               />
             </div>
           </div>
