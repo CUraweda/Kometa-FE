@@ -76,8 +76,8 @@ function Sidebar() {
                           key={Index}
                           to={Item.path}
                           className={({ isActive }) =>
-                            `group flex gap-3 items-center cursor-pointer p-2 rounded-lg hover:text-emeraldGreen ${
-                              isActive ? 'text-emeraldGreen ' : ''
+                            `group flex gap-2 items-center cursor-pointer rounded-lg hover:text-emeraldGreen ${
+                              isActive ? 'text-emeraldGreen border-l-[3px] border-emeraldGreen bg-emerald-100 font-semibold' : ''
                             }`
                           }
                         >
@@ -96,7 +96,7 @@ function Sidebar() {
                   to={item?.path}
                   className={({ isActive }) =>
                     `group flex gap-3 items-center cursor-pointer p-2 rounded-lg hover:text-emeraldGreen ${
-                      isActive ? 'text-emeraldGreen ' : ''
+                      isActive ? 'text-emeraldGreen border-l-[3px] border-emeraldGreen bg-emerald-100 font-semibold' : ''
                     }`
                   }
                 >
