@@ -14,13 +14,13 @@ const Lahan = () => {
   const [data, setData] = useState<any>(undefined);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 10;
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
     getData();
-  }, [currentPage]);
+  }, [currentPage, itemsPerPage]);
 
   const getData = async () => {
     const id = searchParams.get('id');
@@ -49,7 +49,9 @@ const Lahan = () => {
 
     navigate(`${listedAdmin.detaillahanBaru}?${params.toString()}`);
   };
-
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage);
+  };
   return (
     <div>
       <CenterLayout className="min-h-[calc(100vh-105px)]">
@@ -107,11 +109,12 @@ const Lahan = () => {
               </table>
             </div>
             <div className="w-full mt-5 flex justify-end">
-              <Pagination
+            <Pagination
                 totalItems={totalItems}
                 itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
+                onItemsPerPageChange={handleItemsPerPageChange}
               />
             </div>
           </div>

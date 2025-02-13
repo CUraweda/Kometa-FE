@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-
 interface PaginationProps {
   totalItems: number;
   itemsPerPage: number;
   currentPage: number;
   onPageChange: (page: number) => void;
-  onItemsPerPageChange: (itemsPerPage: number) => void; // Fungsi untuk mengubah itemsPerPage
+  onItemsPerPageChange: (itemsPerPage: number) => void; 
 }
 
 const Pagination: React.FC<PaginationProps> = ({

@@ -16,7 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Swal from 'sweetalert2';
 import getErrorMessage from '@/utils/apiHelper';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { listedAdmin, listedUser } from '@/constant/routers/listed';
+import { listedAdmin } from '@/constant/routers/listed';
 import Pagination from '@/components/ui/pagination';
 import { CiTrash } from 'react-icons/ci';
 import { LuPencilLine } from 'react-icons/lu';

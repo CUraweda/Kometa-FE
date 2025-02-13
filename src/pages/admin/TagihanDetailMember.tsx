@@ -1,5 +1,4 @@
 import CenterLayout from '@/layout/center.layout';
-import { AiOutlineExpandAlt } from 'react-icons/ai';
 import ModalDetail, {
   closeModal,
   openModal,

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Payment } from "../../types/common";
-import { convertToRupiah } from "../../utils/rupiah";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -17,7 +16,7 @@ function CardBox({ data, onChange, selected }: Props) {
   }, [selected]);
 
   return data?.map((item) => {
-    const { id, value, img, label, price, active } = item;
+    const { id, value, img, label,  active } = item;
     const isActive = value === currentSelected;
     const handleSlected = () => {
       onChange(item);

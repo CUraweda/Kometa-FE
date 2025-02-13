@@ -1,9 +1,9 @@
 import React from 'react';
-import { convertToRupiah } from '@/utils/rupiah';
 import { formatDateString } from '@/utils/formatDate';
 import { openModal } from '../ui/ModalDetail';
 import { useNavigate } from 'react-router-dom';
 import { listedUser } from '@/constant/routers/listed';
+import { formatRupiah } from '@/utils/formatRupiah';
 
 interface CardProps {
   total?: number;
@@ -41,7 +41,7 @@ const CardFinance: React.FC<CardProps> = ({
       <div className="border border-input p-5 rounded-lg shadow-md">
         <div className="flex justify-between items-center mb-2">
           <span className="text-green-600 font-semibold text-sm">
-            {total ? convertToRupiah(total) : '-'}
+            {total ? formatRupiah(total) : '-'}
           </span>
           <span
             className={` ${

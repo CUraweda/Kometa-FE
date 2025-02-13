@@ -1,5 +1,4 @@
 import CardFinance from '@/components/shared/cardFinance';
-import Input from '@/components/ui/input';
 import CenterLayout from '../layout/center.layout';
 import { useEffect, useState } from 'react';
 import { PaymentData } from '@/middleware/Utils';

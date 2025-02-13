@@ -1,5 +1,5 @@
 
-import { bank, paymentMethod } from "../../constant/form/payment.list";
+import { bank} from "../../constant/form/payment.list";
 import { Payment } from "../../types/common";
 import CardBox from "../ui/cardbox";
 
