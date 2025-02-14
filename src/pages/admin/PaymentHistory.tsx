@@ -19,7 +19,7 @@ const PaymentHistory = () => {
   }, [currentPage, itemsPerPage]);
 
   const getData = async () => {
-    const payload = `whare=memberId:${id}&limit=${itemsPerPage}&page=${currentPage}`;
+    const payload = `where=memberId:${id}&limit=${itemsPerPage}&page=${currentPage}`;
     const { data } = await paymentRest.getPaymentHistory(payload);
     setTotalItems(data.data.total_items);
     setDataPayment(data.data.items);
