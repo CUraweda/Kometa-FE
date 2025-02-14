@@ -1,9 +1,7 @@
 import ModalDetail, { closeModal, openModal } from '@/components/ui/ModalDetail';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatDateString, formatDateTime } from '@/utils/formatDate';
-import { formatRupiah } from '@/utils/formatRupiah';
-import { memberRest } from '@/middleware';
-import { previewImage } from '@/middleware/Rest';
+import { dataMember, memberRest } from '@/middleware';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -14,8 +12,10 @@ const DetailAnggotaBaru = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [searchParams] = useSearchParams();
   const [textReject, setText] = useState<string>('')
+  const [indexImage, setIndexImage] = useState<string>('')
 
   const type = searchParams.get("type");
+
   const checkData = async () => {
     const id = searchParams.get("id");
 
@@ -53,26 +53,10 @@ const DetailAnggotaBaru = () => {
     };
   }, []);
 
-  const getFile = async (path: string): Promise<string | undefined> => {
-    try {
-      const response = await previewImage.get(path);
-      const blob = new Blob([response.data], { type: response.headers["content-type"] });
-      return URL.createObjectURL(blob);
-    } catch (error) {
-      console.error("Failed to load file:", error);
-      return undefined;
-    }
-  };
   const loadImages = async (props: any) => {
-    if (props) {
-      const loadedImages = await Promise.all(
-        props.map(async (value: any, index: number) => {
-          const src = await getFile(value.filePath);
-          return { index, src: src || "" };
-        })
-      );
-      setImages(loadedImages);
-    }
+    const allowedFilePaths = { ktp: true, ktp_selfie: true }; 
+    const image = await dataMember.loadImage(props, allowedFilePaths)
+    setImages(image ?? []);
   };
 
   const handleVerif = async (verify: boolean, id: string, text?: string) => {
@@ -109,35 +93,16 @@ const DetailAnggotaBaru = () => {
 
     }
   }
+  
+  const handlePreview = (index: string) => {
+    setIndexImage(index)
+    openModal('preview-image')
+  }
   return (
     <div className="container ">
       <div className="bg-white shadow-lg rounded-lg p-6">
         <h1 className="text-xl font-bold mb-4">Anggota</h1>
         <p className="text-sm text-gray-500 mb-6">Anggota / Detail Anggota</p>
-
-        <h2 className="text-lg font-bold mb-4">Detail Transaksi</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <table className="table w-1/2">
-            <tr >
-              <th className="font-semibold">Pembayaran</th>
-              <td>:</td>
-              <td>{data?.registrationPaymentMethod}</td>
-            </tr>
-            <tr >
-              <th className="font-semibold">Total</th>
-              <td>:</td>
-              <td>{formatRupiah(data?.registrationFee ? data?.registrationFee : 5000)}</td>
-            </tr>
-            <tr >
-              <th className="font-semibold">Status</th>
-              <td>:</td>
-              <td><span className={`p-1 rounded-md font-bold ${data?.registrationIsPaid ? 'bg-green-300 text-green-800' : 'bg-red-300 text-red-800'}`}>{data?.registrationIsPaid ? 'Paid' : 'Unpaid'}</span></td>
-            </tr>
-
-
-          </table>
-
-        </div>
 
         <h2 className="text-lg font-bold mt-6 mb-4">Informasi Akun</h2>
         <div className='z-0 overflow-hidden'>
@@ -187,10 +152,11 @@ const DetailAnggotaBaru = () => {
           {images.map(({ index, src }) => (
             <div
               key={index}
-              className="flex items-center mt-5"
+              className="flex items-center mt-5 cursor-pointer"
+              onClick={() => handlePreview(src)}
             >
 
-              <img src={src} alt={`Image ${index}`} className="w-96 rounded border" />
+              <img src={src} alt={`Image ${index}`} className="aspect-video rounded border" />
               <div className="w-full justify-start">
                 {/* Tambahkan konten tambahan di sini jika diperlukan */}
               </div>
@@ -300,12 +266,6 @@ const DetailAnggotaBaru = () => {
           <span>{data?.rejectedMessage || 'Tidak ada catatan'}</span>
         </div>
 
-        {/* {
-          type === 'member' &&
-          <>
-            <button className='btn btn-ghost bg-emeraldGreen text-white'>Edit</button>
-          </>
-        } */}
         {
           type !== 'member' &&
           <div className="flex space-x-4 mt-6">
@@ -321,6 +281,13 @@ const DetailAnggotaBaru = () => {
           <span>Tolak Pengajuan Anggota</span>
           <textarea className="textarea textarea-bordered w-full" placeholder="Catatan" value={textReject} onChange={(e) => setText(e.target.value)} />
           <button className='btn btn-outline text-white bg-emeraldGreen w-full' onClick={() => handleVerif(false, data?.id, textReject)}>Simpan</button>
+
+        </div>
+
+      </ModalDetail>
+      <ModalDetail id='preview-image'>
+        <div className='w-full flex flex-col gap-3'>
+        <img src={indexImage} alt={`Image preview`} className="rounded border" />
 
         </div>
 

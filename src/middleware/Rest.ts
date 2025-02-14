@@ -8,6 +8,8 @@ import {
   BillReferenceResponse,
   createBillData,
 
+  getDataUser,
+
   LandData,
   Login,
   LoginResponse,
@@ -142,11 +144,25 @@ export const authApi = {
 };
 
 export const authUser = {
-  profil: () =>
+  profil: (): AxiosPromise<getDataUser> =>
     server({
       method: 'GET',
-      url: '',
+      url: 'api/user/me',
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
     }),
+  updateProfil: (data: any): AxiosPromise<getDataUser> =>
+    server({
+      method: 'PUT',
+      url: 'api/member-data/update-profile',
+      data,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+
+
 };
 
 export const restAnggota = {

@@ -27,8 +27,7 @@ function PaymentPage() {
       const isPaid = response.data.data.isPaid;
       const type = response.data.data.paymentMethod
       const idTransaksi = response.data.data.id;
-      console.log(type);
-      
+     
       if (isPaid) {
         navigate(listedUser.dahsboardVerfi);
       }

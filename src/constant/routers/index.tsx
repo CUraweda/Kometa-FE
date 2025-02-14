@@ -48,6 +48,7 @@ import TagihanDetailMember from '@/pages/admin/TagihanDetailMember';
 import FinancePage from '@/pages/Finance.page';
 // import HistoryPayment from '@/pages/admin/RekapPaymentHistori';
 import RekapPaymentHistori from '@/pages/admin/RekapPaymentHistori';
+import ProfilePage from '@/pages/Profile.page';
 
 export const router = createBrowserRouter([
   {
@@ -107,7 +108,7 @@ export const router = createBrowserRouter([
       },
       { path: listedUser.supplier, element: <SupplierPage /> },
       { path: listedUser.finance, element: <FinancePage /> },
-      // { path: listedUser.profile, element: <ProfilePage /> },
+      { path: listedUser.profile, element: <ProfilePage /> },
 
       { path: listedUser.test, element: <Test /> },
       { path: listedUser.dahsboardVerfi, element: <UnVerifiedPage /> },

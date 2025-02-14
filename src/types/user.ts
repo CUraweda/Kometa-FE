@@ -1,5 +1,7 @@
-import { SignUp } from "./sign";
 
-export type Profile = Omit<SignUp, "password" | "repeatPassword"> & {
-  name: string;
+export interface Profile {
+  fullName: string;
+  email: string;
+  phoneWA: string;
+  
 };
