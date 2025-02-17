@@ -16,6 +16,8 @@ import {
   MemberData,
   MembershipTypeResponse,
  
+  NotificationResponse,
+ 
   provinces,
   Register,
   Simpanan,
@@ -423,6 +425,33 @@ export const dashboarRest = {
     server({
       method: 'GET',
       url: `api/dashboard/count-statistic`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+};
+
+export const notifRest = {
+  notifUser: (): AxiosPromise<NotificationResponse> =>
+    server({
+      method: 'GET',
+      url: `api/notification/show-me`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  notifAdmin: (): AxiosPromise<NotificationResponse> =>
+    server({
+      method: 'GET',
+      url: `api/notification/show-all?where=fromAdmin:true`,
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
+      },
+    }),
+  readAll: (): AxiosPromise<NotificationResponse> =>
+    server({
+      method: 'PATCH',
+      url: `api/notification/read`,
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().accessToken}`,
       },

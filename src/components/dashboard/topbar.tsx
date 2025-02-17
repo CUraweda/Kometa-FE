@@ -1,6 +1,9 @@
 import { listedUser } from '@/constant/routers/listed';
 import { MdMenuOpen } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Bell } from 'lucide-react';
+import NotificationContent from '../content/notification.content';
 
 function TopBar({
   profileImageUrl,
@@ -24,16 +27,8 @@ function TopBar({
         </div>
         {userName && <h3>Hello, {userName}</h3>}
       </div>
-      <div className="flex gap-3 ml-auto">
-        {/* <Popover>
-          <PopoverTrigger>
-            <button className="group w-10 rounded-lg bg-gray-50 flex justify-center items-center hover:bg-emerald-50">
-              <Bell className="h-8 group-hover:fill-emerald-600" />
-            </button>
-          </PopoverTrigger>
-          <PopoverContent><NotificationContent /></PopoverContent>
-        </Popover> */}
-
+      <div className="flex gap-3 ml-auto ml">
+        <NotificationContent/>
         <div
           onClick={() => navigate(listedUser.profile)}
           className="avatar ml-5 cursor-pointer"

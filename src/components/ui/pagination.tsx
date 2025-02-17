@@ -57,7 +57,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={handlePrevious}
         disabled={currentPage === 1}
-        className="btn btn-sm bg-gray-600"
+        className="btn btn-sm bg-gray-600 text-white"
       >
         Prev
       </button>
@@ -65,7 +65,7 @@ const Pagination: React.FC<PaginationProps> = ({
       {pageNumbers.map((page, index) => {
         if (page === '...') {
           return (
-            <button key={index} disabled className="btn btn-sm bg-gray-600">
+            <button key={index} disabled className="btn btn-sm bg-gray-600 text-white">
               ...
             </button>
           );
@@ -75,7 +75,7 @@ const Pagination: React.FC<PaginationProps> = ({
           <button
             key={page}
             onClick={() => onPageChange(Number(page))}
-            className="btn btn-sm bg-gray-300"
+            className="btn btn-sm bg-gray-300 "
           >
             {page}
           </button>
@@ -85,7 +85,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={handleNext}
         disabled={currentPage === totalPages}
-        className="btn btn-sm bg-gray-600"
+        className="btn btn-sm bg-gray-600 text-white"
       >
         Next
       </button>

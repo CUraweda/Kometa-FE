@@ -327,3 +327,27 @@ export interface Simpanan {
   status: string;
   isPaymentSuccess?: boolean;
 }
+
+export interface Notification {
+  id: string;
+  title: string;
+  label: string;
+  message: string;
+  fromAdmin: boolean;
+  directPath: string | null;
+  subTopic: string;
+  createdAt: string; // Use a Date type if you prefer to work with Date objects
+}
+
+export interface NotificationUser {
+  notificationId: string;
+  userId: string;
+  isReaded: boolean;
+  Notification: Notification;
+}
+
+export interface NotificationResponse {
+  status: boolean;
+  message: string;
+  data: NotificationUser[];
+}
