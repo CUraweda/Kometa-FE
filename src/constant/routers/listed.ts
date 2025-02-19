@@ -17,13 +17,22 @@ export const listedUser = {
   add: "add",
   detail: "detail",
 
+  personalInformation: "add/personal-information",
+  plantingAddress: "add/address",
+  fasility: "add/fasility",
+  comodity: "add/comodity",
+  food: "add/food",
+  harvest: "add/harvest",
+  kycPlanting: "add/kyc-planting",
+  kycPersonal: "add/kyc-personal",
+  documents: "add/documents",
+
   planting: "planting",
   supplier: "supplier",
   finance: "finance",
   profile: "profile",
   test: "/test",
   dahsboardVerfi: "/dashboard/verif",
- 
 };
 
 export const listedAdmin = {

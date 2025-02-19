@@ -8,8 +8,10 @@ import HarvestTab from "./tabs/Harvest.tab";
 import KYCPlantingTab from "./tabs/KYCPlanting.tab";
 import KYCPersonalTab from "./tabs/KYCPersonal.tab";
 import DocumentTab from "./tabs/Document.tab";
+import { useNavigate } from "react-router-dom";
 
 function PlantingDetail() {
+  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState(0);
 
   const tabs = [
@@ -69,10 +71,8 @@ function PlantingDetail() {
           <a
             key={item.id}
             onClick={() => setSelectedTab(index)}
-            role={`tab ${item.id}`}
-            className={`truncate text-ellipsis tab ${
-              index == selectedTab ? "tab-active" : ""
-            }`}
+            role={`truncate text-ellipsis tab ${item.id}`}
+            className={` tab ${index == selectedTab ? "tab-active" : ""}`}
           >
             {item.label}
           </a>
@@ -80,7 +80,12 @@ function PlantingDetail() {
       </div>
       <Content />
       <div className="space-x-3 mt-7">
-        <button className="btn btn-outline">Kembali</button>
+        <button
+          className="btn btn-outline"
+          onClick={() => navigate("/planting")}
+        >
+          Kembali
+        </button>
         <button className="btn btn-primary">Edit</button>
       </div>
     </div>

@@ -22,30 +22,30 @@ function Radio({ id, data, error, onChange, selected, className }: Props) {
       <div className={twMerge("flex gap-3 h-full", className)}>
         {data.map((item) => {
           const { value, label } = item;
-          const isSelected = currentSelected == value;
+          const isSelected = currentSelected === value;
+
           return (
             <label
               key={value}
-              htmlFor={value}
+              htmlFor={`${id}-${value}`}
               className={twMerge(
-                "border input-bordered rounded-lg p-2 px-3 text-gray-500 flex flex-1 items-center justify-between cursor-pointer",
+                "border w-full input-bordered rounded-lg p-2 px-3 text-gray-500 flex items-center justify-between cursor-pointer",
                 isSelected ? "border-primary" : ""
               )}
+              onClick={() => {
+                onChange(item);
+                setCurrentSelected(value);
+              }}
             >
-              <label htmlFor={value} className="cursor-pointer">
-                {label}
-              </label>
+              <span className="cursor-pointer">{label}</span>
               <input
-                id={value}
+                id={`${id}-${value}`}
                 type="radio"
                 name={id}
                 className="radio radio-xs checked:bg-primary"
-                onClick={() => {
-                  onChange(item);
-                  setCurrentSelected(value);
-                }}
-                value={currentSelected}
-                defaultChecked={isSelected}
+                value={value}
+                checked={isSelected}
+                onChange={() => {}}
               />
             </label>
           );

@@ -20,11 +20,21 @@ type InputProps = {
   className?: string;
   icon?: string;
   direction?: "left" | "right";
+  uom?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { error, className, placeholder, type, icon, direction = "left", ...rest },
+    {
+      error,
+      className,
+      placeholder,
+      type,
+      icon,
+      direction = "left",
+      uom,
+      ...rest
+    },
     ref
   ) => {
     const errorMessage = typeof error === "string" ? error : error?.message;
@@ -35,16 +45,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <div className="w-full">
+      <div className="w-full relative">
         <label
           className={twMerge(
-            icon
-              ? "border h-[48px] rounded-lg px-3 flex items-center gap-2 focus-within:border-primary fill-[#b3b3b3] focus-within:fill-primary"
-              : "form-control w-full",
+            "border border-gray-300 h-[48px] rounded-lg px-3 flex items-center gap-2 focus-within:border-primary",
+            icon ? "pr-10" : "",
+            uom ? "pr-14" : "",
             className
           )}
         >
-          {icon && direction == "left"
+          {icon && direction === "left"
             ? selectedIcon[icon as keyof typeof selectedIcon]
             : null}
           <input
@@ -66,15 +76,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               }
             }}
             className={twMerge(
-              `${
-                icon ? "grow outline-none group" : "input input-bordered"
-              } w-full ${error ? "border-red-600" : ""}`,
+              `grow outline-none bg-transparent w-full ${
+                error ? "border-red-600" : ""
+              }`,
               className
             )}
             {...rest}
             ref={ref}
           />
-          {icon && direction == "right"
+          {uom && (
+            <span className="absolute right-4 text-black text-sm">{uom}</span>
+          )}
+          {icon && direction === "right"
             ? selectedIcon[icon as keyof typeof selectedIcon]
             : null}
         </label>

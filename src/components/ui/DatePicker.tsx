@@ -1,31 +1,32 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
+import * as React from "react";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 interface DatePickerProps {
   onDateSelect: (date: Date) => void; // Menyatakan bahwa onDateSelect hanya menerima Date
+  placeholder?: string;
 }
 
-export function DatePicker({ onDateSelect }: DatePickerProps) {
-  const [date, setDate] = React.useState<Date | undefined>(undefined)
+export function DatePicker({ onDateSelect, placeholder }: DatePickerProps) {
+  const [date, setDate] = React.useState<Date | undefined>(undefined);
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
-      setDate(selectedDate)
-      onDateSelect(selectedDate) // Memanggil callback hanya jika tanggal dipilih
+      setDate(selectedDate);
+      onDateSelect(selectedDate); // Memanggil callback hanya jika tanggal dipilih
     }
-  }
+  };
 
   return (
     <Popover>
@@ -33,12 +34,16 @@ export function DatePicker({ onDateSelect }: DatePickerProps) {
         <Button
           variant={"outline"}
           className={cn(
-            "w-[280px] justify-start text-left font-normal",
+            "w-[240px] justify-start text-left font-normal p-6 rounded-lg",
             !date && "text-muted-foreground"
           )}
         >
           <CalendarIcon />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? (
+            format(date, "PPP")
+          ) : (
+            <span>{placeholder || "Pick a date"}</span>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -48,12 +53,12 @@ export function DatePicker({ onDateSelect }: DatePickerProps) {
           onSelect={(selectedDate) => {
             // Menangani pemilihan tanggal hanya jika valid
             if (selectedDate) {
-              handleDateSelect(selectedDate)
+              handleDateSelect(selectedDate);
             }
           }}
           initialFocus
         />
       </PopoverContent>
     </Popover>
-  )
+  );
 }
