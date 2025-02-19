@@ -65,6 +65,9 @@ import * as yup from "yup";
         value ? ["image/jpeg", "image/png"].includes(value.type) : false
       ),
       registrationFee: yup.number().optional(),
-      registrationPaymentMethod: yup.string().optional()
+      registrationPaymentMethod: yup.string().optional(),
+      phoneWA: yup.string().optional(),
+      email: yup.string().optional(),
+      password: yup.string().optional(),
   });
   

@@ -82,6 +82,9 @@ function RegisterMember() {
       ktp_selfie: undefined,
       registrationFee: 0,
       registrationPaymentMethod: '',
+      phoneWA: '',
+      email: '',
+      password: '',
     },
     resolver: yupResolver(schemaMember),
   });
@@ -186,19 +189,24 @@ function RegisterMember() {
   const onSubmit: SubmitHandler<Register> = (value) => {
     setValue('registrationFee', payment?.price ?? 10000);
     setValue('registrationPaymentMethod', payment?.value ?? 'QRIS');
-    handleCreate(value);
+    if(!type){
+      const { phoneWA, email, password, ...rest } = value;
+      handleCreate(rest);
+    }else{
+      handleCreate(value)
+    }
   };
 
   const handleCreate = async (value: any) => {
     try {
       const response = await memberRest.createData(value);
       const id = response?.data?.data?.id;
-
       if (id) {
         const params = new URLSearchParams({
-          type: payment?.value ?? 'QRIS',
+          payment: payment?.value ?? 'QRIS',
+          idUser : response.data.data.userId,
+          type: type === 'register-admin' ? 'create-admin' : ''
         });
-
         reset();
         navigate(
           `${
@@ -208,23 +216,19 @@ function RegisterMember() {
           }?${params.toString()}`
         );
       } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Pendaftaran Gagal Silakan coba beberapa saat lagi , pastikan koneksi anda bagus',
-        });
+       
       }
     } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Pendaftaran Gagal Silakan coba beberapa saat lagi',
-      });
+     console.log(error);
+     
     }
   };
 
   const onUpdate: SubmitHandler<Register> = (value) => {
-    memberRest.updateData(value, Id);
+    if(type === 'reject'){
+      const { phoneWA, email, password, ...rest } = value;
+      memberRest.updateData(rest, Id);
+    }
     reset();
     navigate('/dashboard/verif');
   };
@@ -288,7 +292,47 @@ function RegisterMember() {
 
         <div className="gap-5 px-3 sm:p-10">
           <div className="bg-white p-3 rounded-md">
-            <div className="space-y-4">
+            {type === 'register-admin' && (
+              <div className="space-y-4">
+                <h2 className="font-medium tracking-wide mb-3">
+                  Informasi Akun Login Member
+                </h2>
+
+                <div className="flex gap-4 flex-col sm:flex-row">
+                  <div className="w-full">
+                    <label htmlFor="">Nomor Whatsapp / handphone</label>
+                    <Input
+                      type="text"
+                      error={errors?.phoneWA}
+                      placeholder="Nomor Whatsapp / handphone"
+                      {...register('phoneWA')}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="">Email</label>
+                    <Input
+                      type="text"
+                      error={errors?.email}
+                      placeholder="Email"
+                      {...register('email')}
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-4 flex-col sm:flex-row">
+                  <div className="w-full sm:w-1/2">
+                    <label htmlFor="">Password</label>
+                    <Input
+                      type="text"
+                      error={errors?.password}
+                      placeholder="Password"
+                      {...register('password')}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-4 mt-10">
               <h2 className="font-medium tracking-wide mb-3">
                 Informasi Pribadi
               </h2>
@@ -691,19 +735,18 @@ function RegisterMember() {
               )}
             </div>
           </div>
-          {
-            !type && 
-          <div className="space-y-4 flex-col sm:flex-row bg-white mt-10 p-3 rounded-md">
-            <h2 className="font-medium tracking-wide">Metode Pembayaran</h2>
-            <PaymentMethod
-              selected={payment?.value}
-              onChange={(item) => setPayment(item)}
-            />
-          </div>
-          }
+          {(type === 'register-admin' || !type) && (
+            <div className="space-y-4 flex-col sm:flex-row bg-white mt-10 p-3 rounded-md">
+              <h2 className="font-medium tracking-wide">Metode Pembayaran</h2>
+              <PaymentMethod
+                selected={payment?.value}
+                onChange={(item) => setPayment(item)}
+              />
+            </div>
+          )}
         </div>
         <div className="w-full text-center">
-          {type && (
+          {type === 'reject' && (
             <button
               onClick={() => handleSubmit(onUpdate)()}
               className="btn w-56 btn-ghost bg-emeraldGreen text-white mt-10 mb-20"
@@ -711,16 +754,17 @@ function RegisterMember() {
               Update Data
             </button>
           )}
-          {!type && (
+          {(type === 'register-admin' || !type) && (
             <button
               onClick={() => handleSubmit(onSubmit)()}
               className="btn w-56 btn-ghost bg-emeraldGreen text-white mt-10 mb-20"
             >
-              Bayar Sekarang
+              Daftar Sekarang
             </button>
           )}
         </div>
       </PaymentLayout>
+
       <Modal id={modalId} title="Instruksi" alignTitle="left">
         {modalId && (
           <div>

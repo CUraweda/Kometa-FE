@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { LuCopy, LuCopyCheck } from 'react-icons/lu';
-import {useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import PaymentMethod from '../components/shared/payment.component';
 import { paymentList } from '../constant/form/payment.list';
@@ -26,7 +26,6 @@ function PaymentVaPage() {
 
   useEffect(() => {
     checkPayment();
-   
   }, []);
 
   const checkPayment = async () => {
@@ -49,7 +48,7 @@ function PaymentVaPage() {
     const payload = {
       paymentType: type,
     };
-  
+
     try {
       const response = await paymentRest.generatePayment(payload);
       const id = response.data.data.id;
@@ -98,6 +97,15 @@ function PaymentVaPage() {
     paymentList.find((item) => (item as Payment).value == type) as Payment
   )?.img;
 
+  const downloadQRCode = () => {
+    const canvas = document.querySelector('canvas') as HTMLCanvasElement;
+    const url = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'qris-code.png';
+    a.click();
+  };
+
   return (
     <>
       <PaymentLayout>
@@ -112,7 +120,7 @@ function PaymentVaPage() {
                   </h3>
                 </span>
               </div>
-              <div className='flex flex-col gap-3'>
+              <div className="flex flex-col gap-3">
                 <img
                   className="w-32 mx-auto pt-5"
                   src={selectedPayment}
@@ -132,11 +140,14 @@ function PaymentVaPage() {
                       </td>
                     </tr>
                     <tr>
-                      <td className="text-end">Nomor Virtual Account ( VA Pembayaran )</td>
+                      <td className="text-end">
+                        Nomor Virtual Account ( VA Pembayaran )
+                      </td>
                       <td>
                         <span className="flex gap-1 items-center">
                           <h3 className="tracking-wider font-bold">
-                            {data?.virtualAccountNo ?? 'Virtual Account Tidak Tersedia'}
+                            {data?.virtualAccountNo ??
+                              'Virtual Account Tidak Tersedia'}
                           </h3>
                           {element}
                         </span>

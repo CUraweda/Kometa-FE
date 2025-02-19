@@ -6,7 +6,7 @@ import { Member } from '@/middleware/Utils';
 import { memberRest } from '@/middleware';
 import { formatDate } from '@/utils/date';
 import { useNavigate } from 'react-router-dom';
-import { listedAdmin } from '@/constant/routers/listed';
+import { listedAdmin, listedUser } from '@/constant/routers/listed';
 import Pagination from '@/components/ui/pagination';
 import { IoSearchOutline } from 'react-icons/io5';
 
@@ -50,6 +50,13 @@ const AnggotaBaru = () => {
 
     navigate(`${listedAdmin.DetailAnggotaBaru}?${params.toString()}`);
   };
+  const handleNewAnggota = () => {
+    const params = new URLSearchParams({
+      type: 'register-admin',
+    });
+
+    navigate(`${listedUser.registerMember}?${params.toString()}`);
+  };
 
   return (
     <div>
@@ -67,6 +74,7 @@ const AnggotaBaru = () => {
               />
               <IoSearchOutline />
             </label>
+            <button className='btn btn-ghost bg-emeraldGreen text-white' onClick={handleNewAnggota}>Tambah</button>
           </div>
 
           <div className="w-full bg-white mt-5 shadow-md p-2 rounded-md">

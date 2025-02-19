@@ -28,6 +28,9 @@ export interface Register {
   DomicileAddressDetail: string;
   ktp: File;
   ktp_selfie: File;
-  registrationFee? : number
-  registrationPaymentMethod?: string
+  registrationFee?: number;
+  registrationPaymentMethod?: string;
+  phoneWA?: string;
+  email?: string;
+  password?: string;
 }

@@ -16,8 +16,8 @@ const DetailAnggotaBaru = () => {
 
   const type = searchParams.get("type");
 
+  const id = searchParams.get("id");
   const checkData = async () => {
-    const id = searchParams.get("id");
 
     if (!id) {
       console.error("No ID found in query parameters");
@@ -51,7 +51,7 @@ const DetailAnggotaBaru = () => {
     return () => {
       images.forEach(({ src }) => URL.revokeObjectURL(src));
     };
-  }, []);
+  }, [id]);
 
   const loadImages = async (props: any) => {
     const allowedFilePaths = { ktp: true, ktp_selfie: true }; 

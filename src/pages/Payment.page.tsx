@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { listedUser } from '../constant/routers/listed';
+import { listedAdmin, listedUser } from '../constant/routers/listed';
 import PaymentLayout from '../layout/payment.layout';
 import { paymentRest } from '@/middleware/Rest';
 import { formatRupiah } from '@/utils/formatRupiah';
@@ -11,7 +11,9 @@ function PaymentPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const id = searchParams.get('id');
+  const payment = searchParams.get('payment');
   const type = searchParams.get('type');
+  const idUser = searchParams.get('idUser');
   const [data, setData] = useState<any>();
 
   useEffect(() => {
@@ -26,16 +28,18 @@ function PaymentPage() {
       const response = await paymentRest.getStatusPayment(id);
       const data = response?.data?.data;
       const isPaid = response.data.data.isPaid;
-      const type = response.data.data.paymentMethod;
+      const paymentType = response.data.data.paymentMethod;
       const idTransaksi = response.data.data.id;
 
       if (isPaid) {
-        navigate(listedUser.dahsboardVerfi);
+        type === 'create-admin'
+          ? navigate(listedAdmin.anggotaBaru)
+          : navigate(listedUser.dahsboardVerfi);
       }
-      if (type !== 'QRIS') {
+      if (paymentType !== 'QRIS') {
         const params = new URLSearchParams({
           id: idTransaksi,
-          type: type,
+          payment: paymentType,
         });
         navigate(`${listedUser.paymentVa}?${params.toString()}`);
       }
@@ -48,13 +52,15 @@ function PaymentPage() {
 
   const generatePayment = async () => {
     const payload = {
-      paymentType: type,
+      paymentType: payment,
+      idUser,
     };
     try {
       const response = await paymentRest.generatePayment(payload);
       const id = response.data.data.id;
       const params = new URLSearchParams({
         id: id,
+        type: type ?? '',
       });
       navigate(`${listedUser.payment}?${params.toString()}`);
       window.location.reload();
@@ -120,7 +126,9 @@ function PaymentPage() {
           ) : (
             <div className="w-full flex flex-col items-center">
               <img src={animation} alt="animasi" className="w-1/3" />
-              <span>Sedang menyiapkan data pembayaran, mohon tunggu beberapa saat</span>
+              <span>
+                Sedang menyiapkan data pembayaran, mohon tunggu beberapa saat
+              </span>
             </div>
           )}
         </>
