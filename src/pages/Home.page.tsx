@@ -135,7 +135,7 @@ function HomePage() {
         <Header {...headerMembers} />
         <div className="flex mt-14 flex-wrap">
           {members.map((item, index) => (
-            <List key={`member-${index}`} className="sm:w-1/3" {...item} />
+            <List key={`member-${index}`} className="sm:w-1/4" {...item} />
           ))}
         </div>
       </Container>

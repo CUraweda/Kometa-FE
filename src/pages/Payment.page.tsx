@@ -3,8 +3,9 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { listedUser } from '../constant/routers/listed';
 import PaymentLayout from '../layout/payment.layout';
 import { paymentRest } from '@/middleware/Rest';
-import { formatRupiah } from '@/helper/formatRupiah';
+import { formatRupiah } from '@/utils/formatRupiah';
 import CountdownTimer from '@/components/ui/countDown';
+import animation from '@/assets/gif/Fill out.gif';
 
 function PaymentPage() {
   const [searchParams] = useSearchParams();
@@ -14,9 +15,9 @@ function PaymentPage() {
   const [data, setData] = useState<any>();
 
   useEffect(() => {
-   checkPayment();
-    if(!data){
-      generatePayment()
+    checkPayment();
+    if (!data) {
+      generatePayment();
     }
   }, []);
 
@@ -25,17 +26,16 @@ function PaymentPage() {
       const response = await paymentRest.getStatusPayment(id);
       const data = response?.data?.data;
       const isPaid = response.data.data.isPaid;
-      const type = response.data.data.paymentMethod
+      const type = response.data.data.paymentMethod;
       const idTransaksi = response.data.data.id;
-      console.log(type);
-      
+
       if (isPaid) {
         navigate(listedUser.dahsboardVerfi);
       }
-      if(type !== 'QRIS'){
+      if (type !== 'QRIS') {
         const params = new URLSearchParams({
           id: idTransaksi,
-          type: type
+          type: type,
         });
         navigate(`${listedUser.paymentVa}?${params.toString()}`);
       }
@@ -57,7 +57,7 @@ function PaymentPage() {
         id: id,
       });
       navigate(`${listedUser.payment}?${params.toString()}`);
-      window.location.reload()
+      window.location.reload();
     } catch (error) {
       console.log('ini jalan gk ada datanya');
     }
@@ -66,56 +66,64 @@ function PaymentPage() {
   return (
     <>
       <PaymentLayout>
-        <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-100 p-4">
-          <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
-            <h1 className="text-2xl font-bold text-center mb-6">
-              Pembayaran QRIS
-            </h1>
-
-            {/* QR Code Display */}
-            <div className="flex justify-center mb-6">
-              <img src={data?.qrisLink} alt="" />
-              {/* {data && <QRIS qrisLink={data?.qrisLink} />} */}
-            </div>
-            <div className="w-full flex justify-center my-5">
-              <CountdownTimer expiredDate={data?.expiredDate} />
-            </div>
-            {/* Payment Instructions */}
-            <div className="text-center mb-6">
-              <p className="text-gray-700 mb-2">
-                Silahkan scan QR code di atas untuk melakukan pembayaran.
-              </p>
-              <p className="text-gray-500 text-sm">
-                Pastikan nominal pembayaran sesuai dengan yang tertera.
-              </p>
-            </div>
-
-            {data && (
-              <div className="bg-gray-50 p-4 rounded-lg mb-6 gap-2 flex flex-col">
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Total Pembayaran:</span>
-                  <span className="font-bold text-gray-900">
-                    {formatRupiah(data?.paymentTotal)}
-                  </span>
+        <>
+          {data ? (
+            <div className="flex flex-col items-center justify-center w-full min-h-screen bg-gray-100 p-4">
+              <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+                <h1 className="text-2xl font-bold text-center mb-6">
+                  Pembayaran QRIS
+                </h1>
+                <div className="flex justify-center mb-6">
+                  <img src={data?.qrisLink} alt="" />
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-700">Metode Pembayaran:</span>
-                  <span className="text-gray-900">{data?.paymentMethod}</span>
+                <div className="w-full flex justify-center my-5">
+                  <CountdownTimer expiredDate={data?.expiredDate} />
+                </div>
+
+                <div className="text-center mb-6">
+                  <p className="text-gray-700 mb-2">
+                    Silahkan scan QR code di atas untuk melakukan pembayaran.
+                  </p>
+                  <p className="text-gray-500 text-sm">
+                    Pastikan nominal pembayaran sesuai dengan yang tertera.
+                  </p>
+                </div>
+
+                {data && (
+                  <div className="bg-gray-50 p-4 rounded-lg mb-6 gap-2 flex flex-col">
+                    <div className="flex justify-between">
+                      <span className="text-gray-700">Total Pembayaran:</span>
+                      <span className="font-bold text-gray-900">
+                        {formatRupiah(data?.paymentTotal)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-700">Metode Pembayaran:</span>
+                      <span className="text-gray-900">
+                        {data?.paymentMethod}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex justify-center gap-4">
+                  <button
+                    className="btn btn-ghost bg-emeraldGreen text-white"
+                    onClick={checkPayment}
+                  >
+                    Cek Pembayaran
+                  </button>
                 </div>
               </div>
-            )}
-
-            {/* Action Buttons */}
-            <div className="flex justify-center gap-4">
-              <button
-                className="btn btn-ghost bg-emeraldGreen text-white"
-                onClick={checkPayment}
-              >
-                Cek Pembayaran
-              </button>
             </div>
-          </div>
-        </div>
+          ) : (
+            <div className="w-full flex flex-col items-center">
+              <img src={animation} alt="animasi" className="w-1/3" />
+              <span>Sedang menyiapkan data pembayaran, mohon tunggu beberapa saat</span>
+            </div>
+          )}
+        </>
       </PaymentLayout>
     </>
   );

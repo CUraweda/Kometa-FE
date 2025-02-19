@@ -33,14 +33,12 @@ const DashboardAdmin = () => {
     setProvince(sortedData);
   };
 
-  console.log(statistic);
-
   return (
     <div>
       <CenterLayout className="min-h-[calc(100vh-105px)] justify-start items-start">
         <div className=" w-full">
-          <div className="card-custom card mb-5 h-44 border-l-[5px] border-green-700 bg-white shadow p-5 gap-2">
-            <p className='text-3xl font-semibold'>Welcome to Kometa Super Apps</p>
+          <div className="card mb-5 h-44 border-l-[5px] border-green-700 bg-white shadow p-5 gap-2">
+            <p className='text-3xl font-semibold text-green-700'>Welcome to Kometa Super Apps</p>
             <p className='text-md'>Aplikasi monitoring & pendataan anggota Koperasi Modern Teknologi Nusantara ( Kometa )</p>
           </div>
           <div className='w-full flex-col sm:flex-row flex'>

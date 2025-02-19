@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { landApi } from '@/middleware';
 import { LandData } from '@/middleware/Utils';
-import { getLokasi } from '@/helper/mapsHelper';
+import { getLokasi } from '@/utils/mapsHelper';
 
 import { Location } from '@/components/maps/maps';
 

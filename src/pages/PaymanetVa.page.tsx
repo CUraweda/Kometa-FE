@@ -11,7 +11,7 @@ import { useTimer } from '../hooks/useTimer';
 import PaymentLayout from '../layout/payment.layout';
 import { Payment } from '../types/common';
 import { paymentRest } from '@/middleware/Rest';
-import { formatRupiah } from '@/helper/formatRupiah';
+import { formatRupiah } from '@/utils/formatRupiah';
 import CountdownTimer from '@/components/ui/countDown';
 
 function PaymentVaPage() {
@@ -112,9 +112,9 @@ function PaymentVaPage() {
                   </h3>
                 </span>
               </div>
-              <div>
+              <div className='flex flex-col gap-3'>
                 <img
-                  className="h-40 mx-auto"
+                  className="w-32 mx-auto pt-5"
                   src={selectedPayment}
                   alt="payment-logo"
                 />
