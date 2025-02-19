@@ -25,7 +25,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { schemaMember } from '@/useForm/dataMember';
 import { Message } from '@/components/form/error.field';
 import { MemberData } from '@/middleware/Utils';
-import Swal from 'sweetalert2';
 import PaymentMethod from '@/components/shared/payment.component';
 
 function RegisterMember() {

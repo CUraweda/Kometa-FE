@@ -97,15 +97,6 @@ function PaymentVaPage() {
     paymentList.find((item) => (item as Payment).value == type) as Payment
   )?.img;
 
-  const downloadQRCode = () => {
-    const canvas = document.querySelector('canvas') as HTMLCanvasElement;
-    const url = canvas.toDataURL('image/png');
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'qris-code.png';
-    a.click();
-  };
-
   return (
     <>
       <PaymentLayout>
