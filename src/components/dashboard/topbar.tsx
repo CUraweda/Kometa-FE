@@ -1,8 +1,6 @@
 import { listedUser } from '@/constant/routers/listed';
 import { MdMenuOpen } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { Bell } from 'lucide-react';
 import NotificationContent from '../content/notification.content';
 
 function TopBar({

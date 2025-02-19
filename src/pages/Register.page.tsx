@@ -691,6 +691,8 @@ function RegisterMember() {
               )}
             </div>
           </div>
+          {
+            !type && 
           <div className="space-y-4 flex-col sm:flex-row bg-white mt-10 p-3 rounded-md">
             <h2 className="font-medium tracking-wide">Metode Pembayaran</h2>
             <PaymentMethod
@@ -698,6 +700,7 @@ function RegisterMember() {
               onChange={(item) => setPayment(item)}
             />
           </div>
+          }
         </div>
         <div className="w-full text-center">
           {type && (

@@ -114,6 +114,7 @@ const DetailAnggotaBaru = () => {
               <td>:</td>
               <td>{formatDateTime(data?.createdAt)}</td>
             </tr>
+         
             <tr>
               <th>Whatsapp</th>
               <td>:</td>
@@ -124,11 +125,45 @@ const DetailAnggotaBaru = () => {
               <td>:</td>
               <td>{data?.user.email}</td>
             </tr>
-            <tr>
+          <tr>
               <th>Status</th>
               <td>:</td>
               <td>{data?.isVerified ? <span className="badge badge-success text-white">Terverifikasi</span> : <span className="badge badge-warning">Tertunda</span>}</td>
             </tr>
+          </table>
+        </div>
+        <h2 className="text-lg font-bold mt-6 mb-4">Informasi Pribadi</h2>
+        <div className='z-0 overflow-hidden'>
+
+
+          <table className="table w-full">
+            <tr>
+              <th>Nama Lengkap</th>
+              <td>:</td>
+              <td>{data?.fullName}</td>
+            </tr>
+            <tr>
+              <th>NIK</th>
+              <td>:</td>
+              <td>{data?.nik}</td>
+            </tr>
+            <tr>
+              <th>Tempat, Tanggal Lahir</th>
+              <td>:</td>
+              <td>{data?.pob} , {formatDateString(data?.dob)}</td>
+            </tr>
+            <tr>
+              <th>Jenis Kelamin</th>
+              <td>:</td>
+              <td>{data?.gender === 'L' ? 'Laki - Laki' : 'Perempuan'}</td>
+            </tr>
+            <tr>
+              <th>Pekerjaan</th>
+              <td>:</td>
+              <td>{data?.job}</td>
+            </tr>
+           
+            
             <tr>
               <th>Keanggotaan</th>
               <td>:</td>
@@ -136,6 +171,7 @@ const DetailAnggotaBaru = () => {
                 {data?.membershipType.name}
               </span></td>
             </tr>
+          
 
           </table>
         </div>
@@ -280,7 +316,7 @@ const DetailAnggotaBaru = () => {
 
           <span>Tolak Pengajuan Anggota</span>
           <textarea className="textarea textarea-bordered w-full" placeholder="Catatan" value={textReject} onChange={(e) => setText(e.target.value)} />
-          <button className='btn btn-outline text-white bg-emeraldGreen w-full' onClick={() => handleVerif(false, data?.id, textReject)}>Simpan</button>
+          <button className='btn btn-outline text-white w-full' onClick={() => handleVerif(false, data?.id, textReject)}>Simpan</button>
 
         </div>
 

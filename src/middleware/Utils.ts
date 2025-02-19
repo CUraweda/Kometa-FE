@@ -62,61 +62,7 @@ export interface MembershipTypeResponse {
 export interface MemberData {
   status: boolean;
   message: string;
-  data: {
-    id: string;
-    userId: string;
-    membershipTypeId: string;
-    fullName: string;
-    nik: string;
-    gender: 'L' | 'P';
-    pob: string;
-    job: string
-    dob: string; // ISO date string
-    isVerified: boolean;
-    KtpProvince: string;
-    KtpProvinceId: string;
-    KtpCity: string;
-    KtpCityId: string;
-    KtpDistrict: string;
-    KtpDistrictId: string;
-    KtpSubDistrict: string;
-    KtpSubDistrictId: string;
-    KtpAddressDetail: string;
-    addressIsDifferent: boolean;
-    DomicileProvince: string;
-    DomicileProvinceId: string;
-    DomicileCity: string;
-    DomicileCityId: string;
-    DomicileDistrict: string;
-    DomicileDistrictId: string;
-    DomicileSubDistrict: string;
-    DomicileSubDistrictId: string;
-    DomicileAddressDetail: string;
-    registrationPaymentId: string | null;
-    registrationPaymentMethod: string | null;
-    registrationIsPaid: boolean;
-    registrationFee: number | null;
-    rejectedMessage: string | null;
-    createdAt: string; // ISO date string
-    user: {
-      id: string;
-      email: string;
-      password: string;
-      phoneWA: string;
-      tempOTP: string | null;
-      roleId: string;
-      emailVerified: boolean;
-      resetToken: string | null;
-      resetTokenExp: string | null;
-    };
-    membershipType: {
-      id: string;
-      name: string;
-      foregroundColor: string;
-      backgroundColor: string;
-    };
-    MemberFile: any[]; // If the structure of MemberFile is known, replace `any` with the appropriate type.
-  };
+  data: Member
 }
 
 export interface typeGetAllMember {
@@ -133,13 +79,53 @@ export interface typeGetAllMember {
 
 export interface Member {
   id: string;
-  createdAt: string; // ISO date string
+  userId: string;
+  membershipTypeId: string;
   fullName: string;
-  membershipType: MembershipType;
+  nik: string;
+  gender: 'L' | 'P';
+  pob: string;
+  job: string
+  dob: string; // ISO date string
+  isVerified: boolean;
+  KtpProvince: string;
+  KtpProvinceId: string;
+  KtpCity: string;
+  KtpCityId: string;
+  KtpDistrict: string;
+  KtpDistrictId: string;
+  KtpSubDistrict: string;
+  KtpSubDistrictId: string;
+  KtpAddressDetail: string;
+  addressIsDifferent: boolean;
+  DomicileProvince: string;
+  DomicileProvinceId: string;
+  DomicileCity: string;
+  DomicileCityId: string;
+  DomicileDistrict: string;
+  DomicileDistrictId: string;
+  DomicileSubDistrict: string;
+  DomicileSubDistrictId: string;
+  DomicileAddressDetail: string;
+  registrationPaymentId: string | null;
   registrationPaymentMethod: string | null;
   registrationIsPaid: boolean;
-  isVerified: boolean;
-  user: User;
+  registrationFee: number | null;
+  rejectedMessage: string | null;
+  createdAt: string; // ISO date string
+  user: {
+    id: string;
+    email: string;
+    password: string;
+    phoneWA: string;
+    tempOTP: string | null;
+    roleId: string;
+    emailVerified: boolean;
+    resetToken: string | null;
+    resetTokenExp: string | null;
+  };
+  membershipType: MembershipType
+  MemberFile: any[]; 
 }
 
 interface MembershipType {
