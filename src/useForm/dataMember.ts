@@ -11,6 +11,7 @@ import * as yup from "yup";
       .max(16, "NIK must be exactly 16 characters"),
     gender: yup.string().required("Gender is required"),
     pob: yup.string().required("Place of Birth is required"),
+    job: yup.string().required("Job is required"),
     dob: yup
       .string()
       .required("Date of Birth is required")

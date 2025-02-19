@@ -70,6 +70,7 @@ export interface MemberData {
     nik: string;
     gender: 'L' | 'P';
     pob: string;
+    job: string
     dob: string; // ISO date string
     isVerified: boolean;
     KtpProvince: string;

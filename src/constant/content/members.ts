@@ -1,4 +1,4 @@
-import { Area, Fish, Gear } from "../../assets/icon";
+import { Area, Fish, Gear, Money } from "../../assets/icon";
 
 export const headerMembers = {
   section: "ANGGOTA",
@@ -11,19 +11,25 @@ export const members = [
     icon: Area,
     title: "Anggota Pemilik Aset/Lahan",
     description:
-      "Menyediakan lahan yang menjadi bagian penting dalam pengelolaan koperasi, mendukung aktivitas produktif yang selaras dengan tujuan koperasi.",
+      "Mengoptimalkan aset lahan dan properti sebagai fondasi operasional koperasi, mendukung infrastruktur dan kegiatan produktif.",
   },
   {
     icon: Gear,
-    title: "Anggota Pemilik Jasa",
+    title: "Anggota Pemilik Usaha/Bisnis",
     description:
-      "Berkontribusi dalam bentuk tenaga, keahlian, atau modal, menjadi bagian integral dari operasional dan keberhasilan koperasi.",
+      "Mengelola usaha atau bisnis yang menyediakan produk dan layanan inovatif, serta menjadi pendorong utama pertumbuhan koperasi.",
   },
   {
     icon: Fish,
-    title: "Anggota Pemilik Budidaya",
+    title: "Anggota Pemilik Jasa",
     description:
-      "Mengelola usaha budidaya yang menjadi sumber utama produk koperasi, mendukung keberlanjutan dan pertumbuhan bersama.",
+      "Menyediakan layanan atau keahlian khusus yang meningkatkan nilai tambah koperasi dan mendukung keberlanjutan operasional.",
+  },
+  {
+    icon: Money,
+    title: "Anggota Pemberi Modal/Investor",
+    description:
+      "Menyuntikkan modal dan investasi strategis untuk mendukung ekspansi usaha, inovasi, serta memperkuat stabilitas finansial koperasi.",
   },
 ];
 

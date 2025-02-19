@@ -112,9 +112,9 @@ function PaymentVaPage() {
                   </h3>
                 </span>
               </div>
-              <div>
+              <div className='flex flex-col gap-3'>
                 <img
-                  className="h-40 mx-auto"
+                  className="w-32 mx-auto pt-5"
                   src={selectedPayment}
                   alt="payment-logo"
                 />

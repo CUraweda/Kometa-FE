@@ -4,6 +4,7 @@ export interface Register {
   nik: string;
   gender: string;
   pob: string;
+  job: string;
   dob: string;
   isVerified: boolean;
   KtpProvince: string;

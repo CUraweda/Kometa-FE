@@ -55,6 +55,7 @@ function RegisterMember() {
       fullName: '',
       nik: '',
       gender: '',
+      job: '',
       pob: '',
       dob: '',
       isVerified: true,
@@ -192,7 +193,7 @@ function RegisterMember() {
     try {
       const response = await memberRest.createData(value);
       const id = response?.data?.data?.id;
-   
+
       if (id) {
         const params = new URLSearchParams({
           type: payment?.value ?? 'QRIS',
@@ -242,6 +243,7 @@ function RegisterMember() {
       setValue('nik', dataRest.data.nik);
       setValue('gender', dataRest.data.gender);
       setValue('pob', dataRest.data.pob);
+      setValue('job', dataRest.data.job);
       setValue('dob', dataRest.data.dob);
       setValue('isVerified', dataRest.data.isVerified);
       setValue('KtpProvince', dataRest.data.KtpProvince);
@@ -270,8 +272,6 @@ function RegisterMember() {
   };
 
   const { photo, title, regulation } = instructions[modalId as InstructionKey];
-
-  console.log(payment);
 
   return (
     <>
@@ -369,7 +369,7 @@ function RegisterMember() {
                 <div className="w-full">
                   <label htmlFor="">NIK</label>
                   <Input
-                    type="text"
+                    type="number"
                     error={errors?.nik}
                     placeholder="NIK"
                     className="w-full"
@@ -420,6 +420,17 @@ function RegisterMember() {
                     error={errors?.dob}
                     placeholder="Tanggal Lahir"
                     {...register('dob')}
+                  />
+                </div>
+              </div>
+              <div className="flex gap-4 flex-col sm:flex-row">
+                <div className="w-full sm:w-1/2">
+                  <label htmlFor="">Pekerjaan</label>
+                  <Input
+                    type="text"
+                    error={errors?.job}
+                    placeholder="Pekerjaan"
+                    {...register('job')}
                   />
                 </div>
               </div>
