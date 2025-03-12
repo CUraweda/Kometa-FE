@@ -43,9 +43,10 @@ const Anggota = () => {
     setItemsPerPage(newItemsPerPage);
   };
 
-  const handleDetailAnggota = (props: string) => {
+  const handleDetailAnggota = (props: string, idUser: string) => {
     const params = new URLSearchParams({
       id: props,
+      idUser: idUser,
       type: 'member',
     });
 
@@ -111,7 +112,7 @@ const Anggota = () => {
                         <div className="w-full flex justify-center">
                           <button
                             className="text-xl btn btn-xs btn-ghost"
-                            onClick={() => handleDetailAnggota(value.id)}
+                            onClick={() => handleDetailAnggota(value.id, value.user.id)}
                           >
                             <AiOutlineExpandAlt />
                           </button>

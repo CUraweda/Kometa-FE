@@ -1,6 +1,6 @@
 import CenterLayout from '@/layout/center.layout';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
-import ModalDetail from '@/components/ui/ModalDetail';
+import ModalDetail, { openModal } from '@/components/ui/ModalDetail';
 import { useEffect, useState } from 'react';
 import { Member } from '@/middleware/Utils';
 import { memberRest } from '@/middleware';
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { listedAdmin, listedUser } from '@/constant/routers/listed';
 import Pagination from '@/components/ui/pagination';
 import { IoSearchOutline } from 'react-icons/io5';
+import PaymentHistory from './PaymentHistory';
 
 const AnggotaBaru = () => {
   const [data, setData] = useState<any>(undefined);
@@ -120,6 +121,7 @@ const AnggotaBaru = () => {
                           >
                             <AiOutlineExpandAlt />
                           </button>
+                         
                         </div>
                       </td>
                     </tr>
@@ -140,19 +142,6 @@ const AnggotaBaru = () => {
         </div>
       </CenterLayout>
 
-      <ModalDetail id="reject-pendapatan">
-        <span>Tolak Pendaftaran</span>
-        <div className="w-full mt-3">
-          <textarea
-            className="textarea textarea-bordered w-full"
-            placeholder="Keterangan"
-          ></textarea>
-        </div>
-        <div className="w-full flex justify-end gap-3 mt-5">
-          <button className="btn btn-outline btn-sm">Close</button>
-          <button className="btn btn-primary text-white btn-sm">Kirim</button>
-        </div>
-      </ModalDetail>
     </div>
   );
 };
