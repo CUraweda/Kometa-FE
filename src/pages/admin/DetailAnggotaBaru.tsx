@@ -8,7 +8,7 @@ import { dataMember, memberRest } from '@/middleware';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { Member, PaymentData, User } from '@/middleware/Utils';
+import { Member, PaymentData } from '@/middleware/Utils';
 import { formatRupiah } from '@/utils/formatRupiah';
 import { paymentRest } from '@/middleware/Rest';
 

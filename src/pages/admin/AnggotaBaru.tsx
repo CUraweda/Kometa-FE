@@ -1,6 +1,5 @@
 import CenterLayout from '@/layout/center.layout';
 import { AiOutlineExpandAlt } from 'react-icons/ai';
-import ModalDetail, { openModal } from '@/components/ui/ModalDetail';
 import { useEffect, useState } from 'react';
 import { Member } from '@/middleware/Utils';
 import { memberRest } from '@/middleware';
@@ -9,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { listedAdmin, listedUser } from '@/constant/routers/listed';
 import Pagination from '@/components/ui/pagination';
 import { IoSearchOutline } from 'react-icons/io5';
-import PaymentHistory from './PaymentHistory';
 
 const AnggotaBaru = () => {
   const [data, setData] = useState<any>(undefined);
