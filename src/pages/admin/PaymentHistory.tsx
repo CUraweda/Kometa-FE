@@ -41,9 +41,10 @@ const PaymentHistory = () => {
     try {
       const response = await paymentRest.getStatusPayment(idTransaksi);
       const data = response?.data?.data;
-      openModal('detail-payment');
+      openModal('detail-paymentt');
       setDataTransaksi(data);
-
+      console.log('ini jalan');
+      
     } catch (error) {
       console.log(error);
     }
@@ -63,7 +64,7 @@ const PaymentHistory = () => {
     };
 
   return (
-    <div>
+    <>
       <div className="overflow-x-auto">
         <table className="table table-zebra">
           {/* head */}
@@ -114,7 +115,7 @@ const PaymentHistory = () => {
         />
       </div>
 
-      <ModalDetail id="detail-payment">
+      <ModalDetail id="detail-paymentt">
         <span className="text-lg font-bold">Detail Transaksi</span>
         <div className="mt-5">
           <table className="table w-full">
@@ -203,7 +204,7 @@ const PaymentHistory = () => {
           </div>
         </div>
       </ModalDetail>
-    </div>
+    </>
   );
 };
 
