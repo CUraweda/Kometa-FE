@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import ForgetPage from '../../pages/Forget.page';
-import HomePage from '../../pages/Home.page';
+// import HomePage from '../../pages/Home.page';
 import PaidPage from '../../pages/Paid.page';
 import PaymentPage from '../../pages/Payment.page';
 import RegisterMember from '../../pages/Register.page';
@@ -13,7 +13,7 @@ import { listedUser, listedAdmin } from './listed';
 import NotFoundPage from '../../pages/NotFound.page';
 // import DashboardPage from "../../pages/Dashboard.page";
 import ProtectedLayout from '../../layout/Protected.layout';
-import LandingLayout from '../../layout/Landing.layout';
+// import LandingLayout from '../../layout/Landing.layout';
 import DashboardLayout from '../../layout/Dashboard.layout';
 // import PlantingPage from '../../pages/planting/Planting.page';
 import SupplierPage from '../../pages/Supplier.page';
@@ -49,18 +49,20 @@ import FinancePage from '@/pages/Finance.page';
 // import HistoryPayment from '@/pages/admin/RekapPaymentHistori';
 import RekapPaymentHistori from '@/pages/admin/RekapPaymentHistori';
 import ProfilePage from '@/pages/Profile.page';
+import Block from '@/pages/Block';
 
 export const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <LandingLayout />,
-    children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-    ],
-  },
+  // {
+  //   path: '/',
+  //   element: <LandingLayout />,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <HomePage />,
+  //     },
+  //   ],
+  // },
+  { path: "/", element: <Block /> },
   { path: listedUser.signin, element: <SignInPage /> },
   { path: listedUser.signup, element: <SignUpPage /> },
   { path: listedUser.forget, element: <ForgetPage /> },
